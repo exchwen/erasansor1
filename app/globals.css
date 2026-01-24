@@ -1,0 +1,222 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-end-rgb: 0, 0, 0;
+
+  /* Malzeme Renkleri */
+  --wall-color: #1a1a1a;
+  --floor-color: #0f0f0f;
+  --ceiling-color: #f0f0f0;
+  --gold: #fee123;
+  --panel-bg: #111;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: rgb(var(--background-end-rgb));
+  /* Burası değişti: overflow: hidden silindi, yerine x-hidden geldi */
+  overflow-x: hidden;
+}
+
+/* --- 3D SAHNE --- */
+.scene-3d {
+  width: 100vw;
+  height: 100vh;
+  perspective: 1000px; /* Gözün ekrana uzaklığı */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #050505;
+  position: fixed;
+  z-index: 999;
+  overflow: hidden;
+}
+/* ... Geri kalan tüm 3D sahne, kabin ve duvar CSS'lerin aynı kalacak ... */
+
+/* --- ASANSÖR KABİNİ (The Object) --- */
+.cabin-3d {
+  width: 300px;
+  height: 500px;
+  position: relative;
+  transform-style: preserve-3d;
+  /* Hareketlerin pürüzsüz olması için transition */
+  transition: transform 1.5s ease-in-out;
+}
+
+/* --- ANİMASYON DURUMLARI --- */
+
+/* 1. BAŞLANGIÇ: Küçük ve Aşağıda */
+.state-start .cabin-3d {
+  transform: translateY(600px) translateZ(-2000px) rotateX(-10deg);
+}
+
+/* 2. YÜKSELME: Yukarı Çıkıyor (Hala uzakta) */
+.state-rising .cabin-3d {
+  transform: translateY(0px) translateZ(-2000px) rotateX(0deg);
+  /* Titreme efekti verilebilir javascript ile ama sade kalsın */
+}
+
+/* 3. YAKLAŞMA: Ekranı Kapla (Zoom In) */
+.state-approach .cabin-3d {
+  transform: translateY(0px) translateZ(-150px); /* Kameranın tam önüne gel */
+}
+
+/* 4. İÇERİ GİRİŞ: Kamerayı içeri sok */
+.state-inside .cabin-3d {
+  transform: translateZ(200px); /* Kapı eşiğinden içeri adım at */
+}
+
+/* --- YAPI ELEMANLARI (DUVARLAR) --- */
+/* Hepsi merkezden başlar, transform ile yerine gider */
+.wall {
+  position: absolute;
+  width: 300px;
+  height: 500px;
+  backface-visibility: hidden; /* Arkası görünmesin, performans artar */
+  border: 1px solid #333; /* Köşe hatları belli olsun */
+}
+
+/* ARKA DUVAR (AYNA) */
+.wall-back {
+  background: #222;
+  /* 150px geriye it + 180 derece çevir ki yüzü bize baksın */
+  transform: rotateY(180deg) translateZ(150px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* AYNA EFEKTİ */
+.mirror-surface {
+  width: 90%;
+  height: 80%;
+  background: linear-gradient(135deg, #444, #111);
+  border: 2px solid var(--gold);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 0 20px #000;
+}
+/* Ayna Yansıması (Sanal) */
+.mirror-surface::after {
+  content: '';
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  top: -50%;
+  left: -50%;
+  background: linear-gradient(
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transform: rotate(45deg);
+}
+
+/* SAĞ DUVAR (TUŞ TAKIMI BURADA) */
+.wall-right {
+  background: linear-gradient(to left, #222, #111);
+  /* 90 derece sağa çevir, 150px ileri it */
+  transform: rotateY(90deg) translateZ(150px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* SOL DUVAR */
+.wall-left {
+  background: linear-gradient(to right, #222, #111);
+  /* -90 derece sola çevir, 150px ileri it */
+  transform: rotateY(-90deg) translateZ(150px);
+}
+
+/* TAVAN (IŞIKLI) */
+.wall-top {
+  width: 300px;
+  height: 300px; /* Kare tavan */
+  background: radial-gradient(circle, #fff, #555);
+  /* 90 derece yukarı çevir, 250px (yüksekliğin yarısı) yukarı it */
+  transform: rotateX(90deg) translateZ(250px);
+  box-shadow: 0 0 50px rgba(255, 255, 255, 0.3);
+}
+
+/* ZEMİN */
+.wall-bottom {
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, #333, #000);
+  /* -90 derece aşağı çevir, 250px aşağı it */
+  transform: rotateX(-90deg) translateZ(250px);
+  border: 1px solid #222;
+}
+
+/* --- TUŞ TAKIMI (PANEL) --- */
+.control-panel {
+  width: 60px;
+  height: 300px;
+  background: #000;
+  border: 1px solid var(--gold);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  /* Hafif çıkıntılı olsun */
+  transform: translateZ(10px);
+}
+.panel-button {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid #555;
+  background: radial-gradient(circle, #333, #000);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 10px;
+  color: var(--gold);
+  box-shadow: 0 0 5px var(--gold); /* Işıklı tuşlar */
+}
+
+/* --- KAPILAR (ÖN TARAFTA) --- */
+.door-frame {
+  position: absolute;
+  width: 300px;
+  height: 500px;
+  /* 150px öne it (tam öne gelsin) */
+  transform: translateZ(150px);
+  display: flex;
+  overflow: hidden; /* Kapı dışarı taşınca gizlensin */
+}
+
+.door-leaf {
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(to right, #555, #222);
+  border: 1px solid #000;
+  transition: transform 2.5s ease-in-out; /* Açılma hızı */
+  position: relative;
+  z-index: 10;
+}
+.door-leaf-left {
+  border-right: 2px solid var(--gold);
+}
+
+/* Kapı Açılma Hareketi */
+.state-open .door-leaf-left,
+.state-inside .door-leaf-left {
+  transform: translateX(-95%);
+}
+.state-open .door-leaf-right,
+.state-inside .door-leaf-right {
+  transform: translateX(95%);
+}
+html {
+  scroll-behavior: smooth;
+}
