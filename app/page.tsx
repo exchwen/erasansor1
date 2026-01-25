@@ -77,8 +77,8 @@ export default function Home() {
                     NEDEN ER ASANSÖR?
                   </h2>
                   <p className="mb-4 italic font-semibold text-gray-700 text-lg">
-                    "Çünkü biz sadece asansör üretmiyoruz, güveni ve kaliteyi
-                    yukarı taşıyoruz."
+                    Çünkü biz sadece asansör üretmiyoruz, güveni ve kaliteyi
+                    yukarı taşıyoruz.
                   </p>
                   <p className="text-gray-600 mb-4 leading-relaxed">
                     ER Asansör, mühendislik odaklı yaklaşımıyla projelerinizde
