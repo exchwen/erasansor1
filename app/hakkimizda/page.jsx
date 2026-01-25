@@ -45,7 +45,7 @@ const HakkimizdaPage = () => {
               bağlı bir marka olmanın gururunu yaşıyoruz.
             </p>
           </div>
-          <div className="bg-gray-100 rounded-2xl h-[400px] flex items-center justify-center p-12">
+          <div className="relative bg-black rounded-3xl h-[400px] flex items-center justify-center p-12 overflow-hidden border-4 border-[#fee123] shadow-2xl group">
             <Image
               src="/logo.png"
               alt="ER ASANSÖR"
@@ -166,3 +166,4 @@ const HakkimizdaPage = () => {
 };
 
 export default HakkimizdaPage;
+
