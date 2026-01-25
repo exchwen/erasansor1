@@ -2,6 +2,8 @@
 const nextConfig = {
   images: {
     remotePatterns: [
+      { protocol: 'https', hostname: 'images.unsplash.com' }, // Unsplash hatasını çözer
+      { protocol: 'https', hostname: 'vimmer.com.tr' },      // Vimmer hatasını çözer
       { protocol: 'https', hostname: 'belge.alrafidainschools.com' },
       { protocol: 'https', hostname: 'media.licdn.com' },
       { protocol: 'https', hostname: 'i.ytimg.com' },
@@ -14,10 +16,11 @@ const nextConfig = {
       { protocol: 'https', hostname: 'www.butaworld.com' },
       { protocol: 'https', hostname: 'www.hermanoshotel.com' },
       { protocol: 'https', hostname: 'ams3.digitaloceanspaces.com' },
+      // Başka sitelerden görsel eklersen hostname'ini buraya eklemeyi unutma
     ],
   },
   eslint: {
-    ignoreDuringBuilds: true, // Build hatalarını görmezden gelmek için ekledik
+    ignoreDuringBuilds: true,
   },
 }
 
