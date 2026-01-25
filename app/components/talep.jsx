@@ -80,7 +80,7 @@ const TalepFormu = () => {
                 {slides.map((text, index) => (
                   <h2
                     key={index}
-                    className={`absolute inset-0 text-2xl sm:text-4xl md:text-5xl font-black uppercase transition-all duration-1000 ease-in-out ${
+                    className={`absolute inset-0 text-2xl sm:text-4xl md:text-4xl font-black uppercase transition-all duration-1000 ease-in-out ${
                       index === activeSlide
                         ? 'opacity-100 translate-y-0'
                         : 'opacity-0 translate-y-10'
