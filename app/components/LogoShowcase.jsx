@@ -1,31 +1,38 @@
+'use client';
 import React from 'react';
 
 const LogoShowcase = () => {
-  // Sadece senin marka logonun bilgisi
+  // Marka logo bilgisi
   const brandLogo = {
     name: 'ER ASANSÖR',
-    url: '/logo.png', // Public klasöründeki logonun dosya yolunu buraya yazdım.
+    url: '/logo.png', 
   };
 
   return (
-    // Üstteki koyu bölümden sonra temiz bir geçiş için beyaz arka plan
-    <section className="py-16 bg-white border-b border-gray-100">
+    // Arka plan tamamen siyah yapıldı
+    <section className="py-20 bg-black border-t border-gray-900">
       <div className="container mx-auto px-4">
-        {/* Başlığı tekil ve daha güçlü hale getirdim */}
-        <p className="text-center text-gray-400 text-sm font-bold uppercase tracking-widest mb-10"></p>
+        {/* Slogan veya Üst Metin (İhtiyaç duyarsan diye görünür bıraktım) */}
+        <p className="text-center text-[#fee123] text-xs font-black uppercase tracking-[0.5em] mb-12 opacity-80">
+          GÜVENİN MARKASI
+        </p>
 
-        {/* Tek logoyu sayfada ortalamak için Flexbox kullandım */}
+        {/* Logoyu sayfada ortalayan alan */}
         <div className="flex justify-center items-center">
           <div
-            // Logoyu biraz daha büyüttüm (max-w-[240px])
-            // Gri tonlama ve opaklık efektlerini korudum, üzerine gelince canlanacak.
-            className="w-full max-w-[240px] grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-500 cursor-pointer hover:scale-105"
+            // Logo boyutu ve geçiş efektleri
+            className="w-full max-w-[280px] transition-all duration-700 cursor-pointer hover:scale-110 group"
           >
             <img
               src={brandLogo.url}
               alt={brandLogo.name}
-              // Gölgeyi biraz daha belirginleştirdim (drop-shadow-md)
-              className="w-full h-auto object-contain filter drop-shadow-md"
+              /** * CSS FILTRE AÇIKLAMASI: 
+               * Logo görselin ne renk olursa olsun, bu filtre onu #fee123 tonlarına yaklaştırır.
+               * Eğer logon zaten bu renkse, sadece drop-shadow kısmını tutman yeterlidir.
+               */
+              className="w-full h-auto object-contain transition-all duration-500 
+                         drop-shadow-[0_0_20px_rgba(254,225,35,0.4)] 
+                         group-hover:drop-shadow-[0_0_35px_rgba(254,225,35,0.6)]"
             />
           </div>
         </div>

@@ -1,12 +1,12 @@
 'use client';
 import React from 'react';
-import Link from 'next/link'; // Yönlendirme için eklendi
+import Link from 'next/link';
 
 const servicesData = [
   {
     title: 'PERİYODİK BAKIM',
     img: 'https://pemasansor.com/wp-content/uploads/2024/07/EsenlerAsansorBakimFiyatlari-1024x576.webp',
-    path: '/hizmetlerimiz/periyodik-bakim', // İlgili sayfa yolu
+    path: '/hizmetlerimiz/periyodik-bakim',
   },
   {
     title: 'ARIZA SERVİSİ',
@@ -27,65 +27,67 @@ const servicesData = [
 
 const GeneralServices = () => {
   return (
-    <section className="py-16 bg-white">
+    <section className="py-24 bg-black">
       <div className="container mx-auto px-4">
         {/* Başlık Alanı */}
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-black text-black uppercase tracking-tighter mb-3">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-black text-white uppercase tracking-tighter mb-4">
             ASANSÖR HİZMETLERİ
           </h2>
-          <p className="text-gray-600 font-bold text-sm md:text-base uppercase tracking-widest italic">
+          <p className="text-[#fee123] font-bold text-sm md:text-base uppercase tracking-[0.3em] italic">
             PROFESYONEL MÜHENDİSLİK ÇÖZÜMLERİMİZ
           </p>
-          <div className="w-16 h-1 bg-[#f3921f] mx-auto mt-4"></div>
+          <div className="w-24 h-1.5 bg-[#fee123] mx-auto mt-6 shadow-[0_0_15px_rgba(254,225,35,0.4)]"></div>
         </div>
 
         {/* 4'lü Kart Izgarası */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
           {servicesData.map((service, index) => (
             <Link
               href={service.path}
               key={index}
-              className="relative group overflow-hidden h-[320px] border-4 border-white shadow-lg transition-all duration-500 hover:border-[#f3921f] cursor-pointer"
+              className="relative group overflow-hidden h-[380px] border-2 border-gray-900 shadow-2xl transition-all duration-500 hover:border-[#fee123] cursor-pointer rounded-sm"
             >
               <img
                 src={service.img}
-                className="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-110"
+                className="w-full h-full object-cover grayscale-[40%] group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-110"
                 alt={service.title}
               />
-              <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all flex items-center justify-center p-6">
-                <div className="border-2 border-white/30 p-4 w-full h-full flex items-center justify-center transition-all group-hover:border-white">
-                  <h3 className="text-white font-black text-xl md:text-2xl text-center uppercase tracking-tighter drop-shadow-lg">
+              {/* Overlay Karartma */}
+              <div className="absolute inset-0 bg-black/60 group-hover:bg-black/30 transition-all flex items-center justify-center p-6">
+                <div className="border border-[#fee123]/30 p-4 w-full h-full flex flex-col items-center justify-center transition-all group-hover:border-[#fee123]">
+                  <h3 className="text-white font-black text-xl md:text-2xl text-center uppercase tracking-tighter leading-none mb-2">
                     {service.title}
                   </h3>
+                  <div className="w-0 group-hover:w-12 h-1 bg-[#fee123] transition-all duration-500"></div>
                 </div>
               </div>
               {/* Küçük İpucu Yazısı */}
-              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-[#f3921f] text-black text-[10px] font-black px-3 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                DETAYLI BİLGİ
+              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-[#fee123] text-black text-[10px] font-black px-4 py-2 rounded-sm opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-4 group-hover:translate-y-0">
+                İNCELE
               </div>
             </Link>
           ))}
         </div>
 
         {/* Projelendirme Bölümü */}
-        <div className="flex flex-col lg:flex-row items-stretch gap-8 bg-gray-50 hover:bg-white rounded-xl border border-gray-100 hover:border-[#f3921f]/30 shadow-lg hover:shadow-2xl overflow-hidden transition-all duration-300 group/project cursor-default">
-          <div className="lg:w-1/2 p-8 md:p-12 flex flex-col justify-center">
-            <h2 className="text-3xl md:text-4xl font-black text-[#1a3a4a] mb-6 border-b-4 border-[#1a3a4a] inline-block pb-2 self-start tracking-tighter group-hover/project:text-[#f3921f] group-hover/project:border-[#f3921f] transition-colors duration-300">
-              ASANSÖR PROJELENDİRME
+        <div className="flex flex-col lg:flex-row items-stretch gap-0 bg-[#0a0a0a] rounded-2xl border border-gray-900 shadow-2xl overflow-hidden transition-all duration-500 group/project">
+          <div className="lg:w-1/2 p-10 md:p-16 flex flex-col justify-center bg-[#0a0a0a]">
+            <h2 className="text-3xl md:text-4xl font-black text-white mb-8 border-l-8 border-[#fee123] pl-6 tracking-tighter uppercase">
+              ASANSÖR <span className="text-[#fee123]">PROJELENDİRME</span>
             </h2>
-            <p className="text-gray-700 text-lg font-medium leading-relaxed mb-8 italic">
+            <p className="text-gray-400 text-lg font-medium leading-relaxed mb-10 italic">
               ER Asansör, uzman mühendis kadrosuyla her türlü bina yapısına
               uygun, güvenilir ve efektif projeleri başarıyla hayata
               geçirmektedir.
             </p>
 
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap gap-6">
               {/* WhatsApp Butonu */}
               <a
                 href="https://wa.me/905312331711"
                 target="_blank"
-                className="bg-[#3e7d58] text-white px-8 py-4 rounded-lg font-black flex items-center justify-center gap-4 hover:bg-[#2d5c41] transition-all text-lg uppercase tracking-wider shadow-md active:scale-95"
+                className="bg-green-600 text-white px-10 py-4 rounded-lg font-black flex items-center justify-center gap-4 hover:bg-green-500 transition-all text-lg uppercase tracking-wider shadow-lg active:scale-95"
               >
                 <svg
                   stroke="currentColor"
@@ -103,16 +105,17 @@ const GeneralServices = () => {
               {/* Sayfa Linki Butonu */}
               <Link
                 href="/hizmetlerimiz/asansor-projelendirme"
-                className="bg-[#1a3a4a] text-white px-8 py-4 rounded-lg font-black hover:bg-[#f3921f] hover:text-black transition-all text-lg uppercase tracking-wider shadow-md active:scale-95"
+                className="bg-white text-black px-10 py-4 rounded-lg font-black hover:bg-[#fee123] transition-all text-lg uppercase tracking-wider shadow-lg active:scale-95"
               >
                 PROJE DETAYI
               </Link>
             </div>
           </div>
-          <div className="lg:w-1/2 min-h-[350px] overflow-hidden">
+          <div className="lg:w-1/2 min-h-[400px] overflow-hidden relative">
+            <div className="absolute inset-0 bg-black/20 group-hover/project:bg-transparent transition-all duration-700 z-10"></div>
             <img
               src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1200"
-              className="w-full h-full object-cover group-hover/project:scale-105 transition-transform duration-700"
+              className="w-full h-full object-cover group-hover/project:scale-105 transition-transform duration-1000 grayscale-[30%] group-hover/project:grayscale-0"
               alt="Asansör Projelendirme"
             />
           </div>

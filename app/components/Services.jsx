@@ -90,7 +90,6 @@ const Services = () => {
     return () => clearInterval(timer);
   }, []);
 
-  // Başlığı iki noktadan ayırıp JSX döndüren yardımcı fonksiyon
   const renderTitle = (title) => {
     if (!title.includes(':')) return title;
     const [before, after] = title.split(':');
@@ -126,17 +125,17 @@ const Services = () => {
       <div className="relative z-20 container mx-auto px-6 h-full flex flex-col md:flex-row items-center justify-center md:gap-16">
         {/* SOL TARAF: DAİRESEL MENÜ */}
         <div className="relative w-[300px] h-[300px] md:w-[400px] md:h-[400px] flex items-center justify-center flex-shrink-0">
-          {/* Merkez Logo (DAHA DA BÜYÜTÜLDÜ) */}
-          <div className="w-32 h-32 md:w-44 md:h-44 bg-white rounded-full border-[6px] border-yellow-500 flex flex-col items-center justify-center shadow-[0_0_50px_rgba(234,179,8,0.3)] z-30">
-            <span className="text-4xl md:text-5xl font-black text-black leading-none">
-              ER
-            </span>
-            <span className="text-[9px] md:text-[12px] font-bold text-gray-500 tracking-[0.2em] mt-2 uppercase">
-              Asansör
-            </span>
+          
+          {/* MERKEZ LOGO - ARKA PLAN SİYAH YAPILDI */}
+          <div className="w-32 h-32 md:w-44 md:h-44 bg-black rounded-full border-[6px] border-yellow-500 flex items-center justify-center shadow-[0_0_50px_rgba(234,179,8,0.3)] z-30 overflow-hidden">
+            <img 
+              src="/logo.png" 
+              alt="ER Asansör Logo" 
+              className="w-4/5 h-auto object-contain"
+            />
           </div>
 
-          {/* Dairesel Hizmet Butonları (BİRAZ KÜÇÜLTÜLDÜ) */}
+          {/* Dairesel Hizmet Butonları */}
           {slides.map((slide, index) => {
             const angle = index * (360 / slides.length) * (Math.PI / 180);
             const radius = 150;
@@ -155,7 +154,7 @@ const Services = () => {
                       : 'bg-white border-transparent hover:border-yellow-500 hover:scale-105'
                   }`}
               >
-                <span className="text-lg md:text-2xl group-hover:scale-110 transition-transform">
+                <span className="text-lg md:text-2xl group-hover:scale-110 transition-transform text-black">
                   {slide.icon}
                 </span>
                 <span className="text-[6px] md:text-[8px] font-black text-center leading-tight mt-0.5 px-0.5 uppercase text-black">
@@ -176,7 +175,6 @@ const Services = () => {
             {slides[current].description}
           </p>
 
-          {/* Navigasyon İndikatörleri */}
           <div className="mt-10 flex justify-center md:justify-start gap-2">
             {slides.map((_, i) => (
               <button

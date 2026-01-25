@@ -39,61 +39,57 @@ const InfoTabs = () => {
     >
       {/* Sol Taraf: Yüksek Standartlar */}
       <div className="lg:w-1/2 mb-24">
-        {' '}
-        {/* Bölümün altına 96px dış boşluk eklendi */}
-        <h2 className="text-3xl font-bold mb-6">YÜKSEK STANDARTLARDA HİZMET</h2>
-        <p className="text-gray-600 mb-6">
+        <h2 className="text-4xl font-black mb-6 border-l-8 border-[#fee123] pl-6 uppercase">
+          YÜKSEK STANDARTLARDA HİZMET
+        </h2>
+        <p className="text-gray-600 mb-6 text-lg">
           ER Asansör hizmet verdiği sektördeki tüm yeterlilik sertifikalarına
           sahiptir. Daha fazlası için çalışıyoruz ve kaliteli hizmeti standart
           haline getirmek için çaba sarf ediyoruz.
         </p>
-        <ul className="space-y-3 mb-6">
-          {' '}
-          {/* Liste altına boşluk için mb-6 eklendi */}
-          <li className="flex items-center gap-3">
-            <span className="w-3 h-3 bg-er-yellow rounded-full flex-shrink-0"></span>
-            <span>
-              <strong>Uluslararası standartlarda</strong> – tüm ürünlerimiz CE
-              belgelidir
+        <ul className="space-y-4 mb-8">
+          <li className="flex items-center gap-4">
+            <span className="w-4 h-4 bg-[#fee123] rounded-full flex-shrink-0 shadow-[0_0_10px_rgba(254,225,35,0.5)]"></span>
+            <span className="text-gray-800">
+              <strong className="font-black">Uluslararası standartlarda</strong> – tüm ürünlerimiz CE belgelidir.
             </span>
           </li>
-          <li className="flex items-center gap-3">
-            <span className="w-3 h-3 bg-er-yellow rounded-full flex-shrink-0"></span>
-            <span>
-              <strong>Sürekli eğitim</strong> – çalışanlarımız düzenli
-              eğitimlere katılırlar
+          <li className="flex items-center gap-4">
+            <span className="w-4 h-4 bg-[#fee123] rounded-full flex-shrink-0 shadow-[0_0_10px_rgba(254,225,35,0.5)]"></span>
+            <span className="text-gray-800">
+              <strong className="font-black">Sürekli eğitim</strong> – çalışanlarımız düzenli eğitimlere katılırlar.
             </span>
           </li>
-          <li className="flex items-center gap-3">
-            <span className="w-3 h-3 bg-er-yellow rounded-full flex-shrink-0"></span>
-            <span>
-              <strong>Önceliğimiz insan</strong> – güvenliğe öncelik veriyoruz
+          <li className="flex items-center gap-4">
+            <span className="w-4 h-4 bg-[#fee123] rounded-full flex-shrink-0 shadow-[0_0_10px_rgba(254,225,35,0.5)]"></span>
+            <span className="text-gray-800">
+              <strong className="font-black">Önceliğimiz insan</strong> – her projede güvenliğe en yüksek önceliği veriyoruz.
             </span>
           </li>
         </ul>
-        <p className="text-gray-600">
+        <p className="text-gray-500 italic border-t pt-6">
           Müşterilerimizden aldığımız destekle geleceğe güvenle bakıyoruz.
-          Sizleri de Er Asansör ailesinin bir parçası olarak görmekten mutluluk
-          duyarız.
+          Sizleri de <span className="text-black font-bold">ER Asansör</span> ailesinin bir parçası olarak görmekten mutluluk duyarız.
         </p>
       </div>
 
-      {/* Sağ Taraf: Tab Menü */}
-      <div className="lg:w-1/2 border border-gray-200 shadow-lg rounded-lg overflow-hidden flex flex-col">
-        <div className="bg-er-dark text-white text-center py-4 font-bold text-xl tracking-wide">
+      {/* Sağ Taraf: Tab Menü (Maviler Siyah Yapıldı) */}
+      <div className="lg:w-1/2 border border-gray-100 shadow-2xl rounded-2xl overflow-hidden flex flex-col bg-white">
+        {/* Üst Başlık - Tam Siyah */}
+        <div className="bg-black text-white text-center py-6 font-black text-2xl tracking-widest uppercase border-b border-[#fee123]">
           BİZDEN BİLGİLER
         </div>
 
-        {/* Butonlar */}
+        {/* Butonlar - Mavi Tonlar Kaldırıldı */}
         <div className="grid grid-cols-2">
           {tabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`py-4 px-2 text-xs sm:text-sm md:text-base font-bold transition-colors border-b-2 h-full flex items-center justify-center text-center ${
+              className={`py-5 px-4 text-xs sm:text-sm md:text-base font-black transition-all duration-300 border-b-4 h-full flex items-center justify-center text-center uppercase tracking-tighter ${
                 activeTab === tab.id
-                  ? 'bg-gray-700 text-er-yellow border-er-yellow'
-                  : 'bg-white text-gray-700 hover:bg-gray-100 border-gray-200'
+                  ? 'bg-black text-[#fee123] border-[#fee123] scale-[1.02] z-10'
+                  : 'bg-white text-gray-400 hover:bg-gray-50 border-gray-100 hover:text-black'
               }`}
             >
               {tab.title}
@@ -101,9 +97,12 @@ const InfoTabs = () => {
           ))}
         </div>
 
-        {/* İçerik */}
-        <div className="p-8 bg-gray-50 flex-grow flex items-center min-h-[200px]">
-          <p className="text-gray-700 leading-relaxed text-lg animate-fade-in">
+        {/* İçerik Alanı */}
+        <div className="p-10 bg-white flex-grow flex items-center min-h-[250px] relative">
+          <div className="absolute top-4 right-6 text-6xl text-gray-50 font-black select-none pointer-events-none">
+            ER
+          </div>
+          <p className="text-gray-700 leading-relaxed text-xl animate-fade-in font-medium relative z-10">
             {activeContent ? activeContent.content : ''}
           </p>
         </div>
