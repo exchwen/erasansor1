@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react'; // useCallback eklendi
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
@@ -8,17 +8,16 @@ export default function Intro({ onFinish }) {
   const [isVisible, setIsVisible] = useState(true);
   const [isFading, setIsFading] = useState(false);
 
-  // Kararma efektini başlatıp ana siteye geçiş yapan fonksiyon
-  const startFadeAndFinish = () => {
+  // 1. useCallback ile fonksiyonu hafızaya alıyoruz (Build hatasını çözer)
+  const startFadeAndFinish = useCallback(() => {
     if (isFading) return; 
     setIsFading(true);
     
-    // Kararma süresi bittiğinde bileşeni tamamen kaldır
     setTimeout(() => {
       setIsVisible(false);
       onFinish();
     }, 800); 
-  };
+  }, [isFading, onFinish]); // Bağımlılıklar eklendi
 
   useEffect(() => {
     if (!isVisible) return;
@@ -31,7 +30,7 @@ export default function Intro({ onFinish }) {
     const renderer = new THREE.WebGLRenderer({ 
       canvas: canvasRef.current, 
       antialias: true,
-      alpha: false // Beyaz parlamayı önlemek için alpha kapatıldı
+      alpha: false 
     });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
@@ -104,7 +103,8 @@ export default function Intro({ onFinish }) {
       renderer.dispose();
       scene.clear();
     };
-  }, [isVisible]);
+    // 2. Bağımlılık dizisine eksik olanları ekledik
+  }, [isVisible, onFinish, startFadeAndFinish]); 
 
   if (!isVisible) return null;
 
@@ -113,10 +113,8 @@ export default function Intro({ onFinish }) {
       onClick={startFadeAndFinish}
       className="fixed top-0 left-0 w-full h-screen z-[9999] bg-black cursor-pointer"
     >
-      {/* Three.js Sahnesi */}
       <canvas ref={canvasRef} className="w-full h-full" />
       
-      {/* SİYAH KARARMA KATMANI (Overlay) */}
       <div 
         className={`absolute inset-0 bg-black pointer-events-none transition-opacity duration-700 ease-in-out ${isFading ? 'opacity-100' : 'opacity-0'}`}
       />

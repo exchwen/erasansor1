@@ -23,7 +23,7 @@ const LogoShowcase = () => {
             // Logo boyutu ve geçiş efektleri
             className="w-full max-w-[280px] transition-all duration-700 cursor-pointer hover:scale-110 group"
           >
-            <img
+            <Image
               src={brandLogo.url}
               alt={brandLogo.name}
               /** * CSS FILTRE AÇIKLAMASI: 

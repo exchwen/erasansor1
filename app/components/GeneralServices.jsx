@@ -48,7 +48,7 @@ const GeneralServices = () => {
               key={index}
               className="relative group overflow-hidden h-[380px] border-2 border-gray-900 shadow-2xl transition-all duration-500 hover:border-[#fee123] cursor-pointer rounded-sm"
             >
-              <img
+              <Image
                 src={service.img}
                 className="w-full h-full object-cover grayscale-[40%] group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-110"
                 alt={service.title}
@@ -113,7 +113,7 @@ const GeneralServices = () => {
           </div>
           <div className="lg:w-1/2 min-h-[400px] overflow-hidden relative">
             <div className="absolute inset-0 bg-black/20 group-hover/project:bg-transparent transition-all duration-700 z-10"></div>
-            <img
+            <Image
               src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1200"
               className="w-full h-full object-cover group-hover/project:scale-105 transition-transform duration-1000 grayscale-[30%] group-hover/project:grayscale-0"
               alt="Asansör Projelendirme"

@@ -8,7 +8,7 @@ const WelcomeBottom = () => {
       <div className="flex flex-col items-center mb-10 z-10">
         <div className="flex items-center justify-center gap-4 md:gap-8 transition-transform hover:scale-105 duration-500">
           {/* LOGO GÖRSELİ */}
-          <img
+          <Image
             src="/logo.png"
             alt="ER ASANSÖR"
             className="h-20 md:h-32 w-auto object-contain drop-shadow-[0_0_15px_rgba(254,225,35,0.2)]"

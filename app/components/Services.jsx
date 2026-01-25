@@ -114,7 +114,7 @@ const Services = () => {
           }`}
         >
           <div className="absolute inset-0 bg-black/75 z-10" />
-          <img
+          <Image
             src={slide.image}
             className="w-full h-full object-cover"
             alt={slide.title}
@@ -128,7 +128,7 @@ const Services = () => {
           
           {/* MERKEZ LOGO - ARKA PLAN SİYAH YAPILDI */}
           <div className="w-32 h-32 md:w-44 md:h-44 bg-black rounded-full border-[6px] border-yellow-500 flex items-center justify-center shadow-[0_0_50px_rgba(234,179,8,0.3)] z-30 overflow-hidden">
-            <img 
+            <Image 
               src="/logo.png" 
               alt="ER Asansör Logo" 
               className="w-4/5 h-auto object-contain"

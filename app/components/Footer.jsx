@@ -148,7 +148,7 @@ const Footer = () => {
                   key={index}
                   className="bg-gray-950 p-3 rounded-lg flex items-center justify-center h-20 border border-gray-900 hover:border-[#fee123]/40 transition-all group"
                 >
-                  <img
+                  <Image
                     src={logo.url}
                     alt={logo.name}
                     className="max-h-full max-w-full object-contain opacity-40 grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500"

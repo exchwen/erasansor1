@@ -85,7 +85,7 @@ const ReferanslarPage = () => {
               key={index}
               className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-center h-48 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group"
             >
-              <img
+              <Image
                 src={logo.url}
                 alt={logo.name}
                 className="max-h-full max-w-full object-contain grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500"

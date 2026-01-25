@@ -23,7 +23,7 @@ const LiveChat = () => {
           <div className="bg-[#25D366] p-4 flex justify-between items-center shadow-lg">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center overflow-hidden">
-                <img src="/logo.png" alt="ER" className="w-8 h-8 object-contain" />
+                <Image src="/logo.png" alt="ER" className="w-8 h-8 object-contain" />
               </div>
               <div className="text-white text-sm">
                 <p className="font-bold">ER ASANSÖR WhatsApp</p>

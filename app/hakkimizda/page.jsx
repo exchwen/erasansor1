@@ -45,7 +45,7 @@ const HakkimizdaPage = () => {
             </p>
           </div>
           <div className="bg-gray-100 rounded-2xl h-[400px] flex items-center justify-center p-12">
-            <img
+            <Image
               src="/logo.png"
               alt="ER ASANSÖR"
               className="max-h-full w-auto object-contain opacity-20 grayscale"
