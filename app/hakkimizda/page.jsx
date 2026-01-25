@@ -49,7 +49,7 @@ const HakkimizdaPage = () => {
             <Image
               src="/logo.png"
               alt="ER ASANSÖR"
-              className="max-h-full w-auto object-contain opacity-20 grayscale"
+              className="max-h-full w-auto object-contain"
             />
           </div>
         </div>
@@ -166,4 +166,5 @@ const HakkimizdaPage = () => {
 };
 
 export default HakkimizdaPage;
+
 
