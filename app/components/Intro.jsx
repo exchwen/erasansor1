@@ -2,11 +2,16 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import Image from 'next/image'; // Logo için eklendi
 
 export default function Intro({ onFinish }) {
   const canvasRef = useRef();
   const [isVisible, setIsVisible] = useState(true);
   const [isFading, setIsFading] = useState(false);
+  
+  // YENİ: Yükleme durumu ve yüzdesi için state
+  const [isLoading, setIsLoading] = useState(true);
+  const [progress, setProgress] = useState(0);
 
   const startFadeAndFinish = useCallback(() => {
     if (isFading) return; 
@@ -24,7 +29,6 @@ export default function Intro({ onFinish }) {
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x000000); 
 
-    // ÇÖZÜM: Mobilde (dikey ekran) FOV değerini biraz daha genişletiyoruz (75 -> 85-90)
     const initialFov = window.innerWidth < 768 ? 85 : 75;
     let camera = new THREE.PerspectiveCamera(initialFov, window.innerWidth / window.innerHeight, 0.1, 1000);
 
@@ -43,9 +47,8 @@ export default function Intro({ onFinish }) {
       
       if (camera) {
         camera.aspect = width / height;
-        // ÇÖZÜM: Ekran dikeyse kamerayı otomatik olarak daha geriye itiyoruz
         if (width < 768) {
-          camera.position.z = 6; // Daha önce 6'ydı, 10 yaparak uzaklaştırdık
+          camera.position.z = 6; 
           camera.fov = 50; 
         } else {
           camera.position.z = 4;
@@ -58,44 +61,58 @@ export default function Intro({ onFinish }) {
     let mixer;
     const loader = new GLTFLoader();
     
-    loader.load('/erasansor-createdby-dogukankaya.glb', (gltf) => {
-      scene.add(gltf.scene);
+    // YENİ: Loader'a progress (ilerleme) takibi eklendi
+    loader.load(
+      '/erasansor-createdby-dogukankaya.glb', 
+      (gltf) => {
+        // 1. YÜKLEME TAMAMLANDIĞINDA
+        scene.add(gltf.scene);
 
-      const blenderCamera = gltf.cameras[0]; 
-      if (blenderCamera) {
-        camera = blenderCamera;
-        camera.aspect = window.innerWidth / window.innerHeight;
-        
-        // ÇÖZÜM: Blender kamerası yüklense bile mobilde FOV müdahalesi yapıyoruz
-        if (window.innerWidth < 768) {
-           camera.fov = 95; // Blender kamerası genellikle dardır, mobilde genişlettik
+        const blenderCamera = gltf.cameras[0]; 
+        if (blenderCamera) {
+          camera = blenderCamera;
+          camera.aspect = window.innerWidth / window.innerHeight;
+          if (window.innerWidth < 768) {
+             camera.fov = 95;
+          }
+          camera.updateProjectionMatrix();
+        } else {
+          const isMobile = window.innerWidth < 768;
+          camera.position.set(0, 1.2, isMobile ? 10 : 4); 
+          camera.lookAt(0, 1, 0);
         }
-        camera.updateProjectionMatrix();
-      } else {
-        // Yedek kamera pozisyonu
-        const isMobile = window.innerWidth < 768;
-        camera.position.set(0, 1.2, isMobile ? 10 : 4); 
-        camera.lookAt(0, 1, 0);
+
+        updateSize();
+
+        mixer = new THREE.AnimationMixer(gltf.scene);
+        gltf.animations.forEach((clip) => {
+          const action = mixer.clipAction(clip);
+          action.setLoop(THREE.LoopOnce);
+          action.clampWhenFinished = true;
+          action.play();
+        });
+
+        mixer.addEventListener('finished', () => {
+          setTimeout(startFadeAndFinish, 300);
+        });
+
+        // YENİ: Yükleme bitti, loading ekranını kapat
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 100); // Çok kısa bir gecikme ekleyerek render'ın oturmasını sağlıyoruz
+      }, 
+      (xhr) => {
+        // 2. YÜKLEME SIRASINDA (Progress)
+        if (xhr.lengthComputable) {
+          const percentComplete = (xhr.loaded / xhr.total) * 100;
+          setProgress(Math.round(percentComplete));
+        }
+      },
+      (error) => {
+        console.error('Model yüklenirken hata:', error);
+        onFinish();
       }
-
-      updateSize(); // Yükleme bittikten sonra boyutları tekrar kontrol et
-
-      mixer = new THREE.AnimationMixer(gltf.scene);
-      gltf.animations.forEach((clip) => {
-        const action = mixer.clipAction(clip);
-        action.setLoop(THREE.LoopOnce);
-        action.clampWhenFinished = true;
-        action.play();
-      });
-
-      mixer.addEventListener('finished', () => {
-        setTimeout(startFadeAndFinish, 300);
-      });
-
-    }, undefined, (error) => {
-      console.error('Model yüklenirken hata:', error);
-      onFinish();
-    });
+    );
 
     const ambientLight = new THREE.AmbientLight(0xffffff, 2.5);
     scene.add(ambientLight);
@@ -129,14 +146,45 @@ export default function Intro({ onFinish }) {
 
   return (
     <div 
-      onClick={startFadeAndFinish}
-      className="fixed inset-0 w-full h-[100dvh] z-[9999] bg-black cursor-pointer touch-none select-none overflow-hidden"
+      className="fixed inset-0 w-full h-[100dvh] z-[9999] bg-black touch-none select-none overflow-hidden"
     >
-      <canvas ref={canvasRef} className="w-full h-full block" />
-      <div className={`absolute inset-0 bg-black pointer-events-none transition-opacity duration-700 ${isFading ? 'opacity-100' : 'opacity-0'}`} />
+      {/* 3D CANVAS - Yüklenene kadar gizli (opacity-0) */}
+      <canvas 
+        ref={canvasRef} 
+        onClick={!isLoading ? startFadeAndFinish : undefined}
+        className={`w-full h-full block transition-opacity duration-1000 ease-in-out cursor-pointer ${isLoading ? 'opacity-0' : 'opacity-100'}`} 
+      />
       
-      {!isFading && (
-        <div className="absolute bottom-12 left-0 w-full text-center px-6 pointer-events-none">
+      {/* YENİ: YÜKLEME EKRANI (PRELOADER) */}
+      <div className={`absolute inset-0 flex flex-col items-center justify-center bg-black transition-opacity duration-700 pointer-events-none ${isLoading ? 'opacity-100' : 'opacity-0'}`}>
+        
+        {/* Logo */}
+        <div className="relative w-20 h-20 mb-6 animate-pulse">
+            <Image src="/logo.png" alt="ER Asansör" fill className="object-contain" />
+        </div>
+
+        {/* Yüzdelik Yazısı */}
+        <div className="text-[#fee123] font-black text-sm tracking-[0.2em] mb-2">
+          YÜKLENİYOR %{progress}
+        </div>
+
+        {/* Progress Bar Çubuğu */}
+        <div className="w-48 h-1 bg-gray-800 rounded-full overflow-hidden">
+          <div 
+            className="h-full bg-[#fee123] transition-all duration-300 ease-out"
+            style={{ width: `${progress}%` }}
+          />
+        </div>
+      </div>
+
+      {/* Intro Bitiş Fade Efekti */}
+      <div 
+        className={`absolute inset-0 bg-black pointer-events-none transition-opacity duration-700 ease-in-out ${isFading ? 'opacity-100' : 'opacity-0'}`}
+      />
+      
+      {/* "Atlamak İçin" Yazısı - Sadece yüklendikten sonra görünür */}
+      {!isFading && !isLoading && (
+        <div className="absolute bottom-12 left-0 w-full text-center px-6 pointer-events-none animate-in fade-in duration-1000">
           <div className="text-white/40 text-[10px] font-light tracking-[0.3em] animate-pulse uppercase">
              Atlamak İçin Dokunun
           </div>
