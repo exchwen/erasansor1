@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image'; // Image bileşenini ekledik
 import {
   FaPhoneAlt,
   FaWhatsapp,
@@ -15,6 +16,15 @@ const Header = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileSubMenuOpen, setIsMobileSubMenuOpen] = useState(false);
+
+  // --- DİL DEĞİŞTİRME FONKSİYONU ---
+  const changeLanguage = (lang) => {
+    const select = document.querySelector('.goog-te-combo');
+    if (select) {
+      select.value = lang;
+      select.dispatchEvent(new Event('change'));
+    }
+  };
 
   useEffect(() => {
     if (isMobileMenuOpen) {
@@ -58,6 +68,19 @@ const Header = () => {
             <a href="https://wa.me/905312331711" target="_blank" rel="noopener noreferrer" className="bg-green-600 px-3 py-1 rounded text-white font-bold flex items-center gap-2 hover:bg-green-500 transition shadow-sm text-[10px] sm:text-xs">
               <FaWhatsapp /> <span className="hidden xs:inline">Teklif Al</span><span className="xs:hidden">Teklif</span>
             </a>
+
+            {/* --- BAYRAK BUTONLARI --- */}
+            <div className="flex items-center gap-2 ml-2 pl-2 border-l border-gray-700">
+              <button onClick={() => changeLanguage('tr')} className="hover:scale-110 transition-transform duration-200" title="Türkçe">
+                <img src="https://flagcdn.com/w40/tr.png" alt="TR" className="w-5 h-auto rounded-[2px] shadow-sm opacity-90 hover:opacity-100" />
+              </button>
+              <button onClick={() => changeLanguage('en')} className="hover:scale-110 transition-transform duration-200" title="English">
+                <img src="https://flagcdn.com/w40/gb.png" alt="EN" className="w-5 h-auto rounded-[2px] shadow-sm opacity-90 hover:opacity-100" />
+              </button>
+              <button onClick={() => changeLanguage('ar')} className="hover:scale-110 transition-transform duration-200" title="Arabic">
+                <img src="https://flagcdn.com/w40/sa.png" alt="AR" className="w-5 h-auto rounded-[2px] shadow-sm opacity-90 hover:opacity-100" />
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -65,10 +88,26 @@ const Header = () => {
       {/* Navigasyon Alanı */}
       <div className="bg-black py-3 border-b border-gray-800 relative z-50">
         <div className="container mx-auto px-4 flex justify-between items-center">
-          <Link href="/" className="text-2xl md:text-3xl font-black tracking-tighter flex items-center gap-2 group shrink-0">
-            <span className="bg-[#fee123] text-black px-2 py-1 group-hover:bg-white transition-colors">ER</span>
-            <span className="text-white uppercase">ASANSÖR</span>
+          
+          {/* --- LOGO ALANI GÜNCELLENDİ --- */}
+          <Link href="/" className="flex items-center gap-2 group shrink-0">
+            {/* "ER" yazısı yerine LOGO görseli eklendi */}
+            <div className="relative w-10 h-10 md:w-12 md:h-12 bg-black border-2 border-[#fee123] rounded-md p-1 group-hover:bg-white group-hover:border-white transition-all duration-300">
+              <Image
+                src="/logo.png" // public klasöründeki logo dosyanız
+                alt="ER ASANSÖR"
+                fill
+                sizes="(max-width: 768px) 40px, 48px"
+                className="object-contain"
+                priority
+              />
+            </div>
+            {/* "ASANSÖR" yazısı */}
+            <span className="text-white text-xl md:text-3xl font-black tracking-tighter uppercase">
+              ASANSÖR
+            </span>
           </Link>
+          {/* --- LOGO ALANI SONU --- */}
 
           {/* Masaüstü Menü */}
           <nav className="hidden md:flex gap-6 lg:gap-8 font-bold uppercase text-sm items-center">
@@ -109,7 +148,6 @@ const Header = () => {
               <Link href="/hakkimizda" onClick={() => setIsMobileMenuOpen(false)} className="py-3 text-white border-b border-gray-900">Hakkımızda</Link>
               
               <div className="flex flex-col border-b border-gray-900">
-                {/* MOBİL HİZMETLERİMİZ: Hem yönlendirme hem açma özelliği eklendi */}
                 <div className="flex items-center justify-between py-3">
                   <Link 
                     href="/hizmetlerimiz" 
