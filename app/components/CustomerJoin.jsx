@@ -3,30 +3,26 @@ import React from 'react';
 
 const CustomerJoin = () => {
   return (
-    // Arka plan beyaz, ana metin siyah
-    <section className="bg-white py-12 text-black text-center px-4">
+    // Mobilde py-12, masaüstünde py-16 yaparak dikey alanı dengeledik
+    <section className="bg-white py-12 md:py-16 text-black text-center px-6">
       <div className="container mx-auto max-w-4xl">
-        {/* BAŞLIK: 
-            - Font boyutları küçültüldü (text-2xl md:text-3xl).
-            - 'font-black' yerine ilk koddaki 'font-bold' kullanıldı.
-            - 'whitespace-nowrap' kaldırıldı, metin doğal olarak alt satıra geçecek.
-        */}
-        <h2 className="text-1xl md:text-2xl font-bold mb-4">
+        {/* BAŞLIK */}
+        <h2 className="text-xl md:text-2xl font-bold mb-4 leading-tight">
           Hizmet Verdiğimiz{' '}
-          {/* VURGULANAN KISIM: Font boyutu küçültüldü, 'font-bold' kullanıldı */}
-          <span className="text-[#fee123] text-2xl md:text-3xl font-bold">
+          <span className="text-[#fee123] text-2xl md:text-3xl font-bold block sm:inline">
             Binlerce ER Asansör
           </span>{' '}
           Müşterisi Arasına Katılmak İçin
         </h2>
 
-        {/* ALT METİN: İlk koddaki font stili ve boyutu */}
-        <p className="text-gray-600 mb-10 text-sm md:text-base font-medium">
+        {/* ALT METİN */}
+        <p className="text-gray-600 mb-8 text-sm md:text-base font-medium">
           Aşağıdaki Formu Doldurup Gönderin Sizleri Arayalım.
         </p>
 
         {/* FORM ALANI */}
         <form className="max-w-4xl mx-auto">
+          {/* grid-cols-1 md:grid-cols-3 sayesinde mobilde alt alta, PC'de yan yana */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 text-left">
             {/* İSİM SOYİSİM */}
             <div className="flex flex-col gap-2">
@@ -65,11 +61,11 @@ const CustomerJoin = () => {
             </div>
           </div>
 
-          {/* GÖNDER BUTONU: 'font-black' yerine 'font-bold' kullanıldı */}
+          {/* GÖNDER BUTONU */}
           <div className="flex justify-center">
             <button
               type="submit"
-              className="bg-[#fee123] text-black font-bold py-3 px-16 md:px-20 rounded-full hover:bg-black hover:text-white transition-all tracking-wider uppercase shadow-lg text-sm md:text-base active:scale-95"
+              className="bg-[#fee123] text-black font-bold py-3.5 px-12 md:px-20 rounded-full hover:bg-black hover:text-white transition-all tracking-wider uppercase shadow-lg text-sm md:text-base active:scale-95 w-full sm:w-auto"
             >
               GÖNDER
             </button>

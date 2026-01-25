@@ -8,20 +8,23 @@ const WelcomeBottom = () => {
       {/* --- LOGO VE MARKA YAN YANA --- */}
       <div className="flex flex-col items-center mb-10 z-10">
         <div className="flex items-center justify-center gap-4 md:gap-8 transition-transform hover:scale-105 duration-500">
-          {/* LOGO GÖRSELİ */}
+          {/* LOGO GÖRSELİ - Genişlik ve Yükseklik Eklendi */}
           <Image
             src="/logo.png"
             alt="ER ASANSÖR"
+            width={128} // md:h-32 (32*4=128px) karşılığı base değer
+            height={128}
             className="h-20 md:h-32 w-auto object-contain drop-shadow-[0_0_15px_rgba(254,225,35,0.2)]"
+            priority // Sayfa sonunda olsa da marka öğesi olduğu için hızlı yüklenmesi iyidir
           />
 
-          {/* LOGO YANINDAKİ MARKA İSMİ - #fee123 RENGİYLE */}
+          {/* LOGO YANINDAKİ MARKA İSMİ */}
           <h1 className="text-[#fee123] text-4xl md:text-7xl font-black tracking-tighter leading-none uppercase">
             ASANSÖR
           </h1>
         </div>
 
-        {/* SLOGAN - MAVİ RENK SARIYA ÇEVRİLDİ */}
+        {/* SLOGAN */}
         <p className="text-[#fee123] text-[14px] md:text-[18px] tracking-[0.5em] font-black uppercase mt-8 opacity-90">
           Güvenliğiniz Bizimle Yükseliyor
         </p>

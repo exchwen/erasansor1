@@ -2,7 +2,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Phone } from 'lucide-react';
 import emailjs from '@emailjs/browser';
-// --- YENİ ---
 import { EMAILJS_CONFIG } from './emailConfig';
 
 const TalepFormu = () => {
@@ -29,8 +28,6 @@ const TalepFormu = () => {
     e.preventDefault();
     setIsSending(true);
 
-    // --- ESKİ: emailjs.sendForm('YOUR_SERVICE_ID', ...) ---
-    // --- YENİ: EMAILJS_CONFIG kullanılıyor ---
     emailjs
       .sendForm(
         EMAILJS_CONFIG.SERVICE_ID,
@@ -58,7 +55,8 @@ const TalepFormu = () => {
   return (
     <section
       id="iletisim-formu"
-      className="relative py-20 min-h-[650px] flex items-center overflow-hidden"
+      // Mobilde min-h-screen yaparak içeriğin sığmasını garantiledik
+      className="relative py-12 md:py-20 min-h-screen lg:min-h-[650px] flex items-center overflow-hidden"
     >
       <div
         className="absolute inset-0 z-0"
@@ -71,16 +69,18 @@ const TalepFormu = () => {
         <div className="absolute inset-0 bg-slate-900/85 backdrop-blur-[1px]"></div>
       </div>
 
-      <div className="container mx-auto px-4 max-w-6xl relative z-10">
-        <div className="flex flex-col lg:flex-row gap-12 items-center justify-between">
-          <div className="w-full lg:w-1/2 text-white space-y-8">
+      <div className="container mx-auto px-6 max-w-6xl relative z-10">
+        <div className="flex flex-col lg:flex-row gap-10 lg:gap-12 items-center justify-between">
+          
+          {/* Sol Taraf: Metinler (Mobilde ortalandı) */}
+          <div className="w-full lg:w-1/2 text-white space-y-6 md:space-y-8 text-center lg:text-left">
             <div className="space-y-4">
-              <div className="w-16 h-1 bg-[#fee123]"></div>
-              <div className="h-16 overflow-hidden relative">
+              <div className="w-16 h-1 bg-[#fee123] mx-auto lg:mx-0"></div>
+              <div className="h-12 md:h-16 overflow-hidden relative">
                 {slides.map((text, index) => (
                   <h2
                     key={index}
-                    className={`absolute inset-0 text-4xl md:text-5xl font-black uppercase transition-all duration-1000 ease-in-out ${
+                    className={`absolute inset-0 text-2xl sm:text-4xl md:text-5xl font-black uppercase transition-all duration-1000 ease-in-out ${
                       index === activeSlide
                         ? 'opacity-100 translate-y-0'
                         : 'opacity-0 translate-y-10'
@@ -92,7 +92,7 @@ const TalepFormu = () => {
               </div>
             </div>
 
-            <p className="text-gray-300 text-lg leading-relaxed max-w-md font-medium">
+            <p className="text-gray-300 text-base md:text-lg leading-relaxed max-w-md mx-auto lg:mx-0 font-medium">
               Güvenilir ve etkili çözümlerimizle, müşterilerimizin asansör
               sistemlerini sorunsuz bir şekilde işler durumda tutmayı
               hedefliyoruz.
@@ -102,27 +102,29 @@ const TalepFormu = () => {
               href="https://wa.me/905312331711"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-4 border-2 border-[#fee123] bg-[#fee123]/10 hover:bg-[#fee123] text-white hover:text-black px-10 py-4 rounded-full font-bold transition-all group shadow-xl active:scale-95"
+              className="inline-flex items-center gap-4 border-2 border-[#fee123] bg-[#fee123]/10 hover:bg-[#fee123] text-white hover:text-black px-8 md:px-10 py-3 md:py-4 rounded-full font-bold transition-all group shadow-xl active:scale-95 text-sm md:text-base"
             >
-              <Phone size={22} className="group-hover:animate-pulse" />
+              <Phone size={20} className="group-hover:animate-pulse" />
               İLETİŞİM HATTI
             </a>
           </div>
 
-          <div className="w-full lg:w-[480px] bg-white p-10 rounded-2xl shadow-2xl">
-            <form ref={form} onSubmit={sendEmail} className="space-y-5">
-              <div className="grid grid-cols-2 gap-4">
+          {/* Sağ Taraf: Form (Mobilde Padding düşürüldü) */}
+          <div className="w-full lg:w-[480px] bg-white p-6 md:p-10 rounded-2xl shadow-2xl">
+            <form ref={form} onSubmit={sendEmail} className="space-y-4 md:space-y-5">
+              {/* grid-cols-1 yaparak mobilde alt alta gelmesini sağladık */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <input
                   name="user_name"
                   placeholder="Adınız *"
                   required
-                  className="p-3 border-b-2 border-gray-100 focus:border-[#fee123] outline-none text-sm font-semibold transition-all"
+                  className="p-3 border-b-2 border-gray-100 focus:border-[#fee123] outline-none text-sm font-semibold transition-all text-black"
                 />
                 <input
                   name="user_surname"
                   placeholder="Soyadınız *"
                   required
-                  className="p-3 border-b-2 border-gray-100 focus:border-[#fee123] outline-none text-sm font-semibold transition-all"
+                  className="p-3 border-b-2 border-gray-100 focus:border-[#fee123] outline-none text-sm font-semibold transition-all text-black"
                 />
               </div>
 
@@ -144,20 +146,20 @@ const TalepFormu = () => {
                 </select>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <input
                   name="user_email"
                   type="email"
                   placeholder="E-Posta *"
                   required
-                  className="p-3 border-b-2 border-gray-100 focus:border-[#fee123] outline-none text-sm font-semibold transition-all"
+                  className="p-3 border-b-2 border-gray-100 focus:border-[#fee123] outline-none text-sm font-semibold transition-all text-black"
                 />
                 <input
                   name="user_phone"
                   type="tel"
                   placeholder="Telefon *"
                   required
-                  className="p-3 border-b-2 border-gray-100 focus:border-[#fee123] outline-none text-sm font-semibold transition-all"
+                  className="p-3 border-b-2 border-gray-100 focus:border-[#fee123] outline-none text-sm font-semibold transition-all text-black"
                 />
               </div>
 
@@ -166,7 +168,7 @@ const TalepFormu = () => {
                 rows="3"
                 placeholder="Mesajınız *"
                 required
-                className="w-full p-3 border-b-2 border-gray-100 focus:border-[#fee123] outline-none text-sm font-semibold resize-none"
+                className="w-full p-3 border-b-2 border-gray-100 focus:border-[#fee123] outline-none text-sm font-semibold resize-none text-black"
               ></textarea>
 
               <button
@@ -175,7 +177,7 @@ const TalepFormu = () => {
                 className={`w-full py-4 rounded-lg font-black tracking-widest uppercase transition-all shadow-xl ${
                   isSending
                     ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                    : 'bg-[#1a3a4a] text-white hover:bg-[#fee123] hover:text-black hover:-translate-y-1'
+                    : 'bg-[#1a3a4a] text-white hover:bg-[#fee123] hover:text-black active:scale-95'
                 }`}
               >
                 {isSending ? 'İŞLENİYOR...' : 'TALEP GÖNDER'}

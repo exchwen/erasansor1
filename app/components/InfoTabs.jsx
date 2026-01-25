@@ -1,30 +1,34 @@
 'use client';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 const tabs = [
   {
     id: 1,
-    title: 'TEKNOLOJİLERİ TAKİP EDİYORUZ',
+    title: 'TEKNOLOJİ',
+    fullTitle: 'TEKNOLOJİLERİ TAKİP EDİYORUZ',
     content:
-      'Asansör sektöründeki tüm yenilikleri yakından takip ediyoruz. Müşterilerimizin ihtiyaçlarını güncel ve güvenilir teknolojilerle karşılıyoruz. Günün ihtiyaçları doğrultusunda hizmet verdiğimiz müşterilere alternatif çözümler üretiyoruz.',
+      'Asansör sektöründeki tüm yenilikleri yakından takip ediyoruz. Müşterilerimizin ihtiyaçlarını güncel ve güvenilir teknolojilerle karşılıyoruz. Günün ihtiyaçları doğrultusunda alternatif çözümler üretiyoruz.',
   },
   {
     id: 2,
     title: 'KADROMUZ',
+    fullTitle: 'KADROMUZ',
     content:
-      'Hizmet verdiğimiz asansör sayısına uygun personel sayısı ile 7 gün 24 saat kesintisiz hizmet sunuyoruz. Web sayfamızda yer alan iletişim seçenekleri ile muhatap bulma sorunu yaşamazsınız.',
+      'Hizmet verdiğimiz asansör sayısına uygun uzman personel ile 7/24 kesintisiz hizmet sunuyoruz. İletişim seçeneklerimiz ile muhatap bulma sorunu yaşamazsınız.',
   },
   {
     id: 3,
     title: 'TECRÜBE',
+    fullTitle: 'TECRÜBE',
     content:
-      '2002 yılından günümüze asansör sektöründe çeşitli kademelerde yer aldık. 2009 yılında ER Asansör’ün kurulumu ile sektördeki yerimizi aldık. Kurulduğumuz günkü prensiplerimiz ile çalışma hayatına devam etmekteyiz.',
+      '2002 yılından bu yana sektörün her kademesinde yer aldık. 2009 yılında ER Asansör’ün kurulumu ile kazandığımız tecrübeyi modern mühendislik ile birleştiriyoruz.',
   },
   {
     id: 4,
     title: 'HEDEFİMİZ',
+    fullTitle: 'HEDEFİMİZ',
     content:
-      'Asansör sektöründe markamızın kalite ve güven ile birlikte anılmasıdır. Bu hedefe ulaşmak ve markamızı en iyi şekilde temsil etmek için çalışmalarımızı sürdürüyoruz.',
+      'Markamızın kalite ve güven ile birlikte anılmasıdır. Bu hedefe ulaşmak ve markamızı en iyi şekilde temsil etmek için durmaksızın çalışmaya devam ediyoruz.',
   },
 ];
 
@@ -33,81 +37,82 @@ const InfoTabs = () => {
   const activeContent = tabs.find((t) => t.id === activeTab);
 
   return (
-    <div
+    <section
       id="bizden-bilgiler"
-      className="container mx-auto px-4 py-16 flex flex-col lg:flex-row gap-10"
+      className="container mx-auto px-6 py-16 lg:py-24 flex flex-col lg:flex-row gap-12 lg:gap-20 bg-white"
     >
-      {/* Sol Taraf: Yüksek Standartlar */}
-      <div className="lg:w-1/2 mb-24">
-        <h2 className="text-4xl font-black mb-6 border-l-8 border-[#fee123] pl-6 uppercase">
-          YÜKSEK STANDARTLARDA HİZMET
+      {/* SOL TARAF: Kurumsal Metin */}
+      <div className="lg:w-1/2">
+        <h2 className="text-3xl md:text-5xl font-black mb-8 border-l-8 border-[#fee123] pl-6 uppercase tracking-tighter text-black">
+          YÜKSEK STANDARTLARDA <span className="text-[#fee123]">HİZMET</span>
         </h2>
-        <p className="text-gray-600 mb-6 text-lg">
-          ER Asansör hizmet verdiği sektördeki tüm yeterlilik sertifikalarına
-          sahiptir. Daha fazlası için çalışıyoruz ve kaliteli hizmeti standart
-          haline getirmek için çaba sarf ediyoruz.
+        <p className="text-gray-600 mb-8 text-base md:text-lg leading-relaxed">
+          ER Asansör, sektördeki tüm yeterlilik sertifikalarına sahiptir. Kaliteli hizmeti bir standart haline getirmek için mühendislik disipliniyle çalışıyoruz.
         </p>
-        <ul className="space-y-4 mb-8">
-          <li className="flex items-center gap-4">
-            <span className="w-4 h-4 bg-[#fee123] rounded-full flex-shrink-0 shadow-[0_0_10px_rgba(254,225,35,0.5)]"></span>
-            <span className="text-gray-800">
-              <strong className="font-black">Uluslararası standartlarda</strong> – tüm ürünlerimiz CE belgelidir.
-            </span>
-          </li>
-          <li className="flex items-center gap-4">
-            <span className="w-4 h-4 bg-[#fee123] rounded-full flex-shrink-0 shadow-[0_0_10px_rgba(254,225,35,0.5)]"></span>
-            <span className="text-gray-800">
-              <strong className="font-black">Sürekli eğitim</strong> – çalışanlarımız düzenli eğitimlere katılırlar.
-            </span>
-          </li>
-          <li className="flex items-center gap-4">
-            <span className="w-4 h-4 bg-[#fee123] rounded-full flex-shrink-0 shadow-[0_0_10px_rgba(254,225,35,0.5)]"></span>
-            <span className="text-gray-800">
-              <strong className="font-black">Önceliğimiz insan</strong> – her projede güvenliğe en yüksek önceliği veriyoruz.
-            </span>
-          </li>
+        
+        <ul className="space-y-5 mb-10">
+          {[
+            { bold: 'Uluslararası standartlar', text: 'Tüm ürünlerimiz CE belgelidir.' },
+            { bold: 'Sürekli eğitim', text: 'Personelimiz düzenli teknik eğitim alır.' },
+            { bold: 'Önceliğimiz insan', text: 'Güvenlik protokollerini tavizsiz uygularız.' }
+          ].map((item, i) => (
+            <li key={i} className="flex items-start gap-4 group">
+              <span className="w-5 h-5 bg-[#fee123] rounded-full flex-shrink-0 shadow-[0_0_10px_rgba(254,225,35,0.4)] mt-1 group-hover:scale-110 transition-transform"></span>
+              <span className="text-gray-800 font-medium">
+                <strong className="font-black uppercase text-sm md:text-base">{item.bold}</strong> – {item.text}
+              </span>
+            </li>
+          ))}
         </ul>
-        <p className="text-gray-500 italic border-t pt-6">
-          Müşterilerimizden aldığımız destekle geleceğe güvenle bakıyoruz.
-          Sizleri de <span className="text-black font-bold">ER Asansör</span> ailesinin bir parçası olarak görmekten mutluluk duyarız.
+        
+        <p className="text-gray-500 italic border-t border-gray-100 pt-8 text-sm md:text-base">
+          Müşterilerimizden aldığımız destekle geleceğe güvenle bakıyoruz. 
+          Sizleri de <span className="text-black font-black">ER Asansör</span> ailesinde görmekten mutluluk duyarız.
         </p>
       </div>
 
-      {/* Sağ Taraf: Tab Menü (Maviler Siyah Yapıldı) */}
-      <div className="lg:w-1/2 border border-gray-100 shadow-2xl rounded-2xl overflow-hidden flex flex-col bg-white">
-        {/* Üst Başlık - Tam Siyah */}
-        <div className="bg-black text-white text-center py-6 font-black text-2xl tracking-widest uppercase border-b border-[#fee123]">
+      {/* SAĞ TARAF: Tab Menü */}
+      <div className="lg:w-1/2 flex flex-col bg-white rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-gray-50 overflow-hidden">
+        {/* Üst Başlık */}
+        <div className="bg-black text-[#fee123] text-center py-6 font-black text-xl md:text-2xl tracking-[0.2em] uppercase border-b-2 border-[#fee123]">
           BİZDEN BİLGİLER
         </div>
 
-        {/* Butonlar - Mavi Tonlar Kaldırıldı */}
+        {/* Tab Butonları */}
         <div className="grid grid-cols-2">
           {tabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`py-5 px-4 text-xs sm:text-sm md:text-base font-black transition-all duration-300 border-b-4 h-full flex items-center justify-center text-center uppercase tracking-tighter ${
-                activeTab === tab.id
-                  ? 'bg-black text-[#fee123] border-[#fee123] scale-[1.02] z-10'
-                  : 'bg-white text-gray-400 hover:bg-gray-50 border-gray-100 hover:text-black'
-              }`}
+              className={`py-6 px-4 text-xs md:text-sm font-black transition-all duration-300 border-b-4 flex items-center justify-center text-center uppercase tracking-tight
+                ${activeTab === tab.id
+                  ? 'bg-black text-[#fee123] border-[#fee123] z-10'
+                  : 'bg-white text-gray-400 border-gray-100 hover:text-black hover:bg-gray-50'
+                }`}
             >
-              {tab.title}
+              {/* Mobilde kısa başlık, masaüstünde tam başlık */}
+              <span className="md:hidden">{tab.title}</span>
+              <span className="hidden md:block">{tab.fullTitle}</span>
             </button>
           ))}
         </div>
 
         {/* İçerik Alanı */}
-        <div className="p-10 bg-white flex-grow flex items-center min-h-[250px] relative">
-          <div className="absolute top-4 right-6 text-6xl text-gray-50 font-black select-none pointer-events-none">
+        <div className="p-8 md:p-12 bg-white flex-grow flex flex-col justify-center min-h-[300px] relative">
+          {/* Arka Plan "ER" Yazısı */}
+          <div className="absolute top-6 right-8 text-7xl md:text-9xl text-gray-50 font-black select-none pointer-events-none transition-opacity">
             ER
           </div>
-          <p className="text-gray-700 leading-relaxed text-xl animate-fade-in font-medium relative z-10">
-            {activeContent ? activeContent.content : ''}
-          </p>
+          
+          <div className="relative z-10">
+            <div className="w-12 h-1 bg-[#fee123] mb-6"></div>
+            <p className="text-gray-700 leading-relaxed text-lg md:text-2xl font-bold animate-fade-in italic">
+              "{activeContent?.content}"
+            </p>
+          </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

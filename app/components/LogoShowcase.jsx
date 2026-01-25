@@ -11,10 +11,10 @@ const LogoShowcase = () => {
 
   return (
     // Arka plan tamamen siyah yapıldı
-    <section className="py-20 bg-black border-t border-gray-900">
+    <section className="py-20 bg-black border-t border-gray-900 overflow-hidden">
       <div className="container mx-auto px-4">
-        {/* Slogan veya Üst Metin (İhtiyaç duyarsan diye görünür bıraktım) */}
-        <p className="text-center text-[#fee123] text-xs font-black uppercase tracking-[0.5em] mb-12 opacity-80">
+        {/* Slogan */}
+        <p className="text-center text-[#fee123] text-xs font-black uppercase tracking-[0.5em] mb-12 opacity-80 animate-pulse">
           GÜVENİN MARKASI
         </p>
 
@@ -24,16 +24,16 @@ const LogoShowcase = () => {
             // Logo boyutu ve geçiş efektleri
             className="w-full max-w-[280px] transition-all duration-700 cursor-pointer hover:scale-110 group"
           >
+            {/* ÇÖZÜM: Width ve Height eklendi */}
             <Image
               src={brandLogo.url}
               alt={brandLogo.name}
-              /** * CSS FILTRE AÇIKLAMASI: 
-               * Logo görselin ne renk olursa olsun, bu filtre onu #fee123 tonlarına yaklaştırır.
-               * Eğer logon zaten bu renkse, sadece drop-shadow kısmını tutman yeterlidir.
-               */
+              width={280}
+              height={280}
+              priority // Marka logosu olduğu için öncelikli yüklenmesi performans artırır
               className="w-full h-auto object-contain transition-all duration-500 
                          drop-shadow-[0_0_20px_rgba(254,225,35,0.4)] 
-                         group-hover:drop-shadow-[0_0_35px_rgba(254,225,35,0.6)]"
+                         group-hover:drop-shadow-[0_0_40px_rgba(254,225,35,0.7)]"
             />
           </div>
         </div>

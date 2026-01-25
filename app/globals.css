@@ -16,56 +16,90 @@ body {
   overflow-y: auto;
 }
 
-/* =============================================
-   ER ASANSÖR - SINIRSIZ GENİŞ PNG KABİN
-   ============================================= */
+/* ============================================================
+   1. MASAÜSTÜ: PNG KABİN (1024px ve Üzeri) - HİÇ DOKUNULMADI
+   ============================================================ */
+@media (min-width: 1024px) {
+  ::-webkit-scrollbar {
+    width: 65px !important; 
+    background-color: #050505 !important;
+  }
 
-/* 1. Kanal Genişliği - 65px ile daha ferah ve kurumsal */
-::-webkit-scrollbar {
-  width: 65px !important; 
-  background-color: #050505 !important;
+  ::-webkit-scrollbar-track {
+    background-color: #080808 !important;
+    background-image: 
+      linear-gradient(to right, 
+        transparent 18px, 
+        #1a1a1a 18px, #1a1a1a 20px, 
+        transparent 20px, transparent 45px, 
+        #1a1a1a 45px, #1a1a1a 47px, 
+        transparent 47px
+      ) !important;
+    box-shadow: inset 0 0 30px #000 !important;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: transparent !important; 
+    background-image: url('/kabinscroll.png') !important;
+    background-repeat: no-repeat !important;
+    background-position: center top !important;
+    min-height: 120px !important; 
+    background-size: contain !important; 
+    border-radius: 0 !important;
+    filter: drop-shadow(0 5px 15px rgba(0,0,0,0.9)) !important;
+    cursor: pointer !important;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    filter: brightness(1.2) drop-shadow(0 0 25px var(--gold)) !important;
+  }
 }
 
-/* KRİTİK: Butonları Gizle (En üste çıkmama sorununu çözer) */
+/* ============================================================
+   2. MOBİL: "SARI KABİN" TASARIMI (1023px ve Altı) 
+   (PNG yerine CSS Gradyan kullanılarak engeli aşıyoruz)
+   ============================================================ */
+@media (max-width: 1023px) {
+  /* Kanal genişliği (Mobilde ekranı kapatmaması için 12px idealdir) */
+  ::-webkit-scrollbar {
+    width: 12px !important;
+    background-color: #050505 !important;
+    display: block !important;
+  }
+
+  /* Ray simülasyonu (Masaüstü rayının mobil versiyonu) */
+  ::-webkit-scrollbar-track {
+    background-color: #080808 !important;
+    border-left: 1px solid #1a1a1a !important;
+  }
+
+  /* CSS KABİN: Resim yerine Sarı-Siyah gradyan ile kabin efekti */
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(
+      to bottom,
+      #000 0%,
+      var(--gold) 10%,
+      var(--gold) 90%,
+      #000 100%
+    ) !important;
+    border: 2px solid #000 !important;
+    border-radius: 4px !important;
+    min-height: 60px !important;
+  }
+}
+
+/* ============================================================
+   3. ORTAK EMNİYET (Menü Açıkken Gizle)
+   ============================================================ */
 ::-webkit-scrollbar-button {
   display: none !important;
-  height: 0 !important;
 }
 
-/* 2. Asansör Kuyusu (Raylar) */
-::-webkit-scrollbar-track {
-  background-color: #080808 !important;
-  /* Raylar 65px genişliğe göre tam simetrik */
-  background-image: 
-    linear-gradient(to right, 
-      transparent 18px, 
-      #1a1a1a 18px, #1a1a1a 20px, 
-      transparent 20px, transparent 45px, 
-      #1a1a1a 45px, #1a1a1a 47px, 
-      transparent 47px
-    ) !important;
-  box-shadow: inset 0 0 30px #000 !important;
+body.menu-open::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
 }
 
-/* 3. ASANSÖR KABİNİ (kabinscroll.png) */
-::-webkit-scrollbar-thumb {
-  background-color: transparent !important; 
-  background-image: url('/kabinscroll.png') !important;
-  background-repeat: no-repeat !important;
-  
-  /* POZİSYON: 'center top' yaparak tavan çizgisine sıfırladık */
-  background-position: center top !important;
-  
-  /* BOYUT: 'contain' ile oranları korurken genişliği 65px'e yaydık */
-  min-height: 120px !important; 
-  background-size: contain !important; 
-  
-  border-radius: 0 !important; /* Üste tam oturması için radiusu kaldırdık */
-  filter: drop-shadow(0 5px 15px rgba(0,0,0,0.9)) !important;
-  cursor: pointer !important;
-}
-
-/* 4. Hover Efekti */
-::-webkit-scrollbar-thumb:hover {
-  filter: brightness(1.2) drop-shadow(0 0 25px var(--gold)) !important;
+body.menu-open {
+  scrollbar-width: none !important; /* Firefox */
 }

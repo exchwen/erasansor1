@@ -62,33 +62,37 @@ const ReferanslarPage = () => {
   ];
 
   return (
-    <main className="min-h-screen bg-gray-50">
+    <main className="min-h-screen bg-gray-50 text-gray-800">
       <Header />
 
-      {/* --- STANDART BAŞLIK STİLİ (image_236154.png Referanslı) --- */}
-      <section className="pt-48 pb-16 bg-white text-center">
-        <div className="container mx-auto px-4">
-          <h1 className="text-black text-4xl md:text-5xl font-black uppercase tracking-tighter mb-4">
+      {/* --- BAŞLIK ALANI --- */}
+      {/* Mobilde pt-32, masaüstünde pt-48 yaparak navbar boşluğunu dengeledik */}
+      <section className="pt-32 md:pt-48 pb-12 md:pb-16 bg-white text-center">
+        <div className="container mx-auto px-6">
+          <h1 className="text-black text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tighter mb-4 leading-none">
             GÜÇLÜ İŞ ORTAKLARIMIZ
           </h1>
-          <p className="text-gray-500 text-sm font-bold uppercase tracking-[0.4em] mb-6">
+          <p className="text-gray-500 text-[10px] md:text-sm font-bold uppercase tracking-[0.3em] md:tracking-[0.4em] mb-6">
             REFERANSLARIMIZ
           </p>
-          <div className="w-16 h-1 bg-[#fee123] mx-auto"></div>
+          <div className="w-16 h-1 bg-[#fee123] mx-auto shadow-[0_2px_10px_rgba(254,225,35,0.3)]"></div>
         </div>
       </section>
 
       {/* LOGO GRİD ALANI */}
-      <section className="py-24 container mx-auto px-4">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
+      <section className="py-12 md:py-24 container mx-auto px-6">
+        {/* Gap değerleri mobilde daha derli toplu durması için küçültüldü */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-8">
           {referenceLogos.map((logo, index) => (
             <div
               key={index}
-              className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-center h-48 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group"
+              className="bg-white p-4 md:p-8 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-center h-32 md:h-48 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group"
             >
               <Image
                 src={logo.url}
                 alt={logo.name}
+                width={200} // ÇÖZÜM: Next.js hata vermemesi için genişlik eklendi
+                height={200} // ÇÖZÜM: Next.js hata vermemesi için yükseklik eklendi
                 className="max-h-full max-w-full object-contain grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500"
               />
             </div>

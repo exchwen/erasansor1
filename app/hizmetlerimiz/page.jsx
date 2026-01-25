@@ -1,27 +1,24 @@
 'use client';
+import React from 'react';
 import Header from '../components/Header';
-import Footer from '../components/Footer'; // Manual footer yerine kurumsal footer
+import Footer from '../components/Footer';
 import GeneralServices from '../components/GeneralServices';
 
+/**
+ * ER ASANSÖR - Kurumsal Hizmetlerimiz Sayfası
+ * Duplikasyon giderildi; sayfa doğrudan GeneralServices içindeki 
+ * kurumsal siyah başlık ile başlar.
+ */
 export default function HizmetlerimizPage() {
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-black"> {/* Sayfa arka planı siyah yapıldı */}
       <Header />
 
-      {/* --- STANDART BAŞLIK STİLİ (image_236154.png Referanslı) --- */}
-      <section className="pt-48 pb-8 bg-white text-center">
-        <div className="container mx-auto px-4">
-          <h1 className="text-black text-4xl md:text-5xl font-black uppercase tracking-tighter mb-4">
-            ASANSÖR HİZMETLERİ
-          </h1>
-          <p className="text-gray-500 text-sm font-bold uppercase tracking-[0.4em] mb-6">
-            PROFESYONEL MÜHENDİSLİK ÇÖZÜMLERİMİZ
-          </p>
-          <div className="w-16 h-1 bg-[#fee123] mx-auto"></div>
-        </div>
-      </section>
+      {/* NOT: Buradaki manuel başlık (beyaz alan) tamamen kaldırıldı. 
+        GeneralServices bileşeni zaten kendi başlığını (Siyah) içeriyor.
+      */}
 
-      <div className="pb-10">
+      <div className="pt-20 md:pt-32 pb-10">
         <GeneralServices />
       </div>
 
