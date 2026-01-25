@@ -3,6 +3,7 @@ import React from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { Target, Eye, ShieldCheck, Zap, Users, Award } from 'lucide-react';
+import Image from 'next/image';
 
 const HakkimizdaPage = () => {
   return (

@@ -12,6 +12,7 @@ import CustomerJoin from './components/CustomerJoin';
 import LogoShowcase from './components/LogoShowcase';
 import Footer from './components/Footer';
 import LiveChat from './components/LiveChat';
+import Image from 'next/image';
 
 // Bu değişken bileşen dışında olduğu için client-side navigasyonda (menü tıklaması)
 // hafızada kalır ama sayfa yenilendiğinde (F5) sıfırlanır.
