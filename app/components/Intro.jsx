@@ -2,14 +2,12 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import Image from 'next/image'; // Logo için eklendi
+import Image from 'next/image';
 
 export default function Intro({ onFinish }) {
   const canvasRef = useRef();
   const [isVisible, setIsVisible] = useState(true);
   const [isFading, setIsFading] = useState(false);
-  
-  // YENİ: Yükleme durumu ve yüzdesi için state
   const [isLoading, setIsLoading] = useState(true);
   const [progress, setProgress] = useState(0);
 
@@ -61,11 +59,12 @@ export default function Intro({ onFinish }) {
     let mixer;
     const loader = new GLTFLoader();
     
-    // YENİ: Loader'a progress (ilerleme) takibi eklendi
     loader.load(
       '/erasansor-createdby-dogukankaya.glb', 
       (gltf) => {
-        // 1. YÜKLEME TAMAMLANDIĞINDA
+        // Yükleme tamamlandı, %100 yapıp sahneyi kuruyoruz
+        setProgress(100);
+
         scene.add(gltf.scene);
 
         const blenderCamera = gltf.cameras[0]; 
@@ -96,16 +95,17 @@ export default function Intro({ onFinish }) {
           setTimeout(startFadeAndFinish, 300);
         });
 
-        // YENİ: Yükleme bitti, loading ekranını kapat
+        // Yükleme ekranını kapat
         setTimeout(() => {
           setIsLoading(false);
-        }, 100); // Çok kısa bir gecikme ekleyerek render'ın oturmasını sağlıyoruz
+        }, 300); 
       }, 
       (xhr) => {
-        // 2. YÜKLEME SIRASINDA (Progress)
-        if (xhr.lengthComputable) {
+        // --- DÜZELTME BURADA ---
+        if (xhr.lengthComputable && xhr.total > 0) {
           const percentComplete = (xhr.loaded / xhr.total) * 100;
-          setProgress(Math.round(percentComplete));
+          // Math.min ile değeri 100'e sabitledik, asla 101 olmaz.
+          setProgress(Math.min(Math.round(percentComplete), 100));
         }
       },
       (error) => {
@@ -148,27 +148,22 @@ export default function Intro({ onFinish }) {
     <div 
       className="fixed inset-0 w-full h-[100dvh] z-[9999] bg-black touch-none select-none overflow-hidden"
     >
-      {/* 3D CANVAS - Yüklenene kadar gizli (opacity-0) */}
       <canvas 
         ref={canvasRef} 
         onClick={!isLoading ? startFadeAndFinish : undefined}
         className={`w-full h-full block transition-opacity duration-1000 ease-in-out cursor-pointer ${isLoading ? 'opacity-0' : 'opacity-100'}`} 
       />
       
-      {/* YENİ: YÜKLEME EKRANI (PRELOADER) */}
       <div className={`absolute inset-0 flex flex-col items-center justify-center bg-black transition-opacity duration-700 pointer-events-none ${isLoading ? 'opacity-100' : 'opacity-0'}`}>
         
-        {/* Logo */}
         <div className="relative w-20 h-20 mb-6 animate-pulse">
             <Image src="/logo.png" alt="ER Asansör" fill className="object-contain" />
         </div>
 
-        {/* Yüzdelik Yazısı */}
         <div className="text-[#fee123] font-black text-sm tracking-[0.2em] mb-2">
           YÜKLENİYOR %{progress}
         </div>
 
-        {/* Progress Bar Çubuğu */}
         <div className="w-48 h-1 bg-gray-800 rounded-full overflow-hidden">
           <div 
             className="h-full bg-[#fee123] transition-all duration-300 ease-out"
@@ -177,12 +172,10 @@ export default function Intro({ onFinish }) {
         </div>
       </div>
 
-      {/* Intro Bitiş Fade Efekti */}
       <div 
         className={`absolute inset-0 bg-black pointer-events-none transition-opacity duration-700 ease-in-out ${isFading ? 'opacity-100' : 'opacity-0'}`}
       />
       
-      {/* "Atlamak İçin" Yazısı - Sadece yüklendikten sonra görünür */}
       {!isFading && !isLoading && (
         <div className="absolute bottom-12 left-0 w-full text-center px-6 pointer-events-none animate-in fade-in duration-1000">
           <div className="text-white/40 text-[10px] font-light tracking-[0.3em] animate-pulse uppercase">
