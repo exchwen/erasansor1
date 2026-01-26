@@ -107,7 +107,8 @@ gltf.scene.traverse((child) => {
       envMap: cubeRenderTarget.texture,
       envMapIntensity: 1,
       clearcoat: 1,
-      clearcoatRoughness: 0
+      clearcoatRoughness: 0,
+      side: THREE.DoubleSide
     });
 
     mirrorMesh.material.needsUpdate = true;
@@ -199,7 +200,12 @@ gltf.scene.traverse((child) => {
   // ===============================
   if (mirrorMesh && cubeCamera) {
     mirrorMesh.visible = false;              // aynayı gizle
-    cubeCamera.position.copy(mirrorMesh.position);
+    const normal = new THREE.Vector3(0, 0, 1);
+normal.applyQuaternion(mirrorMesh.quaternion);
+
+cubeCamera.position.copy(mirrorMesh.position).add(
+  normal.multiplyScalar(0.05) // aynanın önüne çık
+);
     cubeCamera.update(renderer, scene);      // sahneyi render et
     mirrorMesh.visible = true;               // aynayı geri aç
   }
@@ -307,4 +313,5 @@ gltf.scene.traverse((child) => {
     </div>
   );
 }
+
 
