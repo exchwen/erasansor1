@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js'; // EKLEME BURADA
+import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
 import Image from 'next/image';
 
 export default function Intro({ onFinish }) {
@@ -11,6 +11,12 @@ export default function Intro({ onFinish }) {
   const [isFading, setIsFading] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [progress, setProgress] = useState(0);
+  const [isMounted, setIsMounted] = useState(false); // Hydration hatası çözümü için
+
+  // Hydration hatasını önlemek için mount kontrolü
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const startFadeAndFinish = useCallback(() => {
     if (isFading) return; 
@@ -23,7 +29,8 @@ export default function Intro({ onFinish }) {
   }, [isFading, onFinish]);
 
   useEffect(() => {
-    if (!isVisible) return;
+    // Sadece client tarafında ve görünürken çalış
+    if (!isMounted || !isVisible) return;
 
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x000000); 
@@ -38,12 +45,13 @@ export default function Intro({ onFinish }) {
       powerPreference: "high-performance"
     });
 
-    // --- HDR İÇİN RENDERER AYARLARI ---
-    renderer.toneMapping = THREE.ACESFilmicToneMapping; // Daha gerçekçi ışık kırılımları
-    renderer.toneMappingExposure = 1; // Parlaklık ayarı (Gerekirse artır/azalt)
-    renderer.outputColorSpace = THREE.SRGBColorSpace; 
+    // --- HDR AYARLARI ---
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1;
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
 
     const updateSize = () => {
+      if (!canvasRef.current) return;
       const width = window.innerWidth;
       const height = window.innerHeight;
       renderer.setSize(width, height);
@@ -62,23 +70,32 @@ export default function Intro({ onFinish }) {
       }
     };
 
-    // --- HDR YÜKLEME KISMI ---
-    const rgbeLoader = new RGBELoader();
-    rgbeLoader.load('/studio.hdr', (texture) => {
-        texture.mapping = THREE.EquirectangularReflectionMapping;
-        scene.environment = texture; // Modelin üzerine düşen yansıma ve ışık
-        // scene.background = texture; // Arka planı da HDR yapmak istersen bunu aç (şu an siyah)
-    });
+    // --- YÖNETİCİ (LOADING MANAGER) ---
+    // Hataları daha iyi görmek için
+    const manager = new THREE.LoadingManager();
+    manager.onError = (url) => {
+        console.error('Yükleme hatası:', url);
+    };
+
+    // --- HDR YÜKLEME ---
+    // RGBELoader kullanıyoruz. Eğer dosya bozuksa veya yoksa burada hata verir.
+    new RGBELoader(manager)
+        .setPath('/') // public klasörünü kök alır
+        .load('studio.hdr', (texture) => {
+            texture.mapping = THREE.EquirectangularReflectionMapping;
+            scene.environment = texture;
+        }, undefined, (err) => {
+            console.error("HDR Yüklenemedi (Dosya public/studio.hdr konumunda mı?):", err);
+            // HDR yüklenemezse fallback ışıklar zaten aşağıda var.
+        });
 
     let mixer;
-    const loader = new GLTFLoader();
+    const loader = new GLTFLoader(manager);
     
     loader.load(
       '/erasansor-createdby-dogukankaya.glb', 
       (gltf) => {
-        // Yükleme tamamlandı, %100 yapıp sahneyi kuruyoruz
         setProgress(100);
-
         scene.add(gltf.scene);
 
         const blenderCamera = gltf.cameras[0]; 
@@ -109,7 +126,6 @@ export default function Intro({ onFinish }) {
           setTimeout(startFadeAndFinish, 300);
         });
 
-        // Yükleme ekranını kapat
         setTimeout(() => {
           setIsLoading(false);
         }, 300); 
@@ -121,17 +137,15 @@ export default function Intro({ onFinish }) {
         }
       },
       (error) => {
-        console.error('Model yüklenirken hata:', error);
+        console.error('GLB Model yüklenirken hata:', error);
         onFinish();
       }
     );
 
-    // NOT: HDR eklediğimiz için bu ışıklar bazen fazla gelebilir.
-    // Eğer sahne "patlarsa" (çok parlak olursa), aşağıdaki intensity değerlerini düşür veya ışıkları tamamen kaldır.
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1); // 2.5'ten 1'e çektim (HDR desteklesin diye)
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1); 
     scene.add(ambientLight);
 
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 1); // 1.5'ten 1'e çektim
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
     directionalLight.position.set(2, 5, 5);
     scene.add(directionalLight);
 
@@ -154,9 +168,10 @@ export default function Intro({ onFinish }) {
       renderer.dispose();
       scene.clear();
     };
-  }, [isVisible, startFadeAndFinish, onFinish]); 
+  }, [isVisible, isMounted, startFadeAndFinish, onFinish]); 
 
-  if (!isVisible) return null;
+  // Eğer component henüz client tarafında mount olmadıysa veya görünür değilse
+  if (!isMounted || !isVisible) return null;
 
   return (
     <div 
@@ -171,7 +186,7 @@ export default function Intro({ onFinish }) {
       <div className={`absolute inset-0 flex flex-col items-center justify-center bg-black transition-opacity duration-700 pointer-events-none ${isLoading ? 'opacity-100' : 'opacity-0'}`}>
         
         <div className="relative w-20 h-20 mb-6 animate-pulse">
-            <Image src="/logo.png" alt="ER Asansör" fill className="object-contain" />
+            <Image src="/logo.png" alt="ER Asansör" fill className="object-contain" priority />
         </div>
 
         <div className="text-[#fee123] font-black text-sm tracking-[0.2em] mb-2">
