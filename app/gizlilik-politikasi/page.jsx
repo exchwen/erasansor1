@@ -9,11 +9,11 @@ const GizlilikPolitikasi = () => {
       <Header />
 
       {/* --- BAŞLIK ALANI --- */}
-      {/* Mobilde pt-32, masaüstünde pt-48 yaparak üstteki boşluk sorununu çözdük */}
       <section className="pt-32 md:pt-48 pb-12 md:pb-16 bg-white text-center">
         <div className="container mx-auto px-6">
           <h1 className="text-black text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tighter mb-4 leading-none">
-            ER ASANSÖR
+            {/* Sadece ER kelimesini korumaya aldık */}
+            <span className="notranslate">ER</span> ASANSÖR
           </h1>
           <p className="text-gray-500 text-[10px] md:text-sm font-bold uppercase tracking-[0.3em] md:tracking-[0.4em] mb-6">
             GİZLİLİK POLİTİKASI
@@ -27,7 +27,8 @@ const GizlilikPolitikasi = () => {
         <div className="space-y-12">
           <div>
             <p className="text-base md:text-lg font-medium">
-              ER Asansör olarak, müşterilerimizin ve ziyaretçilerimizin
+              {/* ER korumalı, Asansör çevrilir */}
+              <span className="notranslate">ER</span> Asansör olarak, müşterilerimizin ve ziyaretçilerimizin
               gizliliğini korumayı taahhüt ederiz. Kişisel verilerin korunması,
               hizmet kalitemizin bir parçasıdır ve 6698 sayılı Kişisel Verilerin
               Korunması Kanunu (KVKK) başta olmak üzere ilgili mevzuata uygun
@@ -36,7 +37,6 @@ const GizlilikPolitikasi = () => {
           </div>
 
           <div className="space-y-4">
-            {/* Mavi tonu siyah yapıldı */}
             <h3 className="text-xl md:text-2xl font-black text-black uppercase border-l-4 border-[#fee123] pl-4">
               Toplanan Bilgiler
             </h3>
@@ -104,15 +104,21 @@ const GizlilikPolitikasi = () => {
             </p>
           </div>
 
-          {/* İletişim Kutusu - Mavi tonları temizlendi */}
+          {/* İletişim Kutusu */}
           <div className="bg-gray-50 p-6 md:p-8 rounded-2xl border-l-8 border-[#fee123] shadow-sm">
             <h3 className="text-lg md:text-xl font-black text-black uppercase mb-4">
               İletişim
             </h3>
             <div className="space-y-1 text-sm md:text-base">
-               <p className="font-bold text-black">ER ASANSÖR</p>
-               <p><span className="font-semibold">Telefon:</span> 0 (531) 233 1711</p>
-               <p><span className="font-semibold">E-posta:</span> info@erasansor.com</p>
+               {/* Marka İsmi Korundu */}
+               <p className="font-bold text-black"><span className="notranslate">ER</span> ASANSÖR</p>
+               
+               {/* Telefon numarası korundu */}
+               <p><span className="font-semibold">Telefon:</span> <span className="notranslate">0 (531) 233 1711</span></p>
+               
+               {/* E-posta adresi korundu */}
+               <p><span className="font-semibold">E-posta:</span> <span className="notranslate">info@erasansor.com</span></p>
+               
                <p><span className="font-semibold">Adres:</span> Avcılar, Reşitpaşa Cad, 34361 İstanbul</p>
             </div>
           </div>
