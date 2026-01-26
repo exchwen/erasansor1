@@ -7,14 +7,15 @@ import Image from 'next/image';
 
 export default function Intro({ onFinish }) {
   const canvasRef = useRef();
-  const [isMounted, setIsMounted] = useState(false); // Hydration fix için
+  // Hydration hatasını (Minified React error #425) kökten çözen değişken
+  const [isMounted, setIsMounted] = useState(false);
+  
   const [isVisible, setIsVisible] = useState(true);
   const [isFading, setIsFading] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [progress, setProgress] = useState(0);
 
-  // 1. ADIM: Hydration Hatasını Çözme
-  // Component mount olmadan hiçbir şey render etme.
+  // 1. ADIM: Sayfa tamamen tarayıcıda yüklenmeden kodu çalıştırma
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -30,14 +31,14 @@ export default function Intro({ onFinish }) {
   }, [isFading, onFinish]);
 
   useEffect(() => {
-    // Sadece client tarafında (tarayıcıda) çalış
+    // Tarayıcıda değilsek veya intro gizlendiyse işlem yapma
     if (!isMounted || !isVisible) return;
 
     // --- Sahne Kurulumu ---
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x000000); 
 
-    // Kamera ayarları (window burada güvenli çünkü useEffect içindeyiz)
+    // Kamera Ayarları
     const width = window.innerWidth;
     const height = window.innerHeight;
     const initialFov = width < 768 ? 85 : 75;
@@ -56,46 +57,35 @@ export default function Intro({ onFinish }) {
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-    // --- Loading Manager ---
-    // Tüm yüklemeleri buradan takip edeceğiz
-    const manager = new THREE.LoadingManager();
-    
-    manager.onProgress = (url, itemsLoaded, itemsTotal) => {
-        // Genel ilerleme (HDR + GLB toplamı)
-        // Yüzdeyi biraz yapay artırıyoruz ki kullanıcı akışı hissetsin
-        const percent = (itemsLoaded / itemsTotal) * 100;
-        // setProgress(Math.round(percent)); // Bunu GLB loader'a bırakabiliriz
-    };
-
-    // 2. ADIM: HDR Yükleme (RangeError Çözümü)
-    // Dosya yolunun başına '/' koyarak public klasörünü işaret ediyoruz.
-    const rgbeLoader = new RGBELoader(manager);
-    rgbeLoader.setPath('/'); // Public klasörünü kök al
+    // --- 2. ADIM: HDR Yükleme (Zaten Çalışıyor) ---
+    const rgbeLoader = new RGBELoader();
     rgbeLoader.load(
-        'studio.hdr', // Dosya adı (başında / olmadan, çünkü setPath var)
+        '/studio.hdr', 
         (texture) => {
             texture.mapping = THREE.EquirectangularReflectionMapping;
             scene.environment = texture;
-            console.log("HDR Başarıyla Yüklendi");
+            console.log("HDR Yüklendi");
         },
-        undefined, // onProgress
-        (err) => {
-            console.error("HDR Yüklenemedi, varsayılan ışıklar kullanılacak.", err);
-            // HDR yüklenemese bile uygulama çökmesin diye hata yakaladık.
-        }
+        undefined, 
+        (err) => console.error("HDR hatası:", err)
     );
 
-    // --- GLB Model Yükleme ---
+    // --- 3. ADIM: GLB Model Yükleme (Sorunlu Kısım Düzeltildi) ---
     let mixer;
-    const loader = new GLTFLoader(manager);
+    const loader = new GLTFLoader();
     
+    // Yükleme yolunu garantiye alıyoruz
+    const modelPath = '/erasansor-createdby-dogukankaya.glb';
+
     loader.load(
-      '/erasansor-createdby-dogukankaya.glb', // Dosya adını tam kontrol et!
+      modelPath,
       (gltf) => {
+        // BAŞARILI OLURSA
+        console.log("Model Başarıyla Yüklendi!");
         setProgress(100);
         scene.add(gltf.scene);
 
-        // Kamera varsa modelden al, yoksa manuel ayarla
+        // Kamera modelin içinden geliyorsa onu kullan
         const blenderCamera = gltf.cameras[0]; 
         if (blenderCamera) {
           camera = blenderCamera;
@@ -105,14 +95,15 @@ export default function Intro({ onFinish }) {
           }
           camera.updateProjectionMatrix();
         } else {
+          // Yoksa manuel kamera
           const isMobile = window.innerWidth < 768;
           camera.position.set(0, 1.2, isMobile ? 10 : 4); 
           camera.lookAt(0, 1, 0);
         }
 
-        // Animasyonlar
+        // Animasyon oynatma
         mixer = new THREE.AnimationMixer(gltf.scene);
-        if(gltf.animations.length > 0) {
+        if (gltf.animations.length > 0) {
             gltf.animations.forEach((clip) => {
                 const action = mixer.clipAction(clip);
                 action.setLoop(THREE.LoopOnce);
@@ -121,36 +112,40 @@ export default function Intro({ onFinish }) {
             });
         }
 
+        // Animasyon bitince veya süre dolunca geçiş yap
         mixer.addEventListener('finished', () => {
           setTimeout(startFadeAndFinish, 300);
         });
 
-        // Yükleme ekranını kapat
+        // Loading ekranını kapat
         setTimeout(() => {
           setIsLoading(false);
         }, 300); 
       }, 
       (xhr) => {
+        // YÜKLEME İLERLEMESİ
         if (xhr.lengthComputable && xhr.total > 0) {
           const percentComplete = (xhr.loaded / xhr.total) * 100;
-          setProgress(Math.min(Math.round(percentComplete), 100));
+          setProgress(Math.min(Math.round(percentComplete), 99)); // 100 olmasın, bitince olsun
         }
       },
       (error) => {
-        console.error('Model yüklenirken kritik hata:', error);
-        // Hata olsa bile giriş ekranını geç ki kullanıcı takılmasın
-        onFinish(); 
+        // HATA OLURSA
+        console.error('Model Yükleme Hatası:', error);
+        // Hata olsa bile kullanıcıyı bekletme, introyu bitir
+        console.log("Model yüklenemediği için intro geçiliyor...");
+        onFinish();
       }
     );
 
-    // Yedek Işıklar (HDR yüklenmezse diye)
+    // Yedek Işıklar (HDR yüklenmezse sahne karanlık kalmasın)
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5); 
     scene.add(ambientLight);
     const dirLight = new THREE.DirectionalLight(0xffffff, 1);
     dirLight.position.set(5, 10, 7);
     scene.add(dirLight);
 
-    // --- Resize ve Render Döngüsü ---
+    // --- Render Döngüsü ---
     const updateSize = () => {
         if(!canvasRef.current) return;
         const w = window.innerWidth;
@@ -182,7 +177,8 @@ export default function Intro({ onFinish }) {
     };
   }, [isMounted, isVisible, startFadeAndFinish, onFinish]); 
 
-  // Eğer component client tarafında değilse HİÇBİR ŞEY render etme (Hata #418/#425 Çözümü)
+  // --- KRİTİK: Hydration hatası çözümü ---
+  // Client tarafında değilsek HİÇBİR ŞEY render etme.
   if (!isMounted || !isVisible) return null;
 
   return (
@@ -193,6 +189,7 @@ export default function Intro({ onFinish }) {
         className={`w-full h-full block transition-opacity duration-1000 ease-in-out cursor-pointer ${isLoading ? 'opacity-0' : 'opacity-100'}`} 
       />
       
+      {/* Loading Ekranı */}
       <div className={`absolute inset-0 flex flex-col items-center justify-center bg-black transition-opacity duration-700 pointer-events-none ${isLoading ? 'opacity-100' : 'opacity-0'}`}>
         <div className="relative w-20 h-20 mb-6 animate-pulse">
             <Image src="/logo.png" alt="ER Asansör" fill className="object-contain" priority />
@@ -210,8 +207,10 @@ export default function Intro({ onFinish }) {
         </div>
       </div>
       
+      {/* Siyah Fade Perdesi */}
       <div className={`absolute inset-0 bg-black pointer-events-none transition-opacity duration-700 ease-in-out ${isFading ? 'opacity-100' : 'opacity-0'}`} />
 
+      {/* Geçmek için dokun yazısı */}
       {!isFading && !isLoading && (
         <div className="absolute bottom-12 left-0 w-full text-center px-6 pointer-events-none animate-in fade-in duration-1000">
           <div className="text-white/40 text-[10px] font-light tracking-[0.3em] animate-pulse uppercase">
