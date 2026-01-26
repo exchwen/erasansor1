@@ -24,7 +24,6 @@ const LiveChat = () => {
           <div className="bg-[#25D366] p-4 flex justify-between items-center shadow-lg">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center overflow-hidden">
-                {/* ÇÖZÜM: w-8 h-8 karşılığı olan 32px değerleri eklendi */}
                 <Image 
                   src="/logo.png" 
                   alt="ER Asansör" 
@@ -34,7 +33,8 @@ const LiveChat = () => {
                 />
               </div>
               <div className="text-white text-sm">
-                <p className="font-bold">ER ASANSÖR WhatsApp</p>
+                {/* BURASI GÜNCELLENDİ: ER korumaya alındı */}
+                <p className="font-bold"><span className="notranslate">ER</span> ASANSÖR WhatsApp</p>
                 <p className="text-[10px] opacity-90">Genellikle anında yanıt verir</p>
               </div>
             </div>
@@ -43,7 +43,8 @@ const LiveChat = () => {
           
           <div className="h-48 p-4 bg-[#e5ddd5] overflow-y-auto text-sm">
             <div className="bg-white p-3 rounded-lg shadow-sm relative max-w-[85%] before:content-[''] before:absolute before:left-[-10px] before:top-2 before:border-[10px] before:border-transparent before:border-r-white text-black">
-              Merhaba! 👋 ER Asansör destek hattına hoş geldiniz. Size nasıl yardımcı olabiliriz?
+              {/* BURASI GÜNCELLENDİ: ER korumaya alındı */}
+              Merhaba! 👋 <span className="notranslate">ER</span> Asansör destek hattına hoş geldiniz. Size nasıl yardımcı olabiliriz?
             </div>
           </div>
 
