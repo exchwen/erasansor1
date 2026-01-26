@@ -2,15 +2,26 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js'; // EKLENDİ
+import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js'; 
+import { Reflector } from 'three/examples/jsm/objects/Reflector.js'; 
 import Image from 'next/image';
 
 export default function Intro({ onFinish }) {
   const canvasRef = useRef();
+  
+  // REACT SSR HATASINI ÇÖZMEK İÇİN: 
+  // Sadece client tarafında olduğumuzda render alacağız.
+  const [isMounted, setIsMounted] = useState(false);
+  
   const [isVisible, setIsVisible] = useState(true);
   const [isFading, setIsFading] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [progress, setProgress] = useState(0);
+
+  // Component mount olduğunda işaretle
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const startFadeAndFinish = useCallback(() => {
     if (isFading) return; 
@@ -23,23 +34,35 @@ export default function Intro({ onFinish }) {
   }, [isFading, onFinish]);
 
   useEffect(() => {
-    if (!isVisible) return;
+    // Eğer component mount olmadıysa veya görünür değilse çık
+    if (!isMounted || !isVisible) return;
 
+    // --- THREE.JS BAŞLANGIÇ ---
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x000000); 
 
-    // --- BAŞLANGIÇ: HDR (METAL PARLAMASI) EKLENDİ ---
-    // 'public' klasöründe 'studio.hdr' isminde bir dosya olmalı.
-    new RGBELoader()
-      .load('/studio.hdr', function (texture) {
-          texture.mapping = THREE.EquirectangularReflectionMapping;
-          scene.environment = texture; // Metali parlatan asıl kod bu
-          // scene.background = texture; // Arka planı görmek istersen bunu aç
-      });
-    // --- BİTİŞ: HDR EKLENDİ ---
+    // --- HDR YÜKLEME (HATA YÖNETİMİ EKLENDİ) ---
+    // Eğer studio.hdr yoksa veya bozuksa site çökmesin diye try-catch mantığı gibi çalışır
+    const rgbeLoader = new RGBELoader();
+    rgbeLoader.setPath('/'); // Public klasörü
+    rgbeLoader.load(
+        'studio.hdr', // Dosya adının public içinde doğru olduğundan emin ol!
+        function (texture) {
+            texture.mapping = THREE.EquirectangularReflectionMapping;
+            scene.environment = texture;
+        },
+        undefined, // onProgress
+        function (error) {
+            console.error("HDR Yüklenemedi, metal parlamayabilir:", error);
+            // HDR yüklenemezse varsayılan ışıklarla devam eder, site çökmez.
+        }
+    );
 
-    const initialFov = window.innerWidth < 768 ? 85 : 75;
-    let camera = new THREE.PerspectiveCamera(initialFov, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    const initialFov = width < 768 ? 85 : 75;
+    
+    let camera = new THREE.PerspectiveCamera(initialFov, width / height, 0.1, 1000);
 
     const renderer = new THREE.WebGLRenderer({ 
       canvas: canvasRef.current, 
@@ -47,16 +70,17 @@ export default function Intro({ onFinish }) {
       alpha: false,
       powerPreference: "high-performance"
     });
+    
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
     const updateSize = () => {
-      const width = window.innerWidth;
-      const height = window.innerHeight;
-      renderer.setSize(width, height);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      renderer.setSize(w, h);
       if (camera) {
-        camera.aspect = width / height;
-        if (width < 768) {
+        camera.aspect = w / h;
+        if (w < 768) {
           camera.position.z = 6; 
           camera.fov = 50; 
         } else {
@@ -75,15 +99,38 @@ export default function Intro({ onFinish }) {
       (gltf) => {
         setProgress(100);
 
+        // --- AYNA (REFLECTOR) AYARLARI ---
+        gltf.scene.traverse((child) => {
+          if (child.isMesh && child.name.includes('Mirror')) { 
+            const mirrorGeometry = child.geometry.clone();
+            const mirror = new Reflector(mirrorGeometry, {
+              clipBias: 0.003,
+              textureWidth: window.innerWidth * window.devicePixelRatio,
+              textureHeight: window.innerHeight * window.devicePixelRatio,
+              color: 0x888888,
+              recursion: 1
+            });
+            mirror.position.copy(child.position);
+            mirror.rotation.copy(child.rotation);
+            mirror.scale.copy(child.scale);
+            child.parent.add(mirror);
+            child.parent.remove(child);
+          }
+          
+          // --- RENK DÜZELTME (Pembeleşmeyi önlemek için) ---
+          // Kapı veya metal kısımların rengini beyaza zorluyoruz
+          if (child.isMesh && (child.name.includes('Kapi') || child.name.includes('Door') || child.material.metalness > 0.5)) {
+               // child.material.color.set(0xffffff); // Gerekirse açabilirsin
+          }
+        });
+
         scene.add(gltf.scene);
 
         const blenderCamera = gltf.cameras[0]; 
         if (blenderCamera) {
           camera = blenderCamera;
           camera.aspect = window.innerWidth / window.innerHeight;
-          if (window.innerWidth < 768) {
-             camera.fov = 95;
-          }
+          if (window.innerWidth < 768) camera.fov = 95;
           camera.updateProjectionMatrix();
         } else {
           const isMobile = window.innerWidth < 768;
@@ -91,7 +138,7 @@ export default function Intro({ onFinish }) {
           camera.lookAt(0, 1, 0);
         }
 
-        updateSize();
+        updateSize(); // Kamerayı ve boyutu tekrar ayarla
 
         mixer = new THREE.AnimationMixer(gltf.scene);
         gltf.animations.forEach((clip) => {
@@ -116,14 +163,13 @@ export default function Intro({ onFinish }) {
         }
       },
       (error) => {
-        console.error('Model yüklenirken hata:', error);
+        console.error('Model hatası:', error);
         onFinish();
       }
     );
 
     const ambientLight = new THREE.AmbientLight(0xffffff, 2.5);
     scene.add(ambientLight);
-
     const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
     directionalLight.position.set(2, 5, 5);
     scene.add(directionalLight);
@@ -147,14 +193,13 @@ export default function Intro({ onFinish }) {
       renderer.dispose();
       scene.clear();
     };
-  }, [isVisible, startFadeAndFinish, onFinish]); 
+  }, [isVisible, startFadeAndFinish, onFinish, isMounted]); // isMounted dependency eklendi
 
-  if (!isVisible) return null;
+  // Eğer client tarafında değilsek veya görünür değilsek hiçbir şey render etme (SSR Hatası önleyici)
+  if (!isMounted || !isVisible) return null;
 
   return (
-    <div 
-      className="fixed inset-0 w-full h-[100dvh] z-[9999] bg-black touch-none select-none overflow-hidden"
-    >
+    <div className="fixed inset-0 w-full h-[100dvh] z-[9999] bg-black touch-none select-none overflow-hidden">
       <canvas 
         ref={canvasRef} 
         onClick={!isLoading ? startFadeAndFinish : undefined}
@@ -162,15 +207,12 @@ export default function Intro({ onFinish }) {
       />
       
       <div className={`absolute inset-0 flex flex-col items-center justify-center bg-black transition-opacity duration-700 pointer-events-none ${isLoading ? 'opacity-100' : 'opacity-0'}`}>
-        
         <div className="relative w-20 h-20 mb-6 animate-pulse">
             <Image src="/logo.png" alt="ER Asansör" fill className="object-contain" />
         </div>
-
         <div className="text-[#fee123] font-black text-sm tracking-[0.2em] mb-2">
           YÜKLENİYOR %{progress}
         </div>
-
         <div className="w-48 h-1 bg-gray-800 rounded-full overflow-hidden">
           <div 
             className="h-full bg-[#fee123] transition-all duration-300 ease-out"
@@ -179,9 +221,7 @@ export default function Intro({ onFinish }) {
         </div>
       </div>
 
-      <div 
-        className={`absolute inset-0 bg-black pointer-events-none transition-opacity duration-700 ease-in-out ${isFading ? 'opacity-100' : 'opacity-0'}`}
-      />
+      <div className={`absolute inset-0 bg-black pointer-events-none transition-opacity duration-700 ease-in-out ${isFading ? 'opacity-100' : 'opacity-0'}`} />
       
       {!isFading && !isLoading && (
         <div className="absolute bottom-12 left-0 w-full text-center px-6 pointer-events-none animate-in fade-in duration-1000">
