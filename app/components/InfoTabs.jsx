@@ -47,7 +47,7 @@ const InfoTabs = () => {
           YÜKSEK STANDARTLARDA <span className="text-[#fee123]">HİZMET</span>
         </h2>
         <p className="text-gray-600 mb-8 text-base md:text-lg leading-relaxed">
-          ER Asansör, sektördeki tüm yeterlilik sertifikalarına sahiptir. Kaliteli hizmeti bir standart haline getirmek için mühendislik disipliniyle çalışıyoruz.
+          <span className="notranslate">ER</span> Asansör, sektördeki tüm yeterlilik sertifikalarına sahiptir. Kaliteli hizmeti bir standart haline getirmek için mühendislik disipliniyle çalışıyoruz.
         </p>
         
         <ul className="space-y-5 mb-10">
@@ -67,7 +67,7 @@ const InfoTabs = () => {
         
         <p className="text-gray-500 italic border-t border-gray-100 pt-8 text-sm md:text-base">
           Müşterilerimizden aldığımız destekle geleceğe güvenle bakıyoruz. 
-          Sizleri de <span className="text-black font-black">ER Asansör</span> ailesinde görmekten mutluluk duyarız.
+          Sizleri de <span className="text-black font-black"><span className="notranslate">ER</span> Asansör</span> ailesinde görmekten mutluluk duyarız.
         </p>
       </div>
 
@@ -99,8 +99,8 @@ const InfoTabs = () => {
 
         {/* İçerik Alanı */}
         <div className="p-8 md:p-12 bg-white flex-grow flex flex-col justify-center min-h-[300px] relative">
-          {/* Arka Plan "ER" Yazısı */}
-          <div className="absolute top-6 right-8 text-7xl md:text-9xl text-gray-50 font-black select-none pointer-events-none transition-opacity">
+          {/* Arka Plan "ER" Yazısı - BURAYA notranslate EKLENDİ */}
+          <div className="absolute top-6 right-8 text-7xl md:text-9xl text-gray-50 font-black select-none pointer-events-none transition-opacity notranslate">
             ER
           </div>
           
