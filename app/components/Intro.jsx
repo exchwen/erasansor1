@@ -2,7 +2,8 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
+// DEĞİŞİKLİK 1: RGBELoader yerine HDRLoader import ediyoruz
+import { HDRLoader } from 'three/examples/jsm/loaders/HDRLoader.js';
 import Image from 'next/image';
 
 export default function Intro({ onFinish }) {
@@ -57,9 +58,10 @@ export default function Intro({ onFinish }) {
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-    // --- 2. ADIM: HDR Yükleme (Zaten Çalışıyor) ---
-    const rgbeLoader = new RGBELoader();
-    rgbeLoader.load(
+    // --- 2. ADIM: HDR Yükleme (DÜZELTİLDİ) ---
+    // DEĞİŞİKLİK 2: RGBELoader yerine HDRLoader kullanıyoruz
+    const hdrLoader = new HDRLoader();
+    hdrLoader.load(
         '/studio.hdr', 
         (texture) => {
             texture.mapping = THREE.EquirectangularReflectionMapping;
@@ -70,7 +72,7 @@ export default function Intro({ onFinish }) {
         (err) => console.error("HDR hatası:", err)
     );
 
-    // --- 3. ADIM: GLB Model Yükleme (Sorunlu Kısım Düzeltildi) ---
+    // --- 3. ADIM: GLB Model Yükleme ---
     let mixer;
     const loader = new GLTFLoader();
     
