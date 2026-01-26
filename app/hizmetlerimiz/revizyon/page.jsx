@@ -31,7 +31,8 @@ const Revizyon = () => {
             Revizyon (Yenileme) Hizmeti
           </h3>
           <p className="text-gray-700 leading-relaxed font-medium">
-            ER Asansör olarak, mevcut asansör sistemlerinizi modern teknolojiyle
+            {/* ER korumalı, Asansör çevrilir */}
+            <span className="notranslate">ER</span> Asansör olarak, mevcut asansör sistemlerinizi modern teknolojiyle
             buluşturarak hem daha güvenli hem de daha estetik hale getiriyoruz.
             Eskiyen aksamların yenilenmesi, asansörünüzün performansını artırırken enerji maliyetlerinizi de düşürür.
           </p>
