@@ -74,9 +74,10 @@ const Footer = () => {
           
           {/* 1. KOLON: İLETİŞİM VE HARİTA */}
           <div className="space-y-6 md:space-y-8">
-            <h3 className="text-2xl font-black tracking-widest uppercase border-b-4 border-[#fee123] inline-block pb-2">
-              ER ASANSÖR
-            </h3>
+          <h3 className="text-2xl font-black tracking-widest uppercase border-b-4 border-[#fee123] inline-block pb-2">
+            {/* Sadece ER kelimesini korumaya aldık */}
+            <span className="notranslate">ER</span> ASANSÖR
+          </h3>
             <div className="space-y-4 text-gray-400 font-semibold text-sm">
               <a href="tel:05312331711" className="flex items-center gap-4 hover:text-[#fee123] transition-colors group">
                 <div className="bg-gray-900 p-2.5 rounded-full group-hover:bg-[#fee123] group-hover:text-black transition-all shrink-0">
@@ -121,7 +122,7 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* 2. KOLON: REFERANSLAR */}
+          {/* 2. KOLON: REFERANSLARs */}
           <div className="text-left">
             <h3 className="text-xl font-black tracking-widest uppercase mb-8 md:mb-10 text-[#fee123]">
               REFERANSLARIMIZ
@@ -171,9 +172,10 @@ const Footer = () => {
         <div className="mt-12 md:mt-20 pt-8 border-t border-gray-900 flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] font-black text-gray-600 uppercase tracking-[0.2em] md:tracking-[0.3em] text-center md:text-left">
           {/* ÇÖZÜM: Alt alta gelecek şekilde div içine alındı */}
           <div className="space-y-1">
-            <p>© 2026 ER ASANSÖR</p>
-            <p className="text-gray-700">TÜM HAKLARI SAKLIDIR.</p>
-          </div>
+          {/* Sadece ER kelimesine notranslate verdik, ASANSÖR çevrilecek */}
+          <p>© 2009 <span className="notranslate">ER</span> ASANSÖR</p>
+          <p className="text-gray-700">TÜM HAKLARI SAKLIDIR.</p>
+        </div>
           
           <div className="flex flex-wrap justify-center gap-6 md:gap-10">
             <Link href="/gizlilik-politikasi" className="hover:text-[#fee123] transition-colors">Gizlilik Politikası</Link>
