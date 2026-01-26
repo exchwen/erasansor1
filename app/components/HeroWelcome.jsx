@@ -8,17 +8,17 @@ const WelcomeBottom = () => {
       {/* --- LOGO VE MARKA YAN YANA --- */}
       <div className="flex flex-col items-center mb-10 z-10">
         <div className="flex items-center justify-center gap-4 md:gap-8 transition-transform hover:scale-105 duration-500">
-          {/* LOGO GÖRSELİ - Genişlik ve Yükseklik Eklendi */}
+          {/* LOGO GÖRSELİ */}
           <Image
             src="/logo.png"
             alt="ER ASANSÖR"
-            width={128} // md:h-32 (32*4=128px) karşılığı base değer
+            width={128}
             height={128}
             className="h-20 md:h-32 w-auto object-contain drop-shadow-[0_0_15px_rgba(254,225,35,0.2)]"
-            priority // Sayfa sonunda olsa da marka öğesi olduğu için hızlı yüklenmesi iyidir
+            priority
           />
 
-          {/* LOGO YANINDAKİ MARKA İSMİ */}
+          {/* MARKA İSMİ - Sadece ASANSÖR yazıyor, çevrilmesinde sorun yok */}
           <h1 className="text-[#fee123] text-4xl md:text-7xl font-black tracking-tighter leading-none uppercase">
             ASANSÖR
           </h1>
@@ -30,14 +30,16 @@ const WelcomeBottom = () => {
         </p>
       </div>
 
-      {/* Üst Ayıraç - Altın Işıltılı */}
+      {/* Üst Ayıraç */}
       <div className="w-full max-w-5xl h-[1px] bg-gradient-to-r from-transparent via-[#fee123]/50 to-transparent mb-12"></div>
 
       {/* --- MESAJ ALANI --- */}
       <div className="space-y-6 z-10">
+        {/* BURASI GÜNCELLENDİ: ER korundu, ASANSÖR çeviriye bırakıldı */}
         <h2 className="text-white text-3xl md:text-5xl font-black tracking-tight uppercase">
-          ER ASANSÖR ile yeni güne merhaba
+          <span className="notranslate">ER</span> ASANSÖR ile yeni güne merhaba
         </h2>
+        
         <p className="text-gray-400 text-lg md:text-2xl font-medium tracking-wide max-w-3xl mx-auto leading-relaxed">
           Güvenilir asansörler için <span className="text-[#fee123] font-bold">7/24 servis</span> hizmeti alabilirsiniz.
         </p>
@@ -48,7 +50,8 @@ const WelcomeBottom = () => {
       
       {/* Hafif Arka Plan Dokusu */}
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-5">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[20vw] font-black text-white select-none">
+        {/* BURASI GÜNCELLENDİ: Arka plandaki dev ER yazısı çevrilmesin */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[20vw] font-black text-white select-none notranslate">
           ER
         </div>
       </div>
