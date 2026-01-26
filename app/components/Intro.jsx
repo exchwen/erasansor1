@@ -2,13 +2,11 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-// DEĞİŞİKLİK 1: RGBELoader yerine HDRLoader import ediyoruz
 import { HDRLoader } from 'three/examples/jsm/loaders/HDRLoader.js';
 import Image from 'next/image';
 
 export default function Intro({ onFinish }) {
   const canvasRef = useRef();
-  // Hydration hatasını (Minified React error #425) kökten çözen değişken
   const [isMounted, setIsMounted] = useState(false);
   
   const [isVisible, setIsVisible] = useState(true);
@@ -16,7 +14,6 @@ export default function Intro({ onFinish }) {
   const [isLoading, setIsLoading] = useState(true);
   const [progress, setProgress] = useState(0);
 
-  // 1. ADIM: Sayfa tamamen tarayıcıda yüklenmeden kodu çalıştırma
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -32,14 +29,12 @@ export default function Intro({ onFinish }) {
   }, [isFading, onFinish]);
 
   useEffect(() => {
-    // Tarayıcıda değilsek veya intro gizlendiyse işlem yapma
     if (!isMounted || !isVisible) return;
 
     // --- Sahne Kurulumu ---
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x000000); 
 
-    // Kamera Ayarları
     const width = window.innerWidth;
     const height = window.innerHeight;
     const initialFov = width < 768 ? 85 : 75;
@@ -58,52 +53,91 @@ export default function Intro({ onFinish }) {
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-    // --- 2. ADIM: HDR Yükleme (DÜZELTİLDİ) ---
-    // DEĞİŞİKLİK 2: RGBELoader yerine HDRLoader kullanıyoruz
+    // --- ENVIRONMENT (HDR) YÜKLEME ---
     const hdrLoader = new HDRLoader();
     hdrLoader.load(
         '/studio.hdr', 
         (texture) => {
             texture.mapping = THREE.EquirectangularReflectionMapping;
-            scene.environment = texture;
-            console.log("HDR Yüklendi");
+            scene.environment = texture; 
+            console.log("HDR Environment Yüklendi");
         },
         undefined, 
         (err) => console.error("HDR hatası:", err)
     );
 
-    // --- 3. ADIM: GLB Model Yükleme ---
+    // --- GLB Model Yükleme ---
     let mixer;
     const loader = new GLTFLoader();
-    
-    // Yükleme yolunu garantiye alıyoruz
     const modelPath = '/erasansor-createdby-dogukankaya.glb';
 
     loader.load(
       modelPath,
       (gltf) => {
-        // BAŞARILI OLURSA
         console.log("Model Başarıyla Yüklendi!");
         setProgress(100);
+
+        // ===============================
+// 🪞 REAL MIRROR SYSTEM (CubeCamera)
+// ===============================
+let mirrorMesh = null;
+let cubeCamera = null;
+let cubeRenderTarget = null;
+
+cubeRenderTarget = new THREE.WebGLCubeRenderTarget(512, {
+  format: THREE.RGBAFormat,
+  generateMipmaps: true,
+  minFilter: THREE.LinearMipmapLinearFilter,
+  encoding: THREE.sRGBEncoding
+});
+
+cubeCamera = new THREE.CubeCamera(0.1, 1000, cubeRenderTarget);
+scene.add(cubeCamera);
+
+gltf.scene.traverse((child) => {
+
+  // 🔎 SADECE "Mirror" İSMİNE SAHİP MESH
+  if (child.isMesh && child.name === "Mirror") {
+    mirrorMesh = child;
+
+    // GERÇEK AYNA MATERYALİ
+    mirrorMesh.material = new THREE.MeshPhysicalMaterial({
+      color: 0xffffff,
+      metalness: 1,
+      roughness: 0,
+      envMap: cubeRenderTarget.texture,
+      envMapIntensity: 1,
+      clearcoat: 1,
+      clearcoatRoughness: 0
+    });
+
+    mirrorMesh.material.needsUpdate = true;
+  }
+
+  // Diğer materyaller
+  if (child.isMesh && child.material && child.name !== "Mirror") {
+    child.material.envMapIntensity = 1.0;
+    child.material.needsUpdate = true;
+  }
+});
+
+
         scene.add(gltf.scene);
 
-        // Kamera modelin içinden geliyorsa onu kullan
         const blenderCamera = gltf.cameras[0]; 
         if (blenderCamera) {
           camera = blenderCamera;
           camera.aspect = window.innerWidth / window.innerHeight;
           if (window.innerWidth < 768) {
-             camera.fov = 95;
+             camera.fov = 33;
           }
           camera.updateProjectionMatrix();
         } else {
-          // Yoksa manuel kamera
           const isMobile = window.innerWidth < 768;
-          camera.position.set(0, 1.2, isMobile ? 10 : 4); 
+          camera.position.set(0, 1.2, isMobile ? 8 : 2); 
           camera.lookAt(0, 1, 0);
         }
 
-        // Animasyon oynatma
         mixer = new THREE.AnimationMixer(gltf.scene);
         if (gltf.animations.length > 0) {
             gltf.animations.forEach((clip) => {
@@ -114,40 +148,32 @@ export default function Intro({ onFinish }) {
             });
         }
 
-        // Animasyon bitince veya süre dolunca geçiş yap
         mixer.addEventListener('finished', () => {
           setTimeout(startFadeAndFinish, 300);
         });
 
-        // Loading ekranını kapat
         setTimeout(() => {
           setIsLoading(false);
         }, 300); 
       }, 
       (xhr) => {
-        // YÜKLEME İLERLEMESİ
         if (xhr.lengthComputable && xhr.total > 0) {
           const percentComplete = (xhr.loaded / xhr.total) * 100;
-          setProgress(Math.min(Math.round(percentComplete), 99)); // 100 olmasın, bitince olsun
+          setProgress(Math.min(Math.round(percentComplete), 99));
         }
       },
       (error) => {
-        // HATA OLURSA
         console.error('Model Yükleme Hatası:', error);
-        // Hata olsa bile kullanıcıyı bekletme, introyu bitir
-        console.log("Model yüklenemediği için intro geçiliyor...");
         onFinish();
       }
     );
 
-    // Yedek Işıklar (HDR yüklenmezse sahne karanlık kalmasın)
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5); 
     scene.add(ambientLight);
     const dirLight = new THREE.DirectionalLight(0xffffff, 1);
     dirLight.position.set(5, 10, 7);
     scene.add(dirLight);
 
-    // --- Render Döngüsü ---
     const updateSize = () => {
         if(!canvasRef.current) return;
         const w = window.innerWidth;
@@ -164,11 +190,24 @@ export default function Intro({ onFinish }) {
     let frameId;
 
     const animate = () => {
-      frameId = requestAnimationFrame(animate);
-      const delta = clock.getDelta();
-      if (mixer) mixer.update(delta);
-      renderer.render(scene, camera);
-    };
+  frameId = requestAnimationFrame(animate);
+  const delta = clock.getDelta();
+
+  if (mixer) mixer.update(delta);
+
+  // ===============================
+  // 🪞 MIRROR UPDATE
+  // ===============================
+  if (mirrorMesh && cubeCamera) {
+    mirrorMesh.visible = false;              // aynayı gizle
+    cubeCamera.position.copy(mirrorMesh.position);
+    cubeCamera.update(renderer, scene);      // sahneyi render et
+    mirrorMesh.visible = true;               // aynayı geri aç
+  }
+
+  renderer.render(scene, camera);
+};
+
     animate();
 
     return () => {
@@ -179,8 +218,6 @@ export default function Intro({ onFinish }) {
     };
   }, [isMounted, isVisible, startFadeAndFinish, onFinish]); 
 
-  // --- KRİTİK: Hydration hatası çözümü ---
-  // Client tarafında değilsek HİÇBİR ŞEY render etme.
   if (!isMounted || !isVisible) return null;
 
   return (
@@ -191,28 +228,76 @@ export default function Intro({ onFinish }) {
         className={`w-full h-full block transition-opacity duration-1000 ease-in-out cursor-pointer ${isLoading ? 'opacity-0' : 'opacity-100'}`} 
       />
       
-      {/* Loading Ekranı */}
+      {/* Loading Arayüzü */}
       <div className={`absolute inset-0 flex flex-col items-center justify-center bg-black transition-opacity duration-700 pointer-events-none ${isLoading ? 'opacity-100' : 'opacity-0'}`}>
-        <div className="relative w-20 h-20 mb-6 animate-pulse">
+        
+        {/* LOGO (Sabit) */}
+        <div className="relative w-28 h-12 mb-4">
             <Image src="/logo.png" alt="ER Asansör" fill className="object-contain" priority />
         </div>
 
-        <div className="text-[#fee123] font-black text-sm tracking-[0.2em] mb-2">
-          YÜKLENİYOR %{progress}
+        {/* KOD İLE ÇİZİLMİŞ DÖNEN KASNAK (SVG) */}
+        <div className="mb-6">
+            {/* Dış Çerçeve Efekti (Opsiyonel parlama) */}
+            <div className="relative w-16 h-16">
+                <div className="absolute inset-0 bg-[#fee123] rounded-full opacity-5 blur-md"></div>
+                
+                {/* SVG Çizimi */}
+                <svg 
+                    className="w-full h-full text-[#fee123] animate-[spin_3s_linear_infinite]" 
+                    viewBox="0 0 100 100" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    strokeWidth="8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                >
+                    {/* Dış Çember (Kasnak Çerçevesi) */}
+                    <circle cx="50" cy="50" r="42" />
+                    
+                    {/* İç Göbek (Dolu) */}
+                    <circle cx="50" cy="50" r="8" fill="currentColor" stroke="none" />
+                    
+                    {/* Kollar (Spokes) - 6 Kollu Teknik Görünüm */}
+                    {/* Dikey Çizgi */}
+                    <line x1="50" y1="14" x2="50" y2="86" strokeWidth="6" />
+                    {/* 60 Derece Çizgi */}
+                    <line x1="18.8" y1="32" x2="81.2" y2="68" strokeWidth="6" />
+                    {/* 120 Derece Çizgi */}
+                    <line x1="18.8" y1="68" x2="81.2" y2="32" strokeWidth="6" />
+
+                    {/* Detay: Vida delikleri (Görsellik için küçük çemberler) */}
+                    <circle cx="50" cy="25" r="3" fill="black" stroke="none" />
+                    <circle cx="50" cy="75" r="3" fill="black" stroke="none" />
+                    <circle cx="28" cy="38" r="3" fill="black" stroke="none" />
+                    <circle cx="72" cy="62" r="3" fill="black" stroke="none" />
+                    <circle cx="28" cy="62" r="3" fill="black" stroke="none" />
+                    <circle cx="72" cy="38" r="3" fill="black" stroke="none" />
+                </svg>
+            </div>
         </div>
 
-        <div className="w-48 h-1 bg-gray-800 rounded-full overflow-hidden">
+        {/* METİN ALANI */}
+        <div className="flex flex-col items-center mb-4">
+            <div className="text-[#fee123] font-black text-sm md:text-base tracking-[0.15em] uppercase text-center animate-pulse">
+              ASANSÖRÜNÜZ PROJELENDİRİLİYOR
+            </div>
+            <div className="text-white/60 text-xs font-mono mt-1 tracking-widest">
+              %{progress}
+            </div>
+        </div>
+
+        {/* Progress Bar */}
+        <div className="w-48 h-1 bg-gray-900 rounded-full overflow-hidden border border-gray-800">
           <div 
-            className="h-full bg-[#fee123] transition-all duration-300 ease-out"
+            className="h-full bg-[#fee123] transition-all duration-300 ease-out shadow-[0_0_10px_#fee123]"
             style={{ width: `${progress}%` }}
           />
         </div>
       </div>
       
-      {/* Siyah Fade Perdesi */}
       <div className={`absolute inset-0 bg-black pointer-events-none transition-opacity duration-700 ease-in-out ${isFading ? 'opacity-100' : 'opacity-0'}`} />
 
-      {/* Geçmek için dokun yazısı */}
       {!isFading && !isLoading && (
         <div className="absolute bottom-12 left-0 w-full text-center px-6 pointer-events-none animate-in fade-in duration-1000">
           <div className="text-white/40 text-[10px] font-light tracking-[0.3em] animate-pulse uppercase">
