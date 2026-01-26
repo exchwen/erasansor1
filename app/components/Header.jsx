@@ -61,10 +61,11 @@ const Header = () => {
           </div>
 
           <div className="flex gap-3 md:gap-4 items-center">
-            <a href="https://instagram.com/erasansor" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-[#fee123] transition shrink-0">
-              <FaInstagram className="text-[#fee123]" /> 
-              <span className="hidden lg:inline">erasansor</span>
-            </a>
+          <a href="https://instagram.com/erasansor" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-[#fee123] transition shrink-0">
+            <FaInstagram className="text-[#fee123]" /> 
+            {/* Instagram adı özel isim olduğu için tamamen korumaya aldık */}
+            <span className="hidden lg:inline notranslate">erasansor</span>
+          </a>
             <a href="https://wa.me/905312331711" target="_blank" rel="noopener noreferrer" className="bg-green-600 px-3 py-1 rounded text-white font-bold flex items-center gap-2 hover:bg-green-500 transition shadow-sm text-[10px] sm:text-xs">
               <FaWhatsapp /> <span className="hidden xs:inline">Teklif Al</span><span className="xs:hidden">Teklif</span>
             </a>
