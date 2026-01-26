@@ -10,7 +10,7 @@ const CustomerJoin = () => {
         <h2 className="text-xl md:text-2xl font-bold mb-4 leading-tight">
           Hizmet Verdiğimiz{' '}
           <span className="text-[#fee123] text-2xl md:text-3xl font-bold block sm:inline">
-            Binlerce ER Asansör
+            Binlerce <span className="notranslate">ER</span> Asansör
           </span>{' '}
           Müşterisi Arasına Katılmak İçin
         </h2>
