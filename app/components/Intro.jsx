@@ -65,6 +65,12 @@ export default function Intro({ onFinish }) {
         undefined, 
         (err) => console.error("HDR hatası:", err)
     );
+// ===============================
+// 🪞 MIRROR GLOBAL REFERENCES
+// ===============================
+let mirrorMesh = null;
+let cubeCamera = null;
+let cubeRenderTarget = null;
 
     // --- GLB Model Yükleme ---
     let mixer;
@@ -76,13 +82,6 @@ export default function Intro({ onFinish }) {
       (gltf) => {
         console.log("Model Başarıyla Yüklendi!");
         setProgress(100);
-
-        // ===============================
-// 🪞 REAL MIRROR SYSTEM (CubeCamera)
-// ===============================
-let mirrorMesh = null;
-let cubeCamera = null;
-let cubeRenderTarget = null;
 
 cubeRenderTarget = new THREE.WebGLCubeRenderTarget(512, {
   format: THREE.RGBAFormat,
@@ -308,3 +307,4 @@ gltf.scene.traverse((child) => {
     </div>
   );
 }
+
