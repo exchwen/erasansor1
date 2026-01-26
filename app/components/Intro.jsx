@@ -53,6 +53,13 @@ export default function Intro({ onFinish }) {
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
+    // --- DEĞİŞKENLER (Mirror Referansları) ---
+    // Bu değişkenler hem Loader içinde hem de Animate döngüsünde kullanılacak
+    let mirrorMesh = null;
+    let cubeCamera = null;
+    let cubeRenderTarget = null;
+    let mixer = null;
+
     // --- ENVIRONMENT (HDR) YÜKLEME ---
     const hdrLoader = new HDRLoader();
     hdrLoader.load(
@@ -65,15 +72,8 @@ export default function Intro({ onFinish }) {
         undefined, 
         (err) => console.error("HDR hatası:", err)
     );
-// ===============================
-// 🪞 MIRROR GLOBAL REFERENCES
-// ===============================
-let mirrorMesh = null;
-let cubeCamera = null;
-let cubeRenderTarget = null;
 
     // --- GLB Model Yükleme ---
-    let mixer;
     const loader = new GLTFLoader();
     const modelPath = '/erasansor-createdby-dogukankaya.glb';
 
@@ -83,47 +83,50 @@ let cubeRenderTarget = null;
         console.log("Model Başarıyla Yüklendi!");
         setProgress(100);
 
-cubeRenderTarget = new THREE.WebGLCubeRenderTarget(512, {
-  format: THREE.RGBAFormat,
-  generateMipmaps: true,
-  minFilter: THREE.LinearMipmapLinearFilter,
-  encoding: THREE.sRGBEncoding
-});
+        // 1. Dinamik Yansıma için CubeCamera Hazırlığı
+        cubeRenderTarget = new THREE.WebGLCubeRenderTarget(256, { // 256 performans için ideal, çok kasarsa 128 yap
+            format: THREE.RGBAFormat,
+            generateMipmaps: true,
+            minFilter: THREE.LinearMipmapLinearFilter,
+            colorSpace: THREE.SRGBColorSpace 
+        });
 
-cubeCamera = new THREE.CubeCamera(0.1, 1000, cubeRenderTarget);
-scene.add(cubeCamera);
+        // Kamerayı oluştur ama henüz sahneye ekleme, pozisyonu aşağıda belirlenecek
+        cubeCamera = new THREE.CubeCamera(0.1, 1000, cubeRenderTarget);
+        scene.add(cubeCamera);
 
-gltf.scene.traverse((child) => {
+        // 2. Modeli Tara ve Materyalleri Ayarla
+        gltf.scene.traverse((child) => {
+          
+          // A) AYNA (Mirror) MESH BULUNDUĞUNDA
+          if (child.isMesh && child.name === "Mirror") {
+            mirrorMesh = child;
 
-  // 🔎 SADECE "Mirror" İSMİNE SAHİP MESH
-  if (child.isMesh && child.name === "Mirror") {
-    mirrorMesh = child;
+            // KRİTİK: Sanal kamerayı aynanın tam ortasına taşıyoruz.
+            // getWorldPosition kullanıyoruz ki grup içindeyse bile doğru konumu alsın.
+            child.getWorldPosition(cubeCamera.position);
 
-    // GERÇEK AYNA MATERYALİ
-    mirrorMesh.material = new THREE.MeshPhysicalMaterial({
-      color: 0xffffff,
-      metalness: 1,
-      roughness: 0,
-      envMap: cubeRenderTarget.texture,
-      envMapIntensity: 1,
-      clearcoat: 1,
-      clearcoatRoughness: 0,
-      side: THREE.DoubleSide
-    });
+            // Ayna Materyali
+            mirrorMesh.material = new THREE.MeshPhysicalMaterial({
+              color: 0xffffff,
+              metalness: 1, 
+              roughness: 0, 
+              envMap: cubeRenderTarget.texture, // Canlı kamera görüntüsü
+              envMapIntensity: 1,
+              side: THREE.DoubleSide
+            });
+          }
 
-    mirrorMesh.material.needsUpdate = true;
-  }
-
-  // Diğer materyaller
-  if (child.isMesh && child.material && child.name !== "Mirror") {
-    child.material.envMapIntensity = 1.0;
-    child.material.needsUpdate = true;
-  }
-});
-
+          // B) Diğer tüm parçalar (Normal HDR yansıması)
+          if (child.isMesh && child.material && child.name !== "Mirror") {
+            child.material.envMapIntensity = 1.0;
+            child.material.needsUpdate = true;
+          }
+        });
 
         scene.add(gltf.scene);
 
+        // 3. Kamera Ayarları (Blender vs Manuel)
         const blenderCamera = gltf.cameras[0]; 
         if (blenderCamera) {
           camera = blenderCamera;
@@ -138,6 +141,7 @@ gltf.scene.traverse((child) => {
           camera.lookAt(0, 1, 0);
         }
 
+        // 4. Animasyon Başlatma
         mixer = new THREE.AnimationMixer(gltf.scene);
         if (gltf.animations.length > 0) {
             gltf.animations.forEach((clip) => {
@@ -148,10 +152,12 @@ gltf.scene.traverse((child) => {
             });
         }
 
+        // Animasyon bitince geçiş yap
         mixer.addEventListener('finished', () => {
           setTimeout(startFadeAndFinish, 300);
         });
 
+        // Loading ekranını kaldır
         setTimeout(() => {
           setIsLoading(false);
         }, 300); 
@@ -168,12 +174,14 @@ gltf.scene.traverse((child) => {
       }
     );
 
+    // Yedek Işıklar
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5); 
     scene.add(ambientLight);
     const dirLight = new THREE.DirectionalLight(0xffffff, 1);
     dirLight.position.set(5, 10, 7);
     scene.add(dirLight);
 
+    // --- Render Döngüsü ---
     const updateSize = () => {
         if(!canvasRef.current) return;
         const w = window.innerWidth;
@@ -190,29 +198,26 @@ gltf.scene.traverse((child) => {
     let frameId;
 
     const animate = () => {
-  frameId = requestAnimationFrame(animate);
-  const delta = clock.getDelta();
+      frameId = requestAnimationFrame(animate);
+      const delta = clock.getDelta();
 
-  if (mixer) mixer.update(delta);
+      if (mixer) mixer.update(delta);
 
-  // ===============================
-  // 🪞 MIRROR UPDATE
-  // ===============================
- if (mirrorMesh && cubeCamera) {
-  mirrorMesh.visible = false;
+      // --- AYNA GÜNCELLEME ---
+      // Eğer ayna ve kamera hazırsa:
+      if (mirrorMesh && cubeCamera) {
+        // 1. Aynayı görünmez yap (Kendi içinden kendini çekmemesi için)
+        mirrorMesh.visible = false;
+        
+        // 2. Sanal kamerayla fotoğraf çek
+        cubeCamera.update(renderer, scene);
+        
+        // 3. Aynayı tekrar görünür yap
+        mirrorMesh.visible = true;
+      }
 
-  const prevTone = renderer.toneMapping;
-  renderer.toneMapping = THREE.NoToneMapping;
-
-  cubeCamera.update(renderer, scene);
-
-  renderer.toneMapping = prevTone;
-  mirrorMesh.visible = true;
-}
-
-  renderer.render(scene, camera);
-};
-
+      renderer.render(scene, camera);
+    };
     animate();
 
     return () => {
@@ -220,6 +225,7 @@ gltf.scene.traverse((child) => {
       cancelAnimationFrame(frameId);
       renderer.dispose();
       scene.clear();
+      if(cubeRenderTarget) cubeRenderTarget.dispose();
     };
   }, [isMounted, isVisible, startFadeAndFinish, onFinish]); 
 
@@ -243,11 +249,10 @@ gltf.scene.traverse((child) => {
 
         {/* KOD İLE ÇİZİLMİŞ DÖNEN KASNAK (SVG) */}
         <div className="mb-6">
-            {/* Dış Çerçeve Efekti (Opsiyonel parlama) */}
             <div className="relative w-16 h-16">
                 <div className="absolute inset-0 bg-[#fee123] rounded-full opacity-5 blur-md"></div>
                 
-                {/* SVG Çizimi */}
+                {/* SVG Çizimi - Dönen Kısım */}
                 <svg 
                     className="w-full h-full text-[#fee123] animate-[spin_3s_linear_infinite]" 
                     viewBox="0 0 100 100" 
@@ -257,21 +262,12 @@ gltf.scene.traverse((child) => {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                 >
-                    {/* Dış Çember (Kasnak Çerçevesi) */}
                     <circle cx="50" cy="50" r="42" />
-                    
-                    {/* İç Göbek (Dolu) */}
                     <circle cx="50" cy="50" r="8" fill="currentColor" stroke="none" />
-                    
-                    {/* Kollar (Spokes) - 6 Kollu Teknik Görünüm */}
-                    {/* Dikey Çizgi */}
                     <line x1="50" y1="14" x2="50" y2="86" strokeWidth="6" />
-                    {/* 60 Derece Çizgi */}
                     <line x1="18.8" y1="32" x2="81.2" y2="68" strokeWidth="6" />
-                    {/* 120 Derece Çizgi */}
                     <line x1="18.8" y1="68" x2="81.2" y2="32" strokeWidth="6" />
-
-                    {/* Detay: Vida delikleri (Görsellik için küçük çemberler) */}
+                    {/* Vida detayları */}
                     <circle cx="50" cy="25" r="3" fill="black" stroke="none" />
                     <circle cx="50" cy="75" r="3" fill="black" stroke="none" />
                     <circle cx="28" cy="38" r="3" fill="black" stroke="none" />
@@ -301,8 +297,10 @@ gltf.scene.traverse((child) => {
         </div>
       </div>
       
+      {/* Siyah Fade Perdesi */}
       <div className={`absolute inset-0 bg-black pointer-events-none transition-opacity duration-700 ease-in-out ${isFading ? 'opacity-100' : 'opacity-0'}`} />
 
+      {/* Geçmek için dokun yazısı */}
       {!isFading && !isLoading && (
         <div className="absolute bottom-12 left-0 w-full text-center px-6 pointer-events-none animate-in fade-in duration-1000">
           <div className="text-white/40 text-[10px] font-light tracking-[0.3em] animate-pulse uppercase">
@@ -313,6 +311,3 @@ gltf.scene.traverse((child) => {
     </div>
   );
 }
-
-
-
