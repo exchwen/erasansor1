@@ -2,7 +2,9 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js'; // EKLENDİ
+import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
+// 1. EKLENDİ: Reflector kütüphanesini çağırıyoruz
+import { Reflector } from 'three/examples/jsm/objects/Reflector.js'; 
 import Image from 'next/image';
 
 export default function Intro({ onFinish }) {
@@ -28,15 +30,12 @@ export default function Intro({ onFinish }) {
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x000000); 
 
-    // --- BAŞLANGIÇ: HDR (METAL PARLAMASI) EKLENDİ ---
-    // 'public' klasöründe 'studio.hdr' isminde bir dosya olmalı.
+    // --- HDR IŞIKLANDIRMA (Doğru, kalsın) ---
     new RGBELoader()
       .load('/studio.hdr', function (texture) {
           texture.mapping = THREE.EquirectangularReflectionMapping;
-          scene.environment = texture; // Metali parlatan asıl kod bu
-          // scene.background = texture; // Arka planı görmek istersen bunu aç
+          scene.environment = texture;
       });
-    // --- BİTİŞ: HDR EKLENDİ ---
 
     const initialFov = window.innerWidth < 768 ? 85 : 75;
     let camera = new THREE.PerspectiveCamera(initialFov, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -75,8 +74,40 @@ export default function Intro({ onFinish }) {
       (gltf) => {
         setProgress(100);
 
+        // --- 2. EKLENDİ: AYNAYI BULUP GERÇEK AYNA YAPMA ---
+        gltf.scene.traverse((child) => {
+          // DİKKAT: Blender'daki ayna objesinin adını buraya yazmalısın.
+          // Örnek: 'Ayna', 'Mirror', 'Plane001' vb.
+          if (child.isMesh && child.name.includes('Mirror')) { 
+            
+            // Reflector oluştur
+            const mirrorGeometry = child.geometry.clone(); // Orijinal geometriyi kopyala
+            const mirror = new Reflector(mirrorGeometry, {
+              clipBias: 0.003,
+              textureWidth: window.innerWidth * window.devicePixelRatio,
+              textureHeight: window.innerHeight * window.devicePixelRatio,
+              color: 0x888888, // Yansıma rengi
+              recursion: 1 // Yansıma derinliği
+            });
+
+            // Pozisyonu ve dönüşü kopyala
+            mirror.position.copy(child.position);
+            mirror.rotation.copy(child.rotation);
+            mirror.scale.copy(child.scale);
+
+            // Eski mat objeyi kaldır, yerine aynayı koy
+            child.parent.add(mirror);
+            child.parent.remove(child);
+            
+            // Eğer aynanın yönü ters ise (bazen olur), şunu aç:
+            // mirror.rotateY(Math.PI); 
+          }
+        });
+        // -----------------------------------------------------
+
         scene.add(gltf.scene);
 
+        // Kamera ve Animasyon ayarları (Aynen devam)
         const blenderCamera = gltf.cameras[0]; 
         if (blenderCamera) {
           camera = blenderCamera;
@@ -149,28 +180,24 @@ export default function Intro({ onFinish }) {
     };
   }, [isVisible, startFadeAndFinish, onFinish]); 
 
+  // HTML kısmı aynı kalabilir...
   if (!isVisible) return null;
 
   return (
-    <div 
-      className="fixed inset-0 w-full h-[100dvh] z-[9999] bg-black touch-none select-none overflow-hidden"
-    >
+    <div className="fixed inset-0 w-full h-[100dvh] z-[9999] bg-black touch-none select-none overflow-hidden">
       <canvas 
         ref={canvasRef} 
         onClick={!isLoading ? startFadeAndFinish : undefined}
         className={`w-full h-full block transition-opacity duration-1000 ease-in-out cursor-pointer ${isLoading ? 'opacity-0' : 'opacity-100'}`} 
       />
-      
+      {/* Loading ekranı kodları aynen kalsın */}
       <div className={`absolute inset-0 flex flex-col items-center justify-center bg-black transition-opacity duration-700 pointer-events-none ${isLoading ? 'opacity-100' : 'opacity-0'}`}>
-        
         <div className="relative w-20 h-20 mb-6 animate-pulse">
             <Image src="/logo.png" alt="ER Asansör" fill className="object-contain" />
         </div>
-
         <div className="text-[#fee123] font-black text-sm tracking-[0.2em] mb-2">
           YÜKLENİYOR %{progress}
         </div>
-
         <div className="w-48 h-1 bg-gray-800 rounded-full overflow-hidden">
           <div 
             className="h-full bg-[#fee123] transition-all duration-300 ease-out"
@@ -178,18 +205,6 @@ export default function Intro({ onFinish }) {
           />
         </div>
       </div>
-
-      <div 
-        className={`absolute inset-0 bg-black pointer-events-none transition-opacity duration-700 ease-in-out ${isFading ? 'opacity-100' : 'opacity-0'}`}
-      />
-      
-      {!isFading && !isLoading && (
-        <div className="absolute bottom-12 left-0 w-full text-center px-6 pointer-events-none animate-in fade-in duration-1000">
-          <div className="text-white/40 text-[10px] font-light tracking-[0.3em] animate-pulse uppercase">
-             Atlamak İçin Dokunun
-          </div>
-        </div>
-      )}
     </div>
   );
 }
