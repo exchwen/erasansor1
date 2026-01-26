@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js'; // EKLENDİ
 import Image from 'next/image';
 
 export default function Intro({ onFinish }) {
@@ -26,6 +27,16 @@ export default function Intro({ onFinish }) {
 
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x000000); 
+
+    // --- BAŞLANGIÇ: HDR (METAL PARLAMASI) EKLENDİ ---
+    // 'public' klasöründe 'studio.hdr' isminde bir dosya olmalı.
+    new RGBELoader()
+      .load('/studio.hdr', function (texture) {
+          texture.mapping = THREE.EquirectangularReflectionMapping;
+          scene.environment = texture; // Metali parlatan asıl kod bu
+          // scene.background = texture; // Arka planı görmek istersen bunu aç
+      });
+    // --- BİTİŞ: HDR EKLENDİ ---
 
     const initialFov = window.innerWidth < 768 ? 85 : 75;
     let camera = new THREE.PerspectiveCamera(initialFov, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -62,7 +73,6 @@ export default function Intro({ onFinish }) {
     loader.load(
       '/erasansor-createdby-dogukankaya.glb', 
       (gltf) => {
-        // Yükleme tamamlandı, %100 yapıp sahneyi kuruyoruz
         setProgress(100);
 
         scene.add(gltf.scene);
@@ -95,16 +105,13 @@ export default function Intro({ onFinish }) {
           setTimeout(startFadeAndFinish, 300);
         });
 
-        // Yükleme ekranını kapat
         setTimeout(() => {
           setIsLoading(false);
         }, 300); 
       }, 
       (xhr) => {
-        // --- DÜZELTME BURADA ---
         if (xhr.lengthComputable && xhr.total > 0) {
           const percentComplete = (xhr.loaded / xhr.total) * 100;
-          // Math.min ile değeri 100'e sabitledik, asla 101 olmaz.
           setProgress(Math.min(Math.round(percentComplete), 100));
         }
       },
