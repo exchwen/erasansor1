@@ -9,11 +9,11 @@ const ErisebilirlikBildirimi = () => {
       <Header />
 
       {/* --- BAŞLIK ALANI --- */}
-      {/* Mobilde pt-32, masaüstünde pt-48 yaparak üstteki boşluk sorununu çözdük */}
       <section className="pt-32 md:pt-48 pb-12 md:pb-16 bg-white text-center">
         <div className="container mx-auto px-6">
           <h1 className="text-black text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tighter mb-4 leading-none">
-            ER ASANSÖR
+            {/* Sadece ER kelimesini korumaya aldık */}
+            <span className="notranslate">ER</span> ASANSÖR
           </h1>
           <p className="text-gray-500 text-[10px] md:text-sm font-bold uppercase tracking-[0.3em] md:tracking-[0.4em] mb-6">
             ERİŞİLEBİLİRLİK BİLDİRİMİ
@@ -27,7 +27,8 @@ const ErisebilirlikBildirimi = () => {
         <div className="space-y-12">
           <div>
             <p className="text-base md:text-lg font-medium">
-              ER Asansör olarak, herkesin eşit erişim hakkına sahip olduğuna
+              {/* ER korumalı, Asansör çevrilir */}
+              <span className="notranslate">ER</span> Asansör olarak, herkesin eşit erişim hakkına sahip olduğuna
               inanıyor ve sunduğumuz tüm hizmetlerin herkes için erişilebilir
               olmasını hedefliyoruz. Web sitemiz, dijital içeriklerimiz ve
               müşteri hizmetlerimiz dahil olmak üzere tüm platformlarımızda
@@ -36,7 +37,6 @@ const ErisebilirlikBildirimi = () => {
           </div>
 
           <div className="space-y-4">
-            {/* Mavi tonu siyah yapıldı ve sarı şerit eklendi */}
             <h3 className="text-xl md:text-2xl font-black text-black uppercase border-l-4 border-[#fee123] pl-4">
               Hedefimiz
             </h3>
@@ -71,7 +71,7 @@ const ErisebilirlikBildirimi = () => {
             </p>
           </div>
 
-          {/* Geri Bildirim Kutusu - Mavi arka plan siyah yapıldı */}
+          {/* Geri Bildirim Kutusu */}
           <div className="bg-black text-white p-6 md:p-10 rounded-2xl border-t-8 border-[#fee123] shadow-xl">
             <h3 className="text-[#fee123] text-xl font-black uppercase mb-4">
               Geri Bildirim
@@ -85,8 +85,10 @@ const ErisebilirlikBildirimi = () => {
               <p className="font-bold uppercase tracking-widest text-[10px] opacity-60 mb-2">
                 İletişim Bilgilerimiz:
               </p>
-              <p className="font-bold text-sm md:text-base">Telefon: 0 (531) 233 1711</p>
-              <p className="font-bold text-sm md:text-base">E-posta: info@erasansor.com</p>
+              {/* Telefon numarasını korumaya aldık */}
+              <p className="font-bold text-sm md:text-base">Telefon: <span className="notranslate">0 (531) 233 1711</span></p>
+              {/* E-posta adresini korumaya aldık (info kelimesi çevrilmesin diye) */}
+              <p className="font-bold text-sm md:text-base">E-posta: <span className="notranslate">info@erasansor.com</span></p>
             </div>
           </div>
         </div>
