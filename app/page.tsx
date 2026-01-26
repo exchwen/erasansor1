@@ -64,7 +64,7 @@ export default function Home() {
             <section id="hakkimizda" className="py-16 container mx-auto px-4">
               <div className="flex flex-col md:flex-row items-center gap-10">
                 <div className="md:w-1/3 flex justify-center">
-                  {/* İŞARETLİ ALAN: ER Yazısı kaldırıldı, Logo eklendi */}
+                  {/* Logo Alanı */}
                   <div className="w-64 h-64 bg-black flex items-center justify-center border-4 border-yellow-500 shadow-2xl rounded-xl overflow-hidden p-8">
                     <img 
                       src="/logo.png" 
@@ -75,14 +75,15 @@ export default function Home() {
                 </div>
                 <div className="md:w-2/3">
                   <h2 className="text-3xl font-bold mb-4 border-l-8 border-yellow-500 pl-4 uppercase">
-                    NEDEN ER ASANSÖR?
+                    NEDEN <span className="notranslate">ER</span> ASANSÖR?
                   </h2>
                   <p className="mb-4 italic font-semibold text-gray-700 text-lg">
                     Çünkü biz sadece asansör üretmiyoruz, güveni ve kaliteyi
                     yukarı taşıyoruz.
                   </p>
                   <p className="text-gray-600 mb-4 leading-relaxed">
-                    ER Asansör, mühendislik odaklı yaklaşımıyla projelerinizde
+                    {/* ER korumalı, Asansör çevrilir */}
+                    <span className="notranslate">ER</span> Asansör, mühendislik odaklı yaklaşımıyla projelerinizde
                     güveni en üst seviyeye taşır. Sektördeki yılların
                     tecrübesiyle, her projeye özel çözümler sunarak güvenli,
                     estetik ve uzun ömürlü asansör sistemleri üretiriz. Müşteri
