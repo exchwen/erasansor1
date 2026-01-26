@@ -78,7 +78,7 @@ const Hero = () => {
             <span className="text-[#fee123] drop-shadow-[0_0_15px_rgba(254,225,35,0.3)]">Yukarı Taşıyoruz</span>
           </h1>
           <p className="text-base md:text-xl mb-10 text-gray-200 font-medium max-w-xl mx-auto md:mx-0">
-            ER Asansör, her projeye özel çözümler sunarak güvenli, estetik ve
+            <span className="notranslate">ER</span> Asansör, her projeye özel çözümler sunarak güvenli, estetik ve
             uzun ömürlü asansör sistemleri üretir.
           </p>
 
