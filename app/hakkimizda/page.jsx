@@ -14,7 +14,8 @@ const HakkimizdaPage = () => {
       <section className="pt-32 md:pt-48 pb-12 md:pb-16 bg-white text-center">
         <div className="container mx-auto px-6">
           <h1 className="text-black text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tighter mb-4 leading-none">
-            ER ASANSÖR
+            {/* Sadece ER kelimesini korumaya aldık */}
+            <span className="notranslate">ER</span> ASANSÖR
           </h1>
           <p className="text-gray-500 text-[10px] md:text-sm font-bold uppercase tracking-[0.4em] mb-6">
             HAKKIMIZDA
@@ -27,12 +28,12 @@ const HakkimizdaPage = () => {
       <section className="py-12 md:py-20 container mx-auto px-6 max-w-5xl">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
           <div className="space-y-6 text-center md:text-left order-2 md:order-1">
-            {/* Mavi tonu siyah yapıldı */}
             <h3 className="text-2xl md:text-3xl font-black text-black border-l-8 border-[#fee123] pl-6 uppercase">
               Kurumsal
             </h3>
             <p className="text-gray-700 leading-relaxed text-base md:text-lg font-medium">
-              ER Asansör, asansör sektöründeki yolculuğuna 2002 yılında
+              {/* ER korumalı, Asansör çevrilir */}
+              <span className="notranslate">ER</span> Asansör, asansör sektöründeki yolculuğuna 2002 yılında
               başlamış, sektörde edindiği bilgi ve tecrübeyi 2009 yılında
               kurumsal bir yapıya taşıyarak faaliyetlerine resmen başlamıştır.
               Güvenilirlik, kalite ve müşteri memnuniyetini temel ilke edinerek uzman çözümler sunmaktayız.
@@ -42,7 +43,7 @@ const HakkimizdaPage = () => {
           <div className="relative bg-black rounded-3xl h-[250px] md:h-[400px] flex items-center justify-center p-8 md:p-12 overflow-hidden border-4 border-[#fee123] shadow-2xl group order-1 md:order-2">
             <Image
               src="/logo.png"
-              alt="ER ASANSÖR"
+              alt="ER ASANSÖR" // Alt etiketi çevirilmez, ama gerekirse burayı da manuel ayarlayabiliriz.
               width={350}
               height={350}
               className="max-h-full w-auto object-contain transition-transform group-hover:scale-110 duration-500"
@@ -57,7 +58,6 @@ const HakkimizdaPage = () => {
         <div className="container mx-auto px-6 max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="bg-white p-8 md:p-10 rounded-2xl shadow-xl border-t-8 border-[#fee123]">
             <div className="flex items-center gap-4 mb-6">
-              {/* İkon rengi siyah yapıldı */}
               <Eye className="text-black shrink-0" size={32} />
               <h3 className="text-xl md:text-2xl font-black text-black uppercase">
                 Vizyonumuz
@@ -68,7 +68,7 @@ const HakkimizdaPage = () => {
               tercih edilen asansör firmalarından biri olmak."
             </p>
           </div>
-          {/* Mavi border siyah yapıldı */}
+          
           <div className="bg-white p-8 md:p-10 rounded-2xl shadow-xl border-t-8 border-black">
             <div className="flex items-center gap-4 mb-6">
               <Target className="text-[#fee123] shrink-0" size={32} />
@@ -102,7 +102,6 @@ const HakkimizdaPage = () => {
               className="flex flex-col items-center text-center p-8 bg-white border border-gray-100 rounded-xl hover:shadow-2xl transition-all hover:border-[#fee123]"
             >
               <val.icon className="text-[#fee123] mb-4 shadow-sm" size={40} />
-              {/* Başlık rengi siyah yapıldı */}
               <h4 className="text-lg md:text-xl font-bold text-black mb-2 uppercase">
                 {val.title}
               </h4>
@@ -112,7 +111,7 @@ const HakkimizdaPage = () => {
         </div>
       </section>
 
-      {/* HEDEFLERİMİZ - Mavi arka plan siyah yapıldı */}
+      {/* HEDEFLERİMİZ */}
       <section className="py-12 md:py-20 bg-black text-white">
         <div className="container mx-auto px-6 max-w-4xl text-center">
           <h3 className="text-2xl md:text-3xl font-black uppercase mb-10 text-[#fee123]">Hedeflerimiz</h3>
