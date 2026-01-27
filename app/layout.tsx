@@ -7,6 +7,8 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://erasansor1.vercel.app'),
+  // Not: Metadata içinde &nbsp; veya <span> kullanamadığımız için 
+  // tarayıcı sekmesindeki başlık çevrildiğinde değişebilir. Bu normaldir.
   title: 'ER ASANSÖR | Güven ve Kaliteyi Yukarı Taşıyoruz',
   description: 'ER Asansör, modern asansör sistemleri, periyodik bakım ve revizyon hizmetleri sunan öncü bir firmadır.',
   openGraph: {
@@ -28,9 +30,9 @@ export default function RootLayout({
   return (
     <html lang="tr">
       <head>
-        {/* Google Translate Barını Gizleyen GÜÇLÜ CSS */}
+        {/* Google Translate Barını Gizleyen CSS */}
         <style>{`
-          /* Google Banner Frame'ini (üstteki mavi çubuk) tamamen gizle */
+          /* Google Banner Frame'ini gizle */
           .goog-te-banner-frame.skiptranslate {
             display: none !important;
           }
@@ -54,20 +56,23 @@ export default function RootLayout({
             font-size: 0 !important;
           }
           
-          /* Gizli dropdown kutusunun yer kaplamasını engelle */
+          /* Dropdown kutusunun yer kaplamasını engelle */
           #google_translate_element {
             display: none !important;
           }
           
-          /* Bazı tarayıcılarda oluşan body üst boşluğunu sıfırla */
+          /* Çeviri widget'ı kaynaklı kaymaları önle */
           .skiptranslate {
             display: none !important;
           }
-          /* Ancak widget'ın çalışması için gerekli olan container'ı gizleme (sadece içeriğini gizle) */
-          /* Bu satır riskli olabilir, yukarıdakiler yetmezse body > .skiptranslate'i hedefleyebiliriz */
         `}</style>
       </head>
-      <body className={inter.className}>
+      
+      {/* ÖNEMLİ: suppressHydrationWarning={true} 
+         Google Translate body'ye class eklediğinde Next.js'in hata vermesini engeller.
+      */}
+      <body className={inter.className} suppressHydrationWarning={true}>
+        
         {/* Çeviri motorunun bağlandığı görünmez element */}
         <div id="google_translate_element"></div>
         
