@@ -31,7 +31,8 @@ const AsansorMontaj = () => {
           </h3>
           <p className="text-gray-700 leading-relaxed font-medium">
             Yeni bir yapı için ilk adım, güvenli ve kaliteli bir asansör
-            sistemidir. <span className="notranslate">ER</span> Asansör olarak, bina yapısına ve kullanım ihtiyaçlarına
+            sistemidir. {/* DÜZELTME 1: Marka ismi kilitlendi */}
+            <span className="notranslate">ER</span>&nbsp;Asansör olarak, bina yapısına ve kullanım ihtiyaçlarına
             uygun, uzun ömürlü ve yüksek standartlarda asansör montaj hizmetleri
             sunuyoruz.
           </p>
@@ -56,7 +57,8 @@ const AsansorMontaj = () => {
           </ul>
 
           <p className="text-center font-black text-lg md:text-2xl text-black py-6 border-y border-gray-100 italic">
-            "<span className="notranslate">ER</span> Asansör – Katları değil, güveni taşıyoruz."
+            {/* DÜZELTME 2: Marka ismi kilitlendi */}
+            "<span className="notranslate">ER</span>&nbsp;Asansör – Katları değil, güveni taşıyoruz."
           </p>
         </div>
 
