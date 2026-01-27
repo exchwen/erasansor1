@@ -52,7 +52,8 @@ const ArizaServisi = () => {
 
           <p className="italic text-gray-600 border-l-4 border-[#fee123] pl-4 text-sm md:text-base bg-gray-50 py-4 pr-4">
             Zaman kaybetmeyin. Arızalı bir asansör sadece konfor değil, güvenlik
-            riski de taşır. <span className="notranslate">ER</span> Asansör olarak, güvenliğinizi önemsiyor ve
+            riski de taşır. {/* DÜZELTME BURADA: Kelimeler kilitlendi */}
+            <span className="notranslate">ER</span>&nbsp;Asansör olarak, güvenliğinizi önemsiyor ve
             sorunlarınıza hızlıca çözüm üretiyoruz.
           </p>
         </div>
