@@ -65,25 +65,29 @@ export default function Home() {
               <div className="flex flex-col md:flex-row items-center gap-10">
                 <div className="md:w-1/3 flex justify-center">
                   {/* Logo Alanı */}
-                  <div className="w-64 h-64 bg-black flex items-center justify-center border-4 border-yellow-500 shadow-2xl rounded-xl overflow-hidden p-8">
-                    <img 
+                  <div className="w-64 h-64 bg-black flex items-center justify-center border-4 border-yellow-500 shadow-2xl rounded-xl overflow-hidden p-8 relative">
+                    {/* OPTİMİZASYON: <img> yerine Next.js <Image> kullanıldı */}
+                    <Image 
                       src="/logo.png" 
                       alt="ER Asansör Logo" 
-                      className="w-full h-full object-contain" 
+                      fill
+                      style={{ objectFit: 'contain' }}
+                      className="p-8"
                     />
                   </div>
                 </div>
                 <div className="md:w-2/3">
                   <h2 className="text-3xl font-bold mb-4 border-l-8 border-yellow-500 pl-4 uppercase">
-                    NEDEN <span className="notranslate">ER</span> ASANSÖR?
+                    {/* DÜZELTME 1: Başlıktaki marka ismi kilitlendi */}
+                    NEDEN <span className="notranslate">ER</span>&nbsp;ASANSÖR?
                   </h2>
                   <p className="mb-4 italic font-semibold text-gray-700 text-lg">
                     Çünkü biz sadece asansör üretmiyoruz, güveni ve kaliteyi
                     yukarı taşıyoruz.
                   </p>
                   <p className="text-gray-600 mb-4 leading-relaxed">
-                    {/* ER korumalı, Asansör çevrilir */}
-                    <span className="notranslate">ER</span> Asansör, mühendislik odaklı yaklaşımıyla projelerinizde
+                    {/* DÜZELTME 2: Cümle başındaki marka ismi kilitlendi */}
+                    <span className="notranslate">ER</span>&nbsp;Asansör, mühendislik odaklı yaklaşımıyla projelerinizde
                     güveni en üst seviyeye taşır. Sektördeki yılların
                     tecrübesiyle, her projeye özel çözümler sunarak güvenli,
                     estetik ve uzun ömürlü asansör sistemleri üretiriz. Müşteri
