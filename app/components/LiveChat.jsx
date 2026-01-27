@@ -33,8 +33,10 @@ const LiveChat = () => {
                 />
               </div>
               <div className="text-white text-sm">
-                {/* BURASI GÜNCELLENDİ: ER korumaya alındı */}
-                <p className="font-bold"><span className="notranslate">ER</span> ASANSÖR WhatsApp</p>
+                {/* DÜZELTME 1: Başlıktaki marka ismi kilitlendi */}
+                <p className="font-bold">
+                  <span className="notranslate">ER</span>&nbsp;ASANSÖR WhatsApp
+                </p>
                 <p className="text-[10px] opacity-90">Genellikle anında yanıt verir</p>
               </div>
             </div>
@@ -43,8 +45,8 @@ const LiveChat = () => {
           
           <div className="h-48 p-4 bg-[#e5ddd5] overflow-y-auto text-sm">
             <div className="bg-white p-3 rounded-lg shadow-sm relative max-w-[85%] before:content-[''] before:absolute before:left-[-10px] before:top-2 before:border-[10px] before:border-transparent before:border-r-white text-black">
-              {/* BURASI GÜNCELLENDİ: ER korumaya alındı */}
-              Merhaba! 👋 <span className="notranslate">ER</span> Asansör destek hattına hoş geldiniz. Size nasıl yardımcı olabiliriz?
+              {/* DÜZELTME 2: Cümle içindeki marka ismi kilitlendi */}
+              Merhaba! 👋 <span className="notranslate">ER</span>&nbsp;Asansör destek hattına hoş geldiniz. Size nasıl yardımcı olabiliriz?
             </div>
           </div>
 
