@@ -12,8 +12,8 @@ const GizlilikPolitikasi = () => {
       <section className="pt-32 md:pt-48 pb-12 md:pb-16 bg-white text-center">
         <div className="container mx-auto px-6">
           <h1 className="text-black text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tighter mb-4 leading-none">
-            {/* Sadece ER kelimesini korumaya aldık */}
-            <span className="notranslate">ER</span> ASANSÖR
+            {/* DÜZELTME 1: Başlıkta marka ismi birbirine yapıştırıldı */}
+            <span className="notranslate">ER</span>&nbsp;ASANSÖR
           </h1>
           <p className="text-gray-500 text-[10px] md:text-sm font-bold uppercase tracking-[0.3em] md:tracking-[0.4em] mb-6">
             GİZLİLİK POLİTİKASI
@@ -27,8 +27,8 @@ const GizlilikPolitikasi = () => {
         <div className="space-y-12">
           <div>
             <p className="text-base md:text-lg font-medium">
-              {/* ER korumalı, Asansör çevrilir */}
-              <span className="notranslate">ER</span> Asansör olarak, müşterilerimizin ve ziyaretçilerimizin
+              {/* DÜZELTME 2: Cümle başındaki marka ismi kilitlendi */}
+              <span className="notranslate">ER</span>&nbsp;Asansör olarak, müşterilerimizin ve ziyaretçilerimizin
               gizliliğini korumayı taahhüt ederiz. Kişisel verilerin korunması,
               hizmet kalitemizin bir parçasıdır ve 6698 sayılı Kişisel Verilerin
               Korunması Kanunu (KVKK) başta olmak üzere ilgili mevzuata uygun
@@ -110,8 +110,8 @@ const GizlilikPolitikasi = () => {
               İletişim
             </h3>
             <div className="space-y-1 text-sm md:text-base">
-               {/* Marka İsmi Korundu */}
-               <p className="font-bold text-black"><span className="notranslate">ER</span> ASANSÖR</p>
+               {/* DÜZELTME 3: İletişim alanındaki marka ismi kilitlendi */}
+               <p className="font-bold text-black"><span className="notranslate">ER</span>&nbsp;ASANSÖR</p>
                
                {/* Telefon numarası korundu */}
                <p><span className="font-semibold">Telefon:</span> <span className="notranslate">0 (531) 233 1711</span></p>
