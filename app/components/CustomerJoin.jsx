@@ -10,7 +10,12 @@ const CustomerJoin = () => {
         <h2 className="text-xl md:text-2xl font-bold mb-4 leading-tight">
           Hizmet Verdiğimiz{' '}
           <span className="text-[#fee123] text-2xl md:text-3xl font-bold block sm:inline">
-            Binlerce <span className="notranslate">ER</span> Asansör
+            {/* ÇÖZÜM BURADA:
+               Normal boşluk yerine '&nbsp;' kodu kullanıldı.
+               Bu kod, "Binlerce-ER-Asansör" grubunu birbirine yapıştırır.
+               Google Translate bunları ayıramadığı için cümlenin başına fırlatamaz.
+            */}
+            Binlerce&nbsp;<span className="notranslate">ER</span>&nbsp;Asansör
           </span>{' '}
           Müşterisi Arasına Katılmak İçin
         </h2>
