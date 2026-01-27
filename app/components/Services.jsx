@@ -71,12 +71,28 @@ const slides = [
 
 const Services = () => {
   const [current, setCurrent] = useState(0);
+  // HATA ÇÖZÜMÜ: isMobile state'i eklendi
+  const [isMobile, setIsMobile] = useState(false);
 
+  // Otomatik geçiş efekti
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrent((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
     }, 7000);
     return () => clearInterval(timer);
+  }, []);
+
+  // HATA ÇÖZÜMÜ: Ekran boyutunu sadece Client tarafında kontrol ediyoruz
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    // İlk yüklemede kontrol et
+    handleResize();
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const renderTitle = (title) => {
@@ -130,8 +146,10 @@ const Services = () => {
           {/* Dairesel Hizmet Butonları */}
           {slides.map((slide, index) => {
             const angle = index * (360 / slides.length) * (Math.PI / 180);
-            // Mobilde 110px, Masaüstünde 150px yarıçap
-            const radius = typeof window !== 'undefined' && window.innerWidth < 768 ? 110 : 150;
+            
+            // HATA ÇÖZÜMÜ: State kullanılarak değer belirlendi (SSR hatası önlendi)
+            const radius = isMobile ? 110 : 150;
+            
             const x = Math.cos(angle) * radius;
             const y = Math.sin(angle) * radius;
 
