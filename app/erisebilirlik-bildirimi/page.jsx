@@ -12,8 +12,8 @@ const ErisebilirlikBildirimi = () => {
       <section className="pt-32 md:pt-48 pb-12 md:pb-16 bg-white text-center">
         <div className="container mx-auto px-6">
           <h1 className="text-black text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tighter mb-4 leading-none">
-            {/* Sadece ER kelimesini korumaya aldık */}
-            <span className="notranslate">ER</span> ASANSÖR
+            {/* DÜZELTME 1: ER ve ASANSÖR kelimeleri &nbsp; ile birbirine kilitlendi */}
+            <span className="notranslate">ER</span>&nbsp;ASANSÖR
           </h1>
           <p className="text-gray-500 text-[10px] md:text-sm font-bold uppercase tracking-[0.3em] md:tracking-[0.4em] mb-6">
             ERİŞİLEBİLİRLİK BİLDİRİMİ
@@ -27,8 +27,8 @@ const ErisebilirlikBildirimi = () => {
         <div className="space-y-12">
           <div>
             <p className="text-base md:text-lg font-medium">
-              {/* ER korumalı, Asansör çevrilir */}
-              <span className="notranslate">ER</span> Asansör olarak, herkesin eşit erişim hakkına sahip olduğuna
+              {/* DÜZELTME 2: Cümle başındaki marka ismi kilitlendi */}
+              <span className="notranslate">ER</span>&nbsp;Asansör olarak, herkesin eşit erişim hakkına sahip olduğuna
               inanıyor ve sunduğumuz tüm hizmetlerin herkes için erişilebilir
               olmasını hedefliyoruz. Web sitemiz, dijital içeriklerimiz ve
               müşteri hizmetlerimiz dahil olmak üzere tüm platformlarımızda
