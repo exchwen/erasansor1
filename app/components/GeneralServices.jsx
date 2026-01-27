@@ -85,10 +85,11 @@ const GeneralServices = () => {
               ASANSÖR <span className="text-[#fee123]">PROJELENDİRME</span>
             </h2>
             <p className="text-gray-400 text-base md:text-lg font-medium leading-relaxed mb-8 md:mb-10 italic">
-            <span className="notranslate">ER</span> Asansör, uzman mühendis kadrosuyla her türlü bina yapısına
-            uygun, güvenilir ve efektif projeleri başarıyla hayata
-            geçirmektedir.
-          </p>
+              {/* DÜZELTME BURADA YAPILDI: &nbsp; eklendi */}
+              <span className="notranslate">ER</span>&nbsp;Asansör, uzman mühendis kadrosuyla her türlü bina yapısına
+              uygun, güvenilir ve efektif projeleri başarıyla hayata
+              geçirmektedir.
+            </p>
 
             {/* Butonlar - MOBİL ÇÖZÜM: Butonlar mobilde alt alta gelerek daha rahat tıklama alanı sağlar. */}
             <div className="flex flex-col sm:flex-row gap-4 md:gap-6">
