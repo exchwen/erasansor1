@@ -35,9 +35,9 @@ const WelcomeBottom = () => {
 
       {/* --- MESAJ ALANI --- */}
       <div className="space-y-6 z-10">
-        {/* BURASI GÜNCELLENDİ: ER korundu, ASANSÖR çeviriye bırakıldı */}
+        {/* ÇÖZÜM BURADA: ER ve ASANSÖR kelimeleri &nbsp; ile kilitlendi */}
         <h2 className="text-white text-3xl md:text-5xl font-black tracking-tight uppercase">
-          <span className="notranslate">ER</span> ASANSÖR ile yeni güne merhaba
+          <span className="notranslate">ER</span>&nbsp;ASANSÖR ile yeni güne merhaba
         </h2>
         
         <p className="text-gray-400 text-lg md:text-2xl font-medium tracking-wide max-w-3xl mx-auto leading-relaxed">
@@ -50,7 +50,7 @@ const WelcomeBottom = () => {
       
       {/* Hafif Arka Plan Dokusu */}
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-5">
-        {/* BURASI GÜNCELLENDİ: Arka plandaki dev ER yazısı çevrilmesin */}
+        {/* Arka plandaki dev ER yazısı */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[20vw] font-black text-white select-none notranslate">
           ER
         </div>
