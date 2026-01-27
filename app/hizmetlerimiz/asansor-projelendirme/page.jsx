@@ -32,7 +32,8 @@ const Projelendirme = () => {
           </h3>
           <p className="text-gray-700 leading-relaxed font-medium">
             Her başarılı asansör sisteminin temelinde doğru ve detaylı bir
-            projelendirme süreci yatar. <span className="notranslate">ER</span> Asansör olarak, asansör kurulumuna
+            projelendirme süreci yatar. {/* DÜZELTME BURADA: Marka ismi kilitlendi */}
+            <span className="notranslate">ER</span>&nbsp;Asansör olarak, asansör kurulumuna
             başlamadan önce yapının özelliklerine ve ihtiyaçlarına uygun
             mühendislik temelli projelendirme hizmeti sunuyoruz.
           </p>
