@@ -14,8 +14,8 @@ const HakkimizdaPage = () => {
       <section className="pt-32 md:pt-48 pb-12 md:pb-16 bg-white text-center">
         <div className="container mx-auto px-6">
           <h1 className="text-black text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tighter mb-4 leading-none">
-            {/* Sadece ER kelimesini korumaya aldık */}
-            <span className="notranslate">ER</span> ASANSÖR
+            {/* DÜZELTME 1: Başlıktaki marka ismi kilitlendi */}
+            <span className="notranslate">ER</span>&nbsp;ASANSÖR
           </h1>
           <p className="text-gray-500 text-[10px] md:text-sm font-bold uppercase tracking-[0.4em] mb-6">
             HAKKIMIZDA
@@ -32,8 +32,8 @@ const HakkimizdaPage = () => {
               Kurumsal
             </h3>
             <p className="text-gray-700 leading-relaxed text-base md:text-lg font-medium">
-              {/* ER korumalı, Asansör çevrilir */}
-              <span className="notranslate">ER</span> Asansör, asansör sektöründeki yolculuğuna 2002 yılında
+              {/* DÜZELTME 2: Cümle başındaki marka ismi kilitlendi */}
+              <span className="notranslate">ER</span>&nbsp;Asansör, asansör sektöründeki yolculuğuna 2002 yılında
               başlamış, sektörde edindiği bilgi ve tecrübeyi 2009 yılında
               kurumsal bir yapıya taşıyarak faaliyetlerine resmen başlamıştır.
               Güvenilirlik, kalite ve müşteri memnuniyetini temel ilke edinerek uzman çözümler sunmaktayız.
@@ -43,7 +43,7 @@ const HakkimizdaPage = () => {
           <div className="relative bg-black rounded-3xl h-[250px] md:h-[400px] flex items-center justify-center p-8 md:p-12 overflow-hidden border-4 border-[#fee123] shadow-2xl group order-1 md:order-2">
             <Image
               src="/logo.png"
-              alt="ER ASANSÖR" // Alt etiketi çevirilmez, ama gerekirse burayı da manuel ayarlayabiliriz.
+              alt="ER ASANSÖR"
               width={350}
               height={350}
               className="max-h-full w-auto object-contain transition-transform group-hover:scale-110 duration-500"
