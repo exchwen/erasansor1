@@ -33,7 +33,8 @@ const PeriyodikBakim = () => {
           <p className="text-gray-700 leading-relaxed font-medium">
             Asansörler, günlük yaşamın vazgeçilmez bir parçası haline gelmiştir.
             Bu nedenle, güvenli ve kesintisiz bir kullanım için düzenli bakım
-            şarttır. <span className="notranslate">ER</span> Asansör olarak, asansörlerinizin uzun ömürlü, güvenli ve
+            şarttır. {/* DÜZELTME 1: Marka ismi kilitlendi */}
+            <span className="notranslate">ER</span>&nbsp;Asansör olarak, asansörlerinizin uzun ömürlü, güvenli ve
             yasal yönetmeliklere uygun şekilde çalışmasını sağlamak amacıyla
             profesyonel periyodik bakım hizmetleri sunuyoruz.
           </p>
@@ -56,7 +57,10 @@ const PeriyodikBakim = () => {
             özenle gerçekleştiriyoruz.
           </p>
 
-          <h4 className="text-xl font-bold text-black mt-8 mb-4 uppercase">Neden <span className="notranslate">ER</span> Asansör?</h4>
+          {/* DÜZELTME 2: Başlıktaki marka ismi kilitlendi */}
+          <h4 className="text-xl font-bold text-black mt-8 mb-4 uppercase">
+            Neden <span className="notranslate">ER</span>&nbsp;Asansör?
+          </h4>
           <ul className="list-disc pl-5 space-y-3 text-gray-600">
             <li>Uzman ve deneyimli teknik kadro</li>
             <li>Orijinal yedek parça ve kaliteli malzeme kullanımı</li>
