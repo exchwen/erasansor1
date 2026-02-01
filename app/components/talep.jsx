@@ -8,7 +8,7 @@ const TalepFormu = () => {
   const [status, setStatus] = useState({ type: '', message: '' });
 
   // 🔴 ÖNEMLİ: Buraya az önce aldığın Google Apps Script URL'sini yapıştır
-  const SCRIPT_URL = "BURAYA_GOOGLE_APPS_SCRIPT_URL_YAZILACAK";
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwgD_m6wVcgfNnlRiHQ5qcfUIVNki8EMUGpv1Y_0u1t8tpbguPxFTIgF-QAto62Ozo6/exec";
 
   const slides = [
     '7/24 BİLGİ HATTI',
@@ -230,3 +230,4 @@ const TalepFormu = () => {
 };
 
 export default TalepFormu;
+
