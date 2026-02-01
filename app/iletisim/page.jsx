@@ -1,42 +1,60 @@
-'use client';
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import IletisimForm from '../components/IletisimForm'; // Formu buradan çağırdık
 import { Phone, Mail, MapPin } from 'lucide-react';
-import emailjs from '@emailjs/browser';
-import { EMAILJS_CONFIG } from '../components/emailConfig';
+
+// --- BU SAYFAYA ÖZEL SEO METADATA ---
+export const metadata = {
+  title: 'İletişim | ER Asansör - Teknik Servis ve Ofis Bilgileri',
+  description: 'İstanbul Avcılar merkezli ER Asansör iletişim bilgileri. 7/24 asansör arıza servisi, bakım teklifi ve proje danışmanlığı için bize ulaşın.',
+  keywords: ['er asansör iletişim', 'asansör teknik servis numarası', 'avcılar asansör firması', 'asansör arıza telefon'],
+  openGraph: {
+    title: 'ER Asansör İletişim | Bize Ulaşın',
+    description: '7/24 Teknik destek ve mühendislik çözümleri için iletişim kanallarımız.',
+  },
+};
+
+// --- SCHEMA MARKUP (KOLAY BULUNABİLİRLİK İÇİN) ---
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ContactPage',
+  mainEntity: {
+    '@type': 'LocalBusiness',
+    name: 'ER Asansör',
+    telephone: '+905312331711',
+    email: 'info@erasansor.com',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: 'Merkez, Reşit Paşa Cd.',
+      addressLocality: 'Avcılar',
+      addressRegion: 'İstanbul',
+      postalCode: '34310',
+      addressCountry: 'TR'
+    },
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: '40.9799', // Avcılar koordinatları (Yaklaşık)
+      longitude: '28.7217'
+    }
+  }
+};
 
 const IletisimPage = () => {
-  const formRef = useRef();
-  const [status, setStatus] = useState('');
-
-  const address = 'Merkez, Reşit Paşa Cd., 34310 Avcılar/İstanbul';
-  const googleMapsEmbedUrl = `https://maps.google.com/maps?q=${encodeURIComponent(address)}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setStatus('Gönderiliyor...');
-
-    emailjs
-      .sendForm(
-        EMAILJS_CONFIG.SERVICE_ID,
-        EMAILJS_CONFIG.TEMPLATE_ID,
-        formRef.current,
-        EMAILJS_CONFIG.PUBLIC_KEY
-      )
-      .then(() => {
-        setStatus('Başarıyla gönderildi!');
-        formRef.current.reset();
-      })
-      .catch(() => setStatus('Hata oluştu. Tekrar deneyin.'));
-  };
+  // Google Maps URL'i düzeltildi (Standart Embed)
+  const mapSrc = "https://maps.google.com/maps?q=Avcılar+Reşitpaşa+Cd&t=&z=15&ie=UTF8&iwloc=&output=embed";
 
   return (
     <main className="min-h-screen bg-gray-50">
+      {/* Schema Verisi */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
       <Header />
 
       {/* --- BAŞLIK ALANI --- */}
-      {/* Mobilde pt-32, masaüstünde pt-48 ile boşluk dengelendi */}
       <section className="pt-32 md:pt-48 pb-12 md:pb-16 bg-white text-center">
         <div className="container mx-auto px-6">
           <h1 className="text-black text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tighter mb-4 leading-none">
@@ -52,7 +70,7 @@ const IletisimPage = () => {
       <div className="pb-16 md:pb-24 container mx-auto px-4 md:px-6">
         <div className="bg-white rounded-2xl md:rounded-[32px] shadow-2xl overflow-hidden flex flex-col lg:flex-row max-w-6xl mx-auto border border-white">
           
-          {/* SOL PANEL: İRTİBAT BİLGİLERİ (Mavi yerine Siyah yapıldı) */}
+          {/* SOL PANEL: İRTİBAT BİLGİLERİ */}
           <div className="bg-black lg:w-[380px] p-8 md:p-10 flex flex-col justify-between">
             <div>
               <h3 className="text-white text-xl md:text-2xl font-black uppercase tracking-tighter flex items-center gap-3 mb-10">
@@ -110,7 +128,7 @@ const IletisimPage = () => {
             {/* Google Maps Alanı */}
             <div className="mt-10 rounded-2xl overflow-hidden h-40 border border-white/5 shadow-inner grayscale opacity-80 hover:grayscale-0 transition-all duration-500">
               <iframe
-                src={googleMapsEmbedUrl}
+                src={mapSrc}
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
@@ -130,44 +148,9 @@ const IletisimPage = () => {
               Güvenilir ve hızlı çözümlerimiz için formu doldurun.
             </p>
 
-            <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-1">
-                  <label className="text-gray-500 text-[11px] font-bold pl-1 uppercase">Adınız *</label>
-                  <input name="user_name" type="text" required className="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl focus:border-[#fee123] outline-none text-sm transition-all" />
-                </div>
-                <div className="space-y-1">
-                  <label className="text-gray-500 text-[11px] font-bold pl-1 uppercase">Soyadınız *</label>
-                  <input name="user_surname" type="text" required className="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl focus:border-[#fee123] outline-none text-sm transition-all" />
-                </div>
-              </div>
-
-              <div className="space-y-1">
-                <label className="text-gray-500 text-[11px] font-bold pl-1 uppercase">Konu *</label>
-                <select name="subject" defaultValue="" required className="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl focus:border-[#fee123] outline-none text-sm cursor-pointer transition-all">
-                  <option value="" disabled>Konu Seçiniz *</option>
-                  <option value="satin-alma">Satın Alma</option>
-                  <option value="teknik-destek">Teknik Destek</option>
-                  <option value="asansor-bakim">Asansör Bakım</option>
-                  <option value="asansor-ariza">Asansör Arıza</option>
-                </select>
-              </div>
-
-              <div className="space-y-1">
-                <label className="text-gray-500 text-[11px] font-bold pl-1 uppercase">Mesajınız *</label>
-                <textarea name="message" rows="4" required className="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl focus:border-[#fee123] outline-none resize-none text-sm transition-all"></textarea>
-              </div>
-
-              <button className="w-full bg-black text-white font-black py-4 rounded-xl hover:bg-[#fee123] hover:text-black transition-all duration-300 shadow-lg uppercase tracking-widest text-base mt-4 active:scale-95">
-                TALEP GÖNDER!
-              </button>
-              
-              {status && (
-                <p className="text-center text-sm font-bold text-black mt-4 animate-bounce">
-                  {status}
-                </p>
-              )}
-            </form>
+            {/* Form Bileşeni Buraya Eklendi */}
+            <IletisimForm />
+            
           </div>
         </div>
       </div>
