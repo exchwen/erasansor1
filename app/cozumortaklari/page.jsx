@@ -16,6 +16,8 @@ const CozumOrtaklariPage = () => {
     { name: 'MİKROLİFT', url: 'https://www.mikrolift.com/images/logo.png' },
     { name: 'iLİFT', url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8RqrZMj5aQdNgx-kJvZWDis7E-dwPaYQhng&s' },
     { name: 'ÖZBEŞLER', url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyjyrSRczt9komZVLrSB_X_0FE04l4MYQWtg&s' },
+    { name: 'NAGEL', url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDiJBMC7plvzAQmvFpu0efYmkZN7MWL1nLrA&s' },
+    { name: 'SANKA KABLO', url: 'https://www.find.com.tr/assets/images/Uploads/Company/776446/find_2018116_121725287.jpg' },
     { name: 'MERİH ASANSÖR', url: 'https://erbaasansor.com/wp-content/uploads/2018/09/Merih-Asansor-logo.jpg' }
   ];
 
