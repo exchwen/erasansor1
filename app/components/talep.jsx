@@ -7,8 +7,9 @@ const TalepFormu = () => {
   const [isSending, setIsSending] = useState(false);
   const [status, setStatus] = useState({ type: '', message: '' });
 
-  // 🔴 ÖNEMLİ: Buraya az önce aldığın Google Apps Script URL'sini yapıştır
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwgD_m6wVcgfNnlRiHQ5qcfUIVNki8EMUGpv1Y_0u1t8tpbguPxFTIgF-QAto62Ozo6/exec";
+  // 🔴 DÜZELTME BURADA YAPILDI:
+  // Artık Google linkini değil, kendi oluşturduğumuz API yolunu yazıyoruz.
+  const SCRIPT_URL = "/api/send-google";
 
   const slides = [
     '7/24 BİLGİ HATTI',
@@ -29,32 +30,34 @@ const TalepFormu = () => {
     setIsSending(true);
     setStatus({ type: '', message: '' });
 
-    // Form verilerini otomatik topla
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
 
-    // Google Script'in anlayacağı format (form_source ekliyoruz)
     const payload = {
       ...data,
       form_source: 'Detayli Talep Formu'
     };
 
     try {
-      await fetch(SCRIPT_URL, {
+      // İstek artık senin kendi sunucuna gidiyor (CORS hatası olmaz)
+      const response = await fetch(SCRIPT_URL, {
         method: 'POST',
-        mode: 'no-cors', // CORS hatasını engeller
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(payload),
       });
 
-      // Başarılı kabul ediyoruz
-      setStatus({
-        type: 'success',
-        message: 'Talebiniz ve adres bilgileriniz başarıyla iletildi! En kısa sürede döneceğiz.',
-      });
-      e.target.reset(); // Formu temizle
+      if (response.ok) {
+        setStatus({
+          type: 'success',
+          message: 'Talebiniz ve adres bilgileriniz başarıyla iletildi! En kısa sürede döneceğiz.',
+        });
+        e.target.reset();
+      } else {
+        throw new Error('Sunucu hatası');
+      }
+
     } catch (error) {
       console.error('Hata:', error);
       setStatus({
@@ -85,7 +88,7 @@ const TalepFormu = () => {
       <div className="container mx-auto px-6 max-w-6xl relative z-10">
         <div className="flex flex-col lg:flex-row gap-10 lg:gap-12 items-center justify-between">
           
-          {/* Sol Taraf: Metinler */}
+          {/* Sol Taraf */}
           <div className="w-full lg:w-1/2 text-white space-y-6 md:space-y-8 text-center lg:text-left">
             <div className="space-y-4">
               <div className="w-16 h-1 bg-[#fee123] mx-auto lg:mx-0"></div>
@@ -161,7 +164,7 @@ const TalepFormu = () => {
                 </select>
               </div>
 
-              {/* ✨ YENİ EKLENEN ADRES ALANI ✨ */}
+              {/* Adres Alanı */}
               <div className="space-y-1">
                  <input
                   name="address"
@@ -230,4 +233,3 @@ const TalepFormu = () => {
 };
 
 export default TalepFormu;
-
