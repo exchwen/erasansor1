@@ -1,32 +1,62 @@
-'use client';
 import React from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Image from 'next/image';
 
-const CozumOrtaklariPage = () => {
-  // --- ÇÖZÜM ORTAKLARI LİSTESİ ---
-  const partners = [
-    { name: 'ÖNERSAN', url: 'https://media.licdn.com/dms/image/v2/C4D0BAQHMyPWLVNHjmg/company-logo_200_200/company-logo_200_200/0/1679234371244?e=2147483647&v=beta&t=LK_FL_JB91zg6pyWaFYyQ_fteCa4gJGgxiBysObWZmI' },
-    { name: 'AKIŞ LİFT', url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfhlOWXkt4xYJq3X51dB2mhx3IQyhM28Qi6A&s' },
-    { name: 'BUTCON', url: 'https://www.butkon.com/images/butkon/logo.png' },
-    { name: 'GENEMEK', url: 'https://media.licdn.com/dms/image/v2/D4E0BAQGAV5sAEsC1Tg/company-logo_200_200/company-logo_200_200/0/1700216418921/gen_elektromekanik_san_ve_tic_ltd_ti__logo?e=2147483647&v=beta&t=-mA4bZLcKzycaXFjZZsUMFh4ZbFYsbKvdN9XbivWmpE' },
-    { name: 'ARKEL', url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTktjdB2j3sRzck8adtvTufmAhmxMSSbuXxSQ&s' },
-    { name: 'MİKEL', url: 'https://media.licdn.com/dms/image/v2/C4D0BAQEZHP2lkXf61Q/company-logo_200_200/company-logo_200_200/0/1630459187095/mik_el_elektronik_san_ve_tic_ltd_sti_logo?e=2147483647&v=beta&t=SvIEXs99FkDkMfzC_tIdVShjp4A9pX5QeRoAJx4FdCo' },
-    { name: 'MİKROLİFT', url: 'https://www.mikrolift.com/images/logo.png' },
-    { name: 'iLİFT', url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8RqrZMj5aQdNgx-kJvZWDis7E-dwPaYQhng&s' },
-    { name: 'ÖZBEŞLER', url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyjyrSRczt9komZVLrSB_X_0FE04l4MYQWtg&s' },
-    { name: 'NAGEL', url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDiJBMC7plvzAQmvFpu0efYmkZN7MWL1nLrA&s' },
-    { name: 'SANKA KABLO', url: 'https://www.find.com.tr/assets/images/Uploads/Company/776446/find_2018116_121725287.jpg' },
-    { name: 'MERİH ASANSÖR', url: 'https://erbaasansor.com/wp-content/uploads/2018/09/Merih-Asansor-logo.jpg' }
-  ];
+// --- BU SAYFAYA ÖZEL SEO METADATA ---
+export const metadata = {
+  title: 'Çözüm Ortakları | ER Asansör - Kaliteli Bileşenler',
+  description: 'ER Asansör olarak Arkel, Mikrolift, Önersan gibi sektörün öncü markalarıyla çalışıyoruz. Projelerimizde dünya standartlarında bileşenler kullanıyoruz.',
+  keywords: ['asansör markaları', 'arkel asansör', 'mikrolift', 'asansör yedek parça', 'er asansör çözüm ortakları'],
+  openGraph: {
+    title: 'Çözüm Ortakları | ER Asansör',
+    description: 'Dünya standartlarında asansör bileşenleri ve güçlü çözüm ortaklarımız.',
+  },
+};
 
+const partners = [
+  { name: 'ÖNERSAN', url: 'https://media.licdn.com/dms/image/v2/C4D0BAQHMyPWLVNHjmg/company-logo_200_200/company-logo_200_200/0/1679234371244?e=2147483647&v=beta&t=LK_FL_JB91zg6pyWaFYyQ_fteCa4gJGgxiBysObWZmI' },
+  { name: 'AKIŞ LİFT', url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfhlOWXkt4xYJq3X51dB2mhx3IQyhM28Qi6A&s' },
+  { name: 'BUTCON', url: 'https://www.butkon.com/images/butkon/logo.png' },
+  { name: 'GENEMEK', url: 'https://media.licdn.com/dms/image/v2/D4E0BAQGAV5sAEsC1Tg/company-logo_200_200/company-logo_200_200/0/1700216418921/gen_elektromekanik_san_ve_tic_ltd_ti__logo?e=2147483647&v=beta&t=-mA4bZLcKzycaXFjZZsUMFh4ZbFYsbKvdN9XbivWmpE' },
+  { name: 'ARKEL', url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTktjdB2j3sRzck8adtvTufmAhmxMSSbuXxSQ&s' },
+  { name: 'MİKEL', url: 'https://media.licdn.com/dms/image/v2/C4D0BAQEZHP2lkXf61Q/company-logo_200_200/company-logo_200_200/0/1630459187095/mik_el_elektronik_san_ve_tic_ltd_sti_logo?e=2147483647&v=beta&t=SvIEXs99FkDkMfzC_tIdVShjp4A9pX5QeRoAJx4FdCo' },
+  { name: 'MİKROLİFT', url: 'https://www.mikrolift.com/images/logo.png' },
+  { name: 'iLİFT', url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8RqrZMj5aQdNgx-kJvZWDis7E-dwPaYQhng&s' },
+  { name: 'ÖZBEŞLER', url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyjyrSRczt9komZVLrSB_X_0FE04l4MYQWtg&s' },
+  { name: 'NAGEL', url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDiJBMC7plvzAQmvFpu0efYmkZN7MWL1nLrA&s' },
+  { name: 'SANKA KABLO', url: 'https://www.find.com.tr/assets/images/Uploads/Company/776446/find_2018116_121725287.jpg' },
+  { name: 'MERİH ASANSÖR', url: 'https://erbaasansor.com/wp-content/uploads/2018/09/Merih-Asansor-logo.jpg' }
+];
+
+// --- SCHEMA MARKUP (KULLANILAN MARKALAR LİSTESİ) ---
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'ER Asansör Çözüm Ortakları',
+  description: 'ER Asansör projelerinde kullanılan onaylı tedarikçi ve markalar.',
+  itemListElement: partners.map((partner, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    item: {
+      '@type': 'Corporation',
+      name: partner.name
+    }
+  }))
+};
+
+const CozumOrtaklariPage = () => {
   return (
     <main className="min-h-screen bg-white">
+      {/* Schema Verisini Sayfaya Gömüyoruz */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
       <Header />
 
       {/* --- KURUMSAL BAŞLIK ALANI --- */}
-      {/* MOBİL DÜZELTME: pt-48 yerine mobilde pt-32 kullanıldı */}
       <section className="pt-32 md:pt-48 pb-12 md:pb-16 bg-white text-center">
         <div className="container mx-auto px-4">
           <h1 className="text-black text-3xl md:text-5xl font-black uppercase tracking-tighter mb-4">
@@ -40,7 +70,6 @@ const CozumOrtaklariPage = () => {
       </section>
 
       {/* --- MARKA GRİD ALANI --- */}
-      {/* MOBİL DÜZELTME: Padding ve rounded değerleri mobilde küçültüldü */}
       <section className="py-12 md:py-24 bg-gray-50 container mx-auto px-4 max-w-6xl mb-12 md:mb-20 rounded-2xl md:rounded-[40px] shadow-inner border border-gray-100">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8">
           {partners.map((partner, index) => (
@@ -52,7 +81,7 @@ const CozumOrtaklariPage = () => {
               <div className="relative w-full h-full">
                 <Image
                   src={partner.url}
-                  alt={partner.name}
+                  alt={`${partner.name} Logo - ER Asansör Çözüm Ortağı`} // SEO için alt etiketi güçlendirildi
                   fill
                   sizes="(max-width: 768px) 50vw, 25vw"
                   className="object-contain grayscale group-hover:grayscale-0 transition-all duration-700 opacity-60 group-hover:opacity-100 p-2"
@@ -72,7 +101,7 @@ const CozumOrtaklariPage = () => {
             DÜNYA STANDARTLARINDA <span className="text-[#fee123]">BİLEŞENLER</span>
           </h2>
           <p className="text-gray-400 font-medium leading-relaxed text-sm md:text-base">
-            {/* ÇEVİRİ DÜZELTMESİ: Marka ismi kilitlendi */}
+            {/* Çeviri Koruması */}
             <span className="notranslate">ER</span>&nbsp;Asansör olarak, projelerimizde sadece güvenilirliği kanıtlanmış ve teknolojik olarak en gelişmiş markaların ürünlerini kullanarak, müşterilerimize emniyetli ve konforlu bir sürüş deneyimi sunuyoruz.
           </p>
         </div>
