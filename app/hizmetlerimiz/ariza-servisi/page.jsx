@@ -1,12 +1,52 @@
-'use client';
 import React from 'react';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import { Phone } from 'lucide-react';
 
+// --- BU SAYFAYA ÖZEL SEO METADATA ---
+export const metadata = {
+  title: 'Asansör Arıza Servisi | ER Asansör - 7/24 Acil Teknik Destek',
+  description: 'İstanbul genelinde 7/24 asansör arıza servisi. Elektrik, mekanik ve kart arızalarına uzman ekibimizle anında müdahale. Hızlı, güvenli ve ekonomik çözümler.',
+  keywords: ['asansör arıza', 'asansör tamiri', 'acil asansör servisi', 'asansör teknik servis', 'istanbul asansör tamircisi'],
+  openGraph: {
+    title: 'Asansör Arıza Servisi | 7/24 Hızlı Müdahale',
+    description: 'Asansörünüz mü bozuldu? ER Asansör mobil ekipleriyle en kısa sürede yanınızda.',
+  },
+};
+
+// --- SCHEMA MARKUP (ARIZA HİZMETİ İÇİN) ---
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  serviceType: 'Asansör Arıza ve Tamir Servisi',
+  provider: {
+    '@type': 'LocalBusiness',
+    name: 'ER Asansör',
+    telephone: '+905312331711'
+  },
+  areaServed: {
+    '@type': 'City',
+    name: 'İstanbul'
+  },
+  description: 'Her marka ve model asansör için 7/24 acil arıza tespit ve onarım hizmeti.',
+  offers: {
+    '@type': 'Offer',
+    availability: 'https://schema.org/InStock',
+    priceCurrency: 'TRY',
+    price: '0', // Değişken fiyat olduğu için 0 veya 'TBA' bırakılabilir, Google bunu anlar.
+    description: 'Arıza tespit ve tamir ücreti keşif sonrası belirlenir.'
+  }
+};
+
 const ArizaServisi = () => {
   return (
     <main className="min-h-screen bg-white text-gray-800">
+      {/* Schema Verisi */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
       <Header />
       
       {/* --- BAŞLIK ALANI --- */}
@@ -52,7 +92,7 @@ const ArizaServisi = () => {
 
           <p className="italic text-gray-600 border-l-4 border-[#fee123] pl-4 text-sm md:text-base bg-gray-50 py-4 pr-4">
             Zaman kaybetmeyin. Arızalı bir asansör sadece konfor değil, güvenlik
-            riski de taşır. {/* DÜZELTME BURADA: Kelimeler kilitlendi */}
+            riski de taşır. {/* Kelimeler kilitlendi */}
             <span className="notranslate">ER</span>&nbsp;Asansör olarak, güvenliğinizi önemsiyor ve
             sorunlarınıza hızlıca çözüm üretiyoruz.
           </p>
