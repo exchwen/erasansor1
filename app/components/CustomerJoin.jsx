@@ -1,20 +1,62 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 
 const CustomerJoin = () => {
+  // Veri takibi için State
+  const [formData, setFormData] = useState({
+    isim_soyisim: '',
+    email: '',
+    telefon: '',
+    adres: '', // Yeni eklenen alan
+  });
+  const [status, setStatus] = useState(''); // Gönderim durumu (Sending, Success, Error)
+
+  // 🔴 BURAYA Apps Script URL'ni yapıştır
+  const SCRIPT_URL = "BURAYA_GOOGLE_APPS_SCRIPT_URL_YAZILACAK";
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setStatus('loading');
+
+    // Google Script'in beklediği format
+    const payload = {
+      ...formData,
+      form_source: 'Musteri Katilim Formu', // Kaynak etiketi
+    };
+
+    try {
+      await fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      setStatus('success');
+      setFormData({ isim_soyisim: '', email: '', telefon: '', adres: '' }); // Formu temizle
+      
+      // 3 saniye sonra butonu eski haline getir
+      setTimeout(() => setStatus(''), 3000);
+
+    } catch (error) {
+      console.error(error);
+      setStatus('error');
+    }
+  };
+
   return (
-    // Mobilde py-12, masaüstünde py-16 yaparak dikey alanı dengeledik
     <section className="bg-white py-12 md:py-16 text-black text-center px-6">
       <div className="container mx-auto max-w-4xl">
         {/* BAŞLIK */}
         <h2 className="text-xl md:text-2xl font-bold mb-4 leading-tight">
           Hizmet Verdiğimiz{' '}
           <span className="text-[#fee123] text-2xl md:text-3xl font-bold block sm:inline">
-            {/* ÇÖZÜM BURADA:
-               Normal boşluk yerine '&nbsp;' kodu kullanıldı.
-               Bu kod, "Binlerce-ER-Asansör" grubunu birbirine yapıştırır.
-               Google Translate bunları ayıramadığı için cümlenin başına fırlatamaz.
-            */}
             Binlerce&nbsp;<span className="notranslate">ER</span>&nbsp;Asansör
           </span>{' '}
           Müşterisi Arasına Katılmak İçin
@@ -26,17 +68,20 @@ const CustomerJoin = () => {
         </p>
 
         {/* FORM ALANI */}
-        <form className="max-w-4xl mx-auto">
-          {/* grid-cols-1 md:grid-cols-3 sayesinde mobilde alt alta, PC'de yan yana */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 text-left">
+        <form className="max-w-4xl mx-auto" onSubmit={handleSubmit}>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6 text-left">
             {/* İSİM SOYİSİM */}
             <div className="flex flex-col gap-2">
               <label className="text-xs italic font-semibold text-gray-700 ml-1">
                 İsim Soyisim *
               </label>
               <input
+                name="isim_soyisim"
                 type="text"
                 required
+                value={formData.isim_soyisim}
+                onChange={handleChange}
                 className="w-full p-3 rounded-md bg-[#f4f4f4] text-black outline-none border border-gray-200 focus:border-[#fee123] transition-all"
               />
             </div>
@@ -47,8 +92,11 @@ const CustomerJoin = () => {
                 E-posta *
               </label>
               <input
+                name="email"
                 type="email"
                 required
+                value={formData.email}
+                onChange={handleChange}
                 className="w-full p-3 rounded-md bg-[#f4f4f4] text-black outline-none border border-gray-200 focus:border-[#fee123] transition-all"
               />
             </div>
@@ -59,21 +107,48 @@ const CustomerJoin = () => {
                 Telefon
               </label>
               <input
+                name="telefon"
                 type="tel"
+                value={formData.telefon}
+                onChange={handleChange}
                 className="w-full p-3 rounded-md bg-[#f4f4f4] text-black outline-none border border-gray-200 focus:border-[#fee123] transition-all"
                 placeholder="+90"
+              />
+            </div>
+
+            {/* ✨ YENİ ADRES ALANI (Tüm satırı kaplaması için col-span-3 kullanıldı) ✨ */}
+            <div className="flex flex-col gap-2 md:col-span-3">
+              <label className="text-xs italic font-semibold text-gray-700 ml-1">
+                Adres (İlçe / Mahalle)
+              </label>
+              <input
+                name="adres"
+                type="text"
+                value={formData.adres}
+                onChange={handleChange}
+                placeholder="Örn: Çankaya, Ayrancı Mah..."
+                className="w-full p-3 rounded-md bg-[#f4f4f4] text-black outline-none border border-gray-200 focus:border-[#fee123] transition-all"
               />
             </div>
           </div>
 
           {/* GÖNDER BUTONU */}
-          <div className="flex justify-center">
+          <div className="flex justify-center flex-col items-center gap-3">
             <button
               type="submit"
-              className="bg-[#fee123] text-black font-bold py-3.5 px-12 md:px-20 rounded-full hover:bg-black hover:text-white transition-all tracking-wider uppercase shadow-lg text-sm md:text-base active:scale-95 w-full sm:w-auto"
+              disabled={status === 'loading' || status === 'success'}
+              className={`font-bold py-3.5 px-12 md:px-20 rounded-full transition-all tracking-wider uppercase shadow-lg text-sm md:text-base active:scale-95 w-full sm:w-auto ${
+                status === 'success' 
+                  ? 'bg-green-500 text-white cursor-default' 
+                  : 'bg-[#fee123] text-black hover:bg-black hover:text-white'
+              }`}
             >
-              GÖNDER
+              {status === 'loading' ? 'GÖNDERİLİYOR...' : status === 'success' ? 'BAŞARIYLA GÖNDERİLDİ ✓' : 'GÖNDER'}
             </button>
+            
+            {status === 'error' && (
+               <p className="text-red-600 text-sm font-bold">Bir hata oluştu, lütfen tekrar deneyin.</p>
+            )}
           </div>
         </form>
       </div>
