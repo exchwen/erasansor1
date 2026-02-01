@@ -30,6 +30,7 @@ const nextConfig = {
       { protocol: 'https', hostname: 'www.butkon.com' },
       { protocol: 'https', hostname: 'www.mikrolift.com' },
       { protocol: 'https', hostname: 'erbaasansor.com' },
+      { protocol: 'https', hostname: 'www.find.com.tr' },
     ],
   },
   eslint: {
