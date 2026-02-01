@@ -1,9 +1,7 @@
 'use client';
 import React, { useState } from 'react';
-import emailjs from '@emailjs/browser';
 import Link from 'next/link';
 import Image from 'next/image';
-import { EMAILJS_CONFIG } from './emailConfig';
 
 const Hero = () => {
   const [formData, setFormData] = useState({
@@ -11,51 +9,55 @@ const Hero = () => {
     soyad: '',
     email: '',
     telefon: '',
+    adres: '', // Yeni eklenen alan
     mesaj: '',
   });
   const [status, setStatus] = useState('');
+
+  // 🔴 BURAYA Apps Script URL'ni yapıştır
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwgD_m6wVcgfNnlRiHQ5qcfUIVNki8EMUGpv1Y_0u1t8tpbguPxFTIgF-QAto62Ozo6/exec";
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus('Gönderiliyor...');
 
-    const templateParams = {
-      from_name: `${formData.ad} ${formData.soyad}`,
-      from_email: formData.email,
-      to_name: EMAILJS_CONFIG.TO_NAME,
-      message: formData.mesaj,
-      phone: formData.telefon,
-      user_email: formData.email,
+    const payload = {
+      ...formData,
+      form_source: 'Hero Hizli Servis Formu', // Kaynak etiketi
     };
 
-    emailjs
-      .send(
-        EMAILJS_CONFIG.SERVICE_ID,
-        EMAILJS_CONFIG.TEMPLATE_ID,
-        templateParams,
-        EMAILJS_CONFIG.PUBLIC_KEY
-      )
-      .then(
-        () => {
-          setStatus('Başvurunuz başarıyla gönderildi!');
-          setFormData({ ad: '', soyad: '', email: '', telefon: '', mesaj: '' });
+    try {
+      await fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'application/json',
         },
-        (err) => {
-          console.error('EmailJS Hatası:', err);
-          setStatus('Gönderim sırasında bir hata oluştu.');
-        }
-      );
+        body: JSON.stringify(payload),
+      });
+
+      setStatus('Başvurunuz başarıyla gönderildi!');
+      // Formu temizle
+      setFormData({ ad: '', soyad: '', email: '', telefon: '', adres: '', mesaj: '' });
+      
+      // 3 saniye sonra mesajı kaldır
+      setTimeout(() => setStatus(''), 3000);
+
+    } catch (err) {
+      console.error('Hata:', err);
+      setStatus('Gönderim sırasında bir hata oluştu.');
+    }
   };
 
   return (
     // MOBİL ÇÖZÜM: h-[650px] yerine min-h-screen ve py-20 kullanarak içeriğin taşmasını önledik.
     <section className="relative min-h-screen md:h-[700px] w-full bg-black flex items-center overflow-hidden">
       
-      {/* ARKA PLAN: CSS URL yerine Next.js Image kullanarak optimizasyon sağladık */}
+      {/* ARKA PLAN */}
       <div className="absolute inset-0 z-0">
         <Image
           src="https://images.unsplash.com/photo-1579487785973-74d2ca7abdd5?q=80&w=2000"
@@ -63,9 +65,9 @@ const Hero = () => {
           fill
           style={{ objectFit: 'cover' }}
           className="opacity-40"
-          priority // Hero görseli olduğu için en önce yüklenir
+          priority
         />
-        {/* Karartma Overlay: Yazı okunabilirliği için */}
+        {/* Karartma Overlay */}
         <div className="absolute inset-0 bg-black/50" />
       </div>
 
@@ -78,7 +80,6 @@ const Hero = () => {
             <span className="text-[#fee123] drop-shadow-[0_0_15px_rgba(254,225,35,0.3)]">Yukarı Taşıyoruz</span>
           </h1>
           <p className="text-base md:text-xl mb-10 text-gray-200 font-medium max-w-xl mx-auto md:mx-0">
-            {/* DÜZELTME BURADA YAPILDI: ER ve Asansör arasına &nbsp; koyuldu */}
             <span className="notranslate">ER</span>&nbsp;Asansör, her projeye özel çözümler sunarak güvenli, estetik ve
             uzun ömürlü asansör sistemleri üretir.
           </p>
@@ -98,6 +99,8 @@ const Hero = () => {
             HIZLI SERVİS FORMU
           </h3>
           <form className="space-y-4" onSubmit={handleSubmit}>
+            
+            {/* Ad & Soyad */}
             <div className="grid grid-cols-2 gap-4">
               <input
                 name="ad"
@@ -118,6 +121,8 @@ const Hero = () => {
                 className="p-3.5 bg-white rounded-sm text-black outline-none focus:ring-2 ring-[#fee123] transition-all"
               />
             </div>
+
+            {/* Email */}
             <input
               name="email"
               type="email"
@@ -127,6 +132,8 @@ const Hero = () => {
               required
               className="w-full p-3.5 bg-white rounded-sm text-black outline-none focus:ring-2 ring-[#fee123] transition-all"
             />
+
+            {/* Telefon */}
             <input
               name="telefon"
               type="tel"
@@ -136,9 +143,21 @@ const Hero = () => {
               required
               className="w-full p-3.5 bg-white rounded-sm text-black outline-none focus:ring-2 ring-[#fee123] transition-all"
             />
+
+            {/* ✨ YENİ ADRES ALANI ✨ */}
+            <input
+              name="adres"
+              type="text"
+              placeholder="Adres (İlçe / Mahalle)"
+              value={formData.adres}
+              onChange={handleChange}
+              className="w-full p-3.5 bg-white rounded-sm text-black outline-none focus:ring-2 ring-[#fee123] transition-all"
+            />
+
+            {/* Mesaj */}
             <textarea
               name="mesaj"
-              placeholder="Adres / Sorun Tanımı"
+              placeholder="Sorun Tanımı / Mesajınız"
               rows="3"
               value={formData.mesaj}
               onChange={handleChange}
