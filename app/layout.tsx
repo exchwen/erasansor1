@@ -76,6 +76,10 @@ export const metadata: Metadata = {
     shortcut: '/favicon.ico',
     apple: '/favicon.ico', // Varsa ekleyin
   },
+  
+  verification: {
+    google: 'eShrrrUXPmFkyWv8VZWLm2FtbwVnr7bIyjelYbXmA5w',
+  },
 };
 
 export default function RootLayout({
