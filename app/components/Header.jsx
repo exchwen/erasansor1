@@ -129,6 +129,7 @@ const Header = () => {
               )}
             </div>
             <Link href="/referanslar" className="text-white hover:text-[#fee123] transition">Referanslar</Link>
+            <Link href="/cozumortaklari" className="text-white hover:text-[#fee123] transition">Çözüm Ortaklarımız</Link>
             <Link href="/iletisim" className="text-white border-2 border-[#fee123] px-5 py-2 rounded-lg font-black hover:bg-[#fee123] hover:text-black transition-all">İLETİŞİM</Link>
           </nav>
 
@@ -177,6 +178,7 @@ const Header = () => {
               </div>
 
               <Link href="/referanslar" onClick={() => setIsMobileMenuOpen(false)} className="py-3 text-white border-b border-gray-900">Referanslar</Link>
+              <Link href="/cozumortaklari" onClick={() => setIsMobileMenuOpen(false)} className="py-3 text-white border-b border-gray-900">Çözüm Ortaklarımız</Link>
               <Link href="/iletisim" onClick={() => setIsMobileMenuOpen(false)} className="mt-4 text-center bg-[#fee123] text-black py-3 rounded-lg font-black">İLETİŞİM</Link>
             </nav>
           </div>
@@ -187,3 +189,4 @@ const Header = () => {
 };
 
 export default Header;
+
