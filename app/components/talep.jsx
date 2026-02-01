@@ -1,14 +1,14 @@
 'use client';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Phone } from 'lucide-react';
-import emailjs from '@emailjs/browser';
-import { EMAILJS_CONFIG } from './emailConfig';
 
 const TalepFormu = () => {
-  const form = useRef();
   const [activeSlide, setActiveSlide] = useState(0);
   const [isSending, setIsSending] = useState(false);
   const [status, setStatus] = useState({ type: '', message: '' });
+
+  // 🔴 ÖNEMLİ: Buraya az önce aldığın Google Apps Script URL'sini yapıştır
+  const SCRIPT_URL = "BURAYA_GOOGLE_APPS_SCRIPT_URL_YAZILACAK";
 
   const slides = [
     '7/24 BİLGİ HATTI',
@@ -24,38 +24,51 @@ const TalepFormu = () => {
     return () => clearInterval(interval);
   }, [slides.length]);
 
-  const sendEmail = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSending(true);
+    setStatus({ type: '', message: '' });
 
-    emailjs
-      .sendForm(
-        EMAILJS_CONFIG.SERVICE_ID,
-        EMAILJS_CONFIG.TEMPLATE_ID,
-        form.current,
-        EMAILJS_CONFIG.PUBLIC_KEY
-      )
-      .then(() => {
-        setStatus({
-          type: 'success',
-          message: 'Talebiniz başarıyla iletildi! En kısa sürede döneceğiz.',
-        });
-        form.current.reset();
-      })
-      .catch((error) => {
-        console.error('Hata:', error);
-        setStatus({
-          type: 'error',
-          message: 'Bir hata oluştu. Lütfen tekrar deneyin.',
-        });
-      })
-      .finally(() => setIsSending(false));
+    // Form verilerini otomatik topla
+    const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData.entries());
+
+    // Google Script'in anlayacağı format (form_source ekliyoruz)
+    const payload = {
+      ...data,
+      form_source: 'Detayli Talep Formu'
+    };
+
+    try {
+      await fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors', // CORS hatasını engeller
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      // Başarılı kabul ediyoruz
+      setStatus({
+        type: 'success',
+        message: 'Talebiniz ve adres bilgileriniz başarıyla iletildi! En kısa sürede döneceğiz.',
+      });
+      e.target.reset(); // Formu temizle
+    } catch (error) {
+      console.error('Hata:', error);
+      setStatus({
+        type: 'error',
+        message: 'Bir hata oluştu. Lütfen tekrar deneyin.',
+      });
+    } finally {
+      setIsSending(false);
+    }
   };
 
   return (
     <section
       id="iletisim-formu"
-      // Mobilde min-h-screen yaparak içeriğin sığmasını garantiledik
       className="relative py-12 md:py-20 min-h-screen lg:min-h-[650px] flex items-center overflow-hidden"
     >
       <div
@@ -72,7 +85,7 @@ const TalepFormu = () => {
       <div className="container mx-auto px-6 max-w-6xl relative z-10">
         <div className="flex flex-col lg:flex-row gap-10 lg:gap-12 items-center justify-between">
           
-          {/* Sol Taraf: Metinler (Mobilde ortalandı) */}
+          {/* Sol Taraf: Metinler */}
           <div className="w-full lg:w-1/2 text-white space-y-6 md:space-y-8 text-center lg:text-left">
             <div className="space-y-4">
               <div className="w-16 h-1 bg-[#fee123] mx-auto lg:mx-0"></div>
@@ -109,10 +122,11 @@ const TalepFormu = () => {
             </a>
           </div>
 
-          {/* Sağ Taraf: Form (Mobilde Padding düşürüldü) */}
+          {/* Sağ Taraf: Form */}
           <div className="w-full lg:w-[480px] bg-white p-6 md:p-10 rounded-2xl shadow-2xl">
-            <form ref={form} onSubmit={sendEmail} className="space-y-4 md:space-y-5">
-              {/* grid-cols-1 yaparak mobilde alt alta gelmesini sağladık */}
+            <form onSubmit={handleSubmit} className="space-y-4 md:space-y-5">
+              
+              {/* Ad Soyad */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <input
                   name="user_name"
@@ -128,6 +142,7 @@ const TalepFormu = () => {
                 />
               </div>
 
+              {/* Konu Seçimi */}
               <div className="space-y-1">
                 <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">
                   Konu Seçiniz *
@@ -146,6 +161,17 @@ const TalepFormu = () => {
                 </select>
               </div>
 
+              {/* ✨ YENİ EKLENEN ADRES ALANI ✨ */}
+              <div className="space-y-1">
+                 <input
+                  name="address"
+                  placeholder="Açık Adres (Mahalle, Sokak, No) *"
+                  required
+                  className="w-full p-3 border-b-2 border-gray-100 focus:border-[#fee123] outline-none text-sm font-semibold transition-all text-black"
+                />
+              </div>
+
+              {/* Email ve Telefon */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <input
                   name="user_email"
@@ -163,6 +189,7 @@ const TalepFormu = () => {
                 />
               </div>
 
+              {/* Mesaj */}
               <textarea
                 name="message"
                 rows="3"
@@ -180,7 +207,7 @@ const TalepFormu = () => {
                     : 'bg-[#1a3a4a] text-white hover:bg-[#fee123] hover:text-black active:scale-95'
                 }`}
               >
-                {isSending ? 'İŞLENİYOR...' : 'TALEP GÖNDER'}
+                {isSending ? 'KAYDEDİLİYOR...' : 'TALEP GÖNDER'}
               </button>
 
               {status.message && (
