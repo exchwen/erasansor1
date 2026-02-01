@@ -12,7 +12,7 @@ const CustomerJoin = () => {
   const [status, setStatus] = useState(''); // Gönderim durumu (Sending, Success, Error)
 
   // 🔴 BURAYA Apps Script URL'ni yapıştır
-  const SCRIPT_URL = "BURAYA_GOOGLE_APPS_SCRIPT_URL_YAZILACAK";
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwgD_m6wVcgfNnlRiHQ5qcfUIVNki8EMUGpv1Y_0u1t8tpbguPxFTIgF-QAto62Ozo6/exec";
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -157,3 +157,4 @@ const CustomerJoin = () => {
 };
 
 export default CustomerJoin;
+
