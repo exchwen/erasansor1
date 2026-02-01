@@ -1,16 +1,53 @@
-'use client';
 import React from 'react';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import { Phone } from 'lucide-react';
 
+// --- BU SAYFAYA ÖZEL SEO METADATA ---
+export const metadata = {
+  title: 'Asansör Projelendirme ve Mühendislik | ER Asansör',
+  description: 'Asansör avan ve uygulama projeleri, trafik analizi, şaft ölçümü ve ruhsatlandırma hizmetleri. Yönetmeliklere uygun profesyonel mühendislik çözümleri.',
+  keywords: ['asansör projesi', 'asansör avan proje', 'asansör ruhsat', 'asansör trafik hesabı', 'asansör mühendislik hizmetleri'],
+  openGraph: {
+    title: 'Asansör Projelendirme | Mühendislik ve Ruhsat',
+    description: 'Doğru proje, güvenli sistem. Yapınız için en uygun asansör projelendirme hizmetleri.',
+  },
+};
+
+// --- SCHEMA MARKUP (MÜHENDİSLİK HİZMETİ İÇİN) ---
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  serviceType: 'Asansör Projelendirme ve Mühendislik',
+  provider: {
+    '@type': 'LocalBusiness',
+    name: 'ER Asansör',
+    telephone: '+905312331711'
+  },
+  areaServed: {
+    '@type': 'City',
+    name: 'İstanbul'
+  },
+  description: 'Bina yapısına uygun asansör kuyu ölçümleri, trafik analizleri, avan ve uygulama projelerinin çizimi ve ruhsatlandırma süreçleri.',
+  offers: {
+    '@type': 'Offer',
+    description: 'Proje kapsamına göre fiyatlandırma.'
+  }
+};
+
 const Projelendirme = () => {
   return (
     <main className="min-h-screen bg-white text-gray-800">
+      {/* Schema Verisi */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
       <Header />
       
       {/* --- BAŞLIK ALANI --- */}
-      {/* Mobilde pt-32, masaüstünde pt-48 yaparak üstteki boşluk dengelendi. */}
+      {/* Mobilde pt-32, masaüstünde pt-48 */}
       <section className="pt-32 md:pt-48 pb-10 md:pb-16 bg-white text-center">
         <div className="container mx-auto px-6">
           <h1 className="text-black text-3xl md:text-5xl font-black uppercase tracking-tighter mb-4 leading-none">
@@ -32,7 +69,7 @@ const Projelendirme = () => {
           </h3>
           <p className="text-gray-700 leading-relaxed font-medium">
             Her başarılı asansör sisteminin temelinde doğru ve detaylı bir
-            projelendirme süreci yatar. {/* DÜZELTME BURADA: Marka ismi kilitlendi */}
+            projelendirme süreci yatar. {/* Çeviri Koruması */}
             <span className="notranslate">ER</span>&nbsp;Asansör olarak, asansör kurulumuna
             başlamadan önce yapının özelliklerine ve ihtiyaçlarına uygun
             mühendislik temelli projelendirme hizmeti sunuyoruz.
@@ -60,7 +97,7 @@ const Projelendirme = () => {
           </div>
         </div>
 
-        {/* WHATSAPP BUTONU - Mobilde tam genişlik (w-full) sağlandı. */}
+        {/* WHATSAPP BUTONU */}
         <div className="flex justify-center pt-6 md:pt-10">
           <a
             href="https://wa.me/905312331711"
