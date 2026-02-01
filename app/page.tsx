@@ -1,4 +1,3 @@
-'use client';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import InfoTabs from './components/InfoTabs';
@@ -12,10 +11,66 @@ import Footer from './components/Footer';
 import LiveChat from './components/LiveChat';
 import Image from 'next/image';
 
+// --- SEO METADATA AYARLARI ---
+export const metadata = {
+  title: 'ER Asansör | İstanbul Asansör Bakım, Montaj ve Revizyon',
+  description: 'İstanbul ve çevresinde profesyonel asansör montajı, periyodik bakım, arıza servisi ve revizyon hizmetleri. 7/24 Teknik destek ve mühendislik çözümleri.',
+  keywords: ['asansör bakımı', 'asansör montaj', 'asansör revizyon', 'istanbul asansör firmaları', 'asansör arıza servisi', 'yük asansörü', 'insan asansörü', 'sedye asansörü', 'asansör projelendirme', 'araba asansörü', 'asansör', 'lift', 'elevator'],
+  alternates: {
+    canonical: 'https://www.erasansor.com', // Kendi domain adresinizi yazın
+  },
+  openGraph: {
+    title: 'ER Asansör - Asansör Bakım, Montaj ve Revizyon',
+    description: 'Güvenli, estetik ve yasal yönetmeliklere uygun asansör çözümleri için hemen teklif alın.',
+    url: 'https://www.erasansor.com',
+    siteName: 'ER Asansör',
+    locale: 'tr_TR',
+    type: 'website',
+  },
+};
+
+// --- SCHEMA MARKUP (GOOGLE İÇİN İŞLETME KİMLİĞİ) ---
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness', // Veya 'GeneralContractor'
+  name: 'ER Asansör',
+  image: 'https://www.erasansor.com/logo.png', // Logo URL'niz
+  telephone: '+905312331711',
+  email: 'info@erasansor.com',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Reşitpaşa Cad.',
+    addressLocality: 'Avcılar',
+    addressRegion: 'İstanbul',
+    postalCode: '34310',
+    addressCountry: 'TR',
+  },
+  url: 'https://www.erasansor.com',
+  openingHoursSpecification: {
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: [
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+    ],
+    opens: '08:00',
+    closes: '19:00',
+  },
+  priceRange: '$$',
+};
+
 export default function Home() {
   return (
     <main className="min-h-screen bg-white">
-      {/* Ana Site İçeriği Doğrudan Yüklenir */}
+      {/* Schema Verisini Sayfaya Gömüyoruz */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
       <Header />
 
       <div className="pt-[100px]">
@@ -30,7 +85,7 @@ export default function Home() {
               <div className="w-64 h-64 bg-black flex items-center justify-center border-4 border-yellow-500 shadow-2xl rounded-xl overflow-hidden p-8 relative">
                 <Image 
                   src="/logo.png" 
-                  alt="ER Asansör Logo" 
+                  alt="ER Asansör Kurumsal Logo - İstanbul Asansör Firması" // Alt etiketini SEO için güçlendirdik
                   fill
                   style={{ objectFit: 'contain' }}
                   className="p-8"
@@ -47,7 +102,7 @@ export default function Home() {
               </p>
               <p className="text-gray-600 mb-4 leading-relaxed">
                 <span className="notranslate">ER</span>&nbsp;Asansör, mühendislik odaklı yaklaşımıyla projelerinizde
-                güveni en üst seviyeye taşır. Sektördeki yılların
+                güveni en üst seviyeye taşır. <strong>İstanbul asansör bakımı</strong> ve montajı sektöründeki yılların
                 tecrübesiyle, her projeye özel çözümler sunarak güvenli,
                 estetik ve uzun ömürlü asansör sistemleri üretiriz. Müşteri
                 memnuniyetini her zaman ön planda tutar; montajdan bakıma,
@@ -56,16 +111,16 @@ export default function Home() {
               </p>
               <div className="grid md:grid-cols-2 gap-4 text-sm text-gray-700">
                 <div className="bg-gray-50 p-4 rounded border-l-4 border-yellow-500 shadow-sm font-bold">
-                  Güvenlik standartlarına tam uyumlu.
+                  Güvenlik standartlarına (EN 81-20/50) tam uyumlu.
                 </div>
                 <div className="bg-gray-50 p-4 rounded border-l-4 border-yellow-500 shadow-sm font-bold">
-                  Alanında uzman teknik ekip.
+                  Alanında uzman sertifikalı teknik ekip.
                 </div>
                 <div className="bg-gray-50 p-4 rounded border-l-4 border-yellow-500 shadow-sm font-bold">
-                  Modern ve yenilikçi çözümler.
+                  Modern, enerji tasarruflu ve yenilikçi çözümler.
                 </div>
                 <div className="bg-gray-50 p-4 rounded border-l-4 border-yellow-500 shadow-sm font-bold">
-                  Kesintisiz destek hattı.
+                  7/24 Kesintisiz teknik destek hattı.
                 </div>
               </div>
             </div>
