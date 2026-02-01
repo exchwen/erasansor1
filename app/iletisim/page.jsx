@@ -1,7 +1,7 @@
 import React from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import IletisimForm from '../components/IletisimForm'; // Formu buradan çağırdık
+import IletisimForm from './IletisimForm'; // Formu buradan çağırdık
 import { Phone, Mail, MapPin } from 'lucide-react';
 
 // --- BU SAYFAYA ÖZEL SEO METADATA ---
@@ -161,3 +161,4 @@ const IletisimPage = () => {
 };
 
 export default IletisimPage;
+
