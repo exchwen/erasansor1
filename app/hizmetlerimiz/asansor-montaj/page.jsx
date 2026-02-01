@@ -1,16 +1,53 @@
-'use client';
 import React from 'react';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import { Phone } from 'lucide-react';
 
+// --- BU SAYFAYA ÖZEL SEO METADATA ---
+export const metadata = {
+  title: 'Asansör Montajı ve Kurulumu | ER Asansör - Projeye Özel Çözümler',
+  description: 'İstanbul genelinde yeni binalar için TSE standartlarına uygun, güvenli ve garantili asansör montaj hizmeti. Ücretsiz keşif ve projelendirme için arayın.',
+  keywords: ['asansör montajı', 'asansör kurulum', 'yeni bina asansör', 'istanbul asansör montaj fiyatları', 'tse uyumlu asansör'],
+  openGraph: {
+    title: 'Asansör Montajı | Güvenli ve Estetik Kurulum',
+    description: 'Binanızın değerini artıran, güvenli ve sessiz çalışan asansör montaj çözümleri.',
+  },
+};
+
+// --- SCHEMA MARKUP (MONTAJ HİZMETİ İÇİN) ---
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  serviceType: 'Asansör Montaj ve Kurulum Hizmeti',
+  provider: {
+    '@type': 'LocalBusiness',
+    name: 'ER Asansör',
+    telephone: '+905312331711'
+  },
+  areaServed: {
+    '@type': 'City',
+    name: 'İstanbul'
+  },
+  description: 'Yeni binalar ve mevcut yapılar için yasal mevzuata uygun anahtar teslim asansör montajı.',
+  offers: {
+    '@type': 'Offer',
+    description: 'Ücretsiz keşif sonrası proje bazlı fiyatlandırma.'
+  }
+};
+
 const AsansorMontaj = () => {
   return (
     <main className="min-h-screen bg-white text-gray-800">
+      {/* Schema Verisi */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
       <Header />
       
       {/* --- BAŞLIK ALANI --- */}
-      {/* Mobilde pt-32, masaüstünde pt-48 yaparak üstteki beyaz boşluk sorununu çözdük */}
+      {/* Mobilde pt-32, masaüstünde pt-48 */}
       <section className="pt-32 md:pt-48 pb-10 md:pb-16 bg-white text-center">
         <div className="container mx-auto px-6">
           <h1 className="text-black text-3xl md:text-5xl font-black uppercase tracking-tighter mb-4 leading-none">
@@ -31,7 +68,7 @@ const AsansorMontaj = () => {
           </h3>
           <p className="text-gray-700 leading-relaxed font-medium">
             Yeni bir yapı için ilk adım, güvenli ve kaliteli bir asansör
-            sistemidir. {/* DÜZELTME 1: Marka ismi kilitlendi */}
+            sistemidir. {/* Çeviri Koruması */}
             <span className="notranslate">ER</span>&nbsp;Asansör olarak, bina yapısına ve kullanım ihtiyaçlarına
             uygun, uzun ömürlü ve yüksek standartlarda asansör montaj hizmetleri
             sunuyoruz.
@@ -57,7 +94,7 @@ const AsansorMontaj = () => {
           </ul>
 
           <p className="text-center font-black text-lg md:text-2xl text-black py-6 border-y border-gray-100 italic">
-            {/* DÜZELTME 2: Marka ismi kilitlendi */}
+            {/* Çeviri Koruması */}
             "<span className="notranslate">ER</span>&nbsp;Asansör – Katları değil, güveni taşıyoruz."
           </p>
         </div>
