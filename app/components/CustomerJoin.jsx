@@ -7,12 +7,12 @@ const CustomerJoin = () => {
     isim_soyisim: '',
     email: '',
     telefon: '',
-    adres: '', // Yeni eklenen alan
+    adres: '', 
   });
-  const [status, setStatus] = useState(''); // Gönderim durumu (Sending, Success, Error)
+  const [status, setStatus] = useState(''); // Gönderim durumu (loading, success, error)
 
-  // 🔴 BURAYA Apps Script URL'ni yapıştır
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwgD_m6wVcgfNnlRiHQ5qcfUIVNki8EMUGpv1Y_0u1t8tpbguPxFTIgF-QAto62Ozo6/exec";
+  // 🔴 DÜZELTME: Doğrudan Google linki yerine oluşturduğumuz API yolunu kullanıyoruz
+  const SCRIPT_URL = "/api/send-google";
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -29,23 +29,28 @@ const CustomerJoin = () => {
     };
 
     try {
-      await fetch(SCRIPT_URL, {
+      // 🔴 DÜZELTME: 'no-cors' modunu sildik, kendi API'mızdan yanıt bekliyoruz
+      const response = await fetch(SCRIPT_URL, {
         method: 'POST',
-        mode: 'no-cors',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(payload),
       });
 
-      setStatus('success');
-      setFormData({ isim_soyisim: '', email: '', telefon: '', adres: '' }); // Formu temizle
-      
-      // 3 saniye sonra butonu eski haline getir
-      setTimeout(() => setStatus(''), 3000);
+      // Sunucudan (API'dan) olumlu yanıt gelirse
+      if (response.ok) {
+        setStatus('success');
+        setFormData({ isim_soyisim: '', email: '', telefon: '', adres: '' }); // Formu temizle
+        
+        // 3 saniye sonra butonu eski haline getir
+        setTimeout(() => setStatus(''), 3000);
+      } else {
+        throw new Error('Sunucu hatası');
+      }
 
     } catch (error) {
-      console.error(error);
+      console.error('Hata:', error);
       setStatus('error');
     }
   };
@@ -116,7 +121,7 @@ const CustomerJoin = () => {
               />
             </div>
 
-            {/* ✨ YENİ ADRES ALANI (Tüm satırı kaplaması için col-span-3 kullanıldı) ✨ */}
+            {/* ADRES ALANI */}
             <div className="flex flex-col gap-2 md:col-span-3">
               <label className="text-xs italic font-semibold text-gray-700 ml-1">
                 Adres (İlçe / Mahalle)
@@ -157,4 +162,3 @@ const CustomerJoin = () => {
 };
 
 export default CustomerJoin;
-
