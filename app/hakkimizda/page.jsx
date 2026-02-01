@@ -1,20 +1,50 @@
-'use client';
 import React from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { Target, Eye, ShieldCheck, Zap, Users, Award } from 'lucide-react';
 import Image from 'next/image';
 
+// --- BU SAYFAYA ÖZEL SEO AYARLARI ---
+export const metadata = {
+  title: 'Hakkımızda | ER Asansör - Tarihçe, Vizyon ve Misyon',
+  description: '2002 yılından beri asansör sektöründe güven ve kalite sunan ER Asansör hakkında detaylı bilgi. Kurumsal yapımız, değerlerimiz ve hedeflerimiz.',
+  keywords: ['er asansör hakkımızda', 'asansör firması tarihçe', 'er asansör vizyon', 'istanbul kurumsal asansör firması'],
+  openGraph: {
+    title: 'Hakkımızda | ER Asansör - Güven ve Kalite',
+    description: '2009 yılında kurumsal yapısına kavuşan ER Asansör, mühendislik odaklı çözümleriyle sektörün öncüsüdür.',
+  },
+};
+
+// --- SCHEMA MARKUP (GOOGLE İÇİN SAYFA KİMLİĞİ) ---
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'AboutPage',
+  mainEntity: {
+    '@type': 'Organization',
+    name: 'ER Asansör',
+    foundingDate: '2009',
+    description: 'ER Asansör, asansör sektöründeki yolculuğuna 2002 yılında başlamış, 2009 yılında kurumsal bir yapıya kavuşmuştur.',
+    areaServed: 'İstanbul, Türkiye',
+    logo: 'https://www.erasansor.com/logo.png'
+  }
+};
+
 const HakkimizdaPage = () => {
   return (
     <main className="min-h-screen bg-white">
+      {/* Schema Verisi */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
       <Header />
 
       {/* --- BAŞLIK ALANI --- */}
       <section className="pt-32 md:pt-48 pb-12 md:pb-16 bg-white text-center">
         <div className="container mx-auto px-6">
           <h1 className="text-black text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tighter mb-4 leading-none">
-            {/* DÜZELTME 1: Başlıktaki marka ismi kilitlendi */}
+            {/* Marka İsmi Koruması */}
             <span className="notranslate">ER</span>&nbsp;ASANSÖR
           </h1>
           <p className="text-gray-500 text-[10px] md:text-sm font-bold uppercase tracking-[0.4em] mb-6">
@@ -32,7 +62,7 @@ const HakkimizdaPage = () => {
               Kurumsal
             </h3>
             <p className="text-gray-700 leading-relaxed text-base md:text-lg font-medium">
-              {/* DÜZELTME 2: Cümle başındaki marka ismi kilitlendi */}
+              {/* Marka İsmi Koruması */}
               <span className="notranslate">ER</span>&nbsp;Asansör, asansör sektöründeki yolculuğuna 2002 yılında
               başlamış, sektörde edindiği bilgi ve tecrübeyi 2009 yılında
               kurumsal bir yapıya taşıyarak faaliyetlerine resmen başlamıştır.
@@ -43,7 +73,7 @@ const HakkimizdaPage = () => {
           <div className="relative bg-black rounded-3xl h-[250px] md:h-[400px] flex items-center justify-center p-8 md:p-12 overflow-hidden border-4 border-[#fee123] shadow-2xl group order-1 md:order-2">
             <Image
               src="/logo.png"
-              alt="ER ASANSÖR"
+              alt="ER ASANSÖR Kurumsal Logo"
               width={350}
               height={350}
               className="max-h-full w-auto object-contain transition-transform group-hover:scale-110 duration-500"
