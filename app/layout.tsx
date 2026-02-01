@@ -5,20 +5,76 @@ import Script from 'next/script';
 
 const inter = Inter({ subsets: ['latin'] });
 
+// --- GELİŞMİŞ SEO AYARLARI ---
 export const metadata: Metadata = {
+  // Sitenizin ana domain adresi (Vercel domaini yerine kendi domaininiz varsa onu yazın)
   metadataBase: new URL('https://erasansor1.vercel.app'),
-  // Not: Metadata içinde &nbsp; veya <span> kullanamadığımız için 
-  // tarayıcı sekmesindeki başlık çevrildiğinde değişebilir. Bu normaldir.
-  title: 'ER ASANSÖR | Güven ve Kaliteyi Yukarı Taşıyoruz',
-  description: 'ER Asansör, modern asansör sistemleri, periyodik bakım ve revizyon hizmetleri sunan öncü bir firmadır.',
+  
+  // Başlık Şablonu: Alt sayfalarda başlık otomatik olarak "Sayfa Adı | ER ASANSÖR" olur.
+  title: {
+    default: 'ER ASANSÖR | Asansör Bakım, Montaj ve Revizyon',
+    template: '%s | ER ASANSÖR',
+  },
+  
+  description: 'İstanbul asansör firması ER Asansör; montaj, periyodik bakım, revizyon ve arıza servisi hizmetleri sunar. 7/24 teknik destek.',
+  
+  // Anahtar Kelimeler (Google artık çok önemsemese de diğer motorlar için iyidir)
+  keywords: ['asansör', 'asansör bakımı', 'asansör montaj', 'asansör revizyon', 'istanbul asansör', 'er asansör', 'yük asansörü', 'insan asansörü'],
+  
+  // Yazarlar / Oluşturan
+  authors: [{ name: 'ER Asansör' }],
+  creator: 'ER Asansör',
+  publisher: 'ER Asansör',
+
+  // Robotlar (Google Botları) için talimatlar
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+
+  // Canonical URL (Kopya içerik sorununu çözer)
+  alternates: {
+    canonical: '/',
+  },
+
+  // Sosyal Medya Paylaşımları (Facebook, LinkedIn, WhatsApp vb.)
   openGraph: {
-    title: 'ER ASANSÖR',
-    description: 'Güvenli ve estetik asansör çözümleri.',
+    title: 'ER ASANSÖR | İstanbul Asansör Bakım, Montaj ve Revizyon',
+    description: 'Güvenli, estetik ve yasal yönetmeliklere uygun asansör çözümleri.',
+    url: 'https://erasansor1.vercel.app',
+    siteName: 'ER Asansör',
+    locale: 'tr_TR',
+    type: 'website',
     images: [
       {
-        url: '/logo.png',
+        url: '/logo.png', // Paylaşıldığında çıkacak resim
+        width: 800,
+        height: 600,
+        alt: 'ER Asansör Logo',
       },
     ],
+  },
+
+  // Twitter / X Paylaşımları
+  twitter: {
+    card: 'summary_large_image',
+    title: 'ER ASANSÖR',
+    description: 'İstanbul profesyonel asansör bakım ve montaj hizmetleri.',
+    images: ['/logo.png'], // Twitter için görsel
+  },
+
+  // Favicon Ayarları (Eğer app klasöründe icon.png varsa burası otomatik de çalışır ama garanti olsun)
+  icons: {
+    icon: '/icon.png', // Veya '/favicon.ico'
+    shortcut: '/icon.png',
+    apple: '/apple-icon.png', // Varsa ekleyin
   },
 };
 
@@ -30,7 +86,7 @@ export default function RootLayout({
   return (
     <html lang="tr">
       <head>
-        {/* Google Translate Barını Gizleyen CSS */}
+        {/* Google Translate Barını Gizleyen GÜÇLÜ CSS */}
         <style>{`
           /* Google Banner Frame'ini gizle */
           .goog-te-banner-frame.skiptranslate {
@@ -56,20 +112,21 @@ export default function RootLayout({
             font-size: 0 !important;
           }
           
-          /* Dropdown kutusunun yer kaplamasını engelle */
+          /* Gizli dropdown kutusunun yer kaplamasını engelle */
           #google_translate_element {
             display: none !important;
           }
           
-          /* Çeviri widget'ı kaynaklı kaymaları önle */
+          /* Kaymaları önle */
           .skiptranslate {
             display: none !important;
           }
         `}</style>
       </head>
       
-      {/* ÖNEMLİ: suppressHydrationWarning={true} 
-         Google Translate body'ye class eklediğinde Next.js'in hata vermesini engeller.
+      {/* suppressHydrationWarning={true}: 
+         Google Translate sayfayı çevirdiğinde DOM yapısını değiştirir.
+         Next.js'in "Sunucu ile İstemci uyuşmuyor" hatası verip çökmesini engeller.
       */}
       <body className={inter.className} suppressHydrationWarning={true}>
         
@@ -86,7 +143,7 @@ export default function RootLayout({
             function googleTranslateElementInit() {
               new google.translate.TranslateElement({
                 pageLanguage: 'tr',
-                includedLanguages: 'tr,en,ar', // Türkçe, İngilizce, Arapça
+                includedLanguages: 'tr,en,ar',
                 autoDisplay: false
               }, 'google_translate_element');
             }
