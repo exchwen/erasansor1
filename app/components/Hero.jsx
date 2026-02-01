@@ -9,13 +9,13 @@ const Hero = () => {
     soyad: '',
     email: '',
     telefon: '',
-    adres: '', // Yeni eklenen alan
+    adres: '', 
     mesaj: '',
   });
   const [status, setStatus] = useState('');
 
-  // 🔴 BURAYA Apps Script URL'ni yapıştır
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwgD_m6wVcgfNnlRiHQ5qcfUIVNki8EMUGpv1Y_0u1t8tpbguPxFTIgF-QAto62Ozo6/exec";
+  // 🔴 DÜZELTME: Google linki yerine kendi API yolumuzu yazıyoruz
+  const SCRIPT_URL = "/api/send-google";
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -31,21 +31,25 @@ const Hero = () => {
     };
 
     try {
-      await fetch(SCRIPT_URL, {
+      // 🔴 DÜZELTME: 'no-cors' kaldırıldı, kendi sunucumuzdan net yanıt bekliyoruz
+      const response = await fetch(SCRIPT_URL, {
         method: 'POST',
-        mode: 'no-cors',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(payload),
       });
 
-      setStatus('Başvurunuz başarıyla gönderildi!');
-      // Formu temizle
-      setFormData({ ad: '', soyad: '', email: '', telefon: '', adres: '', mesaj: '' });
-      
-      // 3 saniye sonra mesajı kaldır
-      setTimeout(() => setStatus(''), 3000);
+      if (response.ok) {
+        setStatus('Başvurunuz başarıyla gönderildi!');
+        // Formu temizle
+        setFormData({ ad: '', soyad: '', email: '', telefon: '', adres: '', mesaj: '' });
+        
+        // 3 saniye sonra mesajı kaldır
+        setTimeout(() => setStatus(''), 3000);
+      } else {
+        throw new Error('Sunucu hatası');
+      }
 
     } catch (err) {
       console.error('Hata:', err);
