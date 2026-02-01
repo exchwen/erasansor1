@@ -1,16 +1,53 @@
-'use client';
 import React from 'react';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import { Phone } from 'lucide-react';
 
+// --- BU SAYFAYA ÖZEL SEO METADATA ---
+export const metadata = {
+  title: 'Periyodik Asansör Bakımı | ER Asansör - Güvenli ve Yasal',
+  description: 'İstanbul geneli periyodik asansör bakım hizmetleri. Aylık bakım, güvenlik kontrolleri, yağlama ve temizlik işlemleri ile asansörünüzü koruyun.',
+  keywords: ['periyodik asansör bakımı', 'asansör bakım ücretleri', 'aylık asansör bakımı', 'asansör yeşil etiket', 'istanbul asansör bakım servisi'],
+  openGraph: {
+    title: 'Periyodik Asansör Bakımı | Güvenliğiniz İçin Düzenli Kontrol',
+    description: 'Yasal zorunluluklara uygun, garantili ve profesyonel periyodik asansör bakım hizmeti.',
+  },
+};
+
+// --- SCHEMA MARKUP (BAKIM HİZMETİ İÇİN) ---
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  serviceType: 'Periyodik Asansör Bakımı',
+  provider: {
+    '@type': 'LocalBusiness',
+    name: 'ER Asansör',
+    telephone: '+905312331711'
+  },
+  areaServed: {
+    '@type': 'City',
+    name: 'İstanbul'
+  },
+  description: 'Asansörlerin güvenli çalışması için gerekli aylık periyodik bakım, yağlama ve teknik kontrol hizmetleri.',
+  offers: {
+    '@type': 'Offer',
+    description: 'Bina tipine ve asansör sayısına göre özel fiyatlandırma.'
+  }
+};
+
 const PeriyodikBakim = () => {
   return (
     <main className="min-h-screen bg-white text-gray-800">
+      {/* Schema Verisi */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
       <Header />
       
       {/* --- BAŞLIK ALANI --- */}
-      {/* Mobilde pt-32, masaüstünde pt-48 yaparak navbar boşluğunu dengeledik */}
+      {/* Mobilde pt-32, masaüstünde pt-48 */}
       <section className="pt-32 md:pt-48 pb-10 md:pb-16 bg-white text-center">
         <div className="container mx-auto px-6">
           <h1 className="text-black text-3xl md:text-5xl font-black uppercase tracking-tighter mb-4 leading-none">
@@ -33,7 +70,7 @@ const PeriyodikBakim = () => {
           <p className="text-gray-700 leading-relaxed font-medium">
             Asansörler, günlük yaşamın vazgeçilmez bir parçası haline gelmiştir.
             Bu nedenle, güvenli ve kesintisiz bir kullanım için düzenli bakım
-            şarttır. {/* DÜZELTME 1: Marka ismi kilitlendi */}
+            şarttır. {/* Çeviri Koruması */}
             <span className="notranslate">ER</span>&nbsp;Asansör olarak, asansörlerinizin uzun ömürlü, güvenli ve
             yasal yönetmeliklere uygun şekilde çalışmasını sağlamak amacıyla
             profesyonel periyodik bakım hizmetleri sunuyoruz.
@@ -57,7 +94,7 @@ const PeriyodikBakim = () => {
             özenle gerçekleştiriyoruz.
           </p>
 
-          {/* DÜZELTME 2: Başlıktaki marka ismi kilitlendi */}
+          {/* Çeviri Koruması */}
           <h4 className="text-xl font-bold text-black mt-8 mb-4 uppercase">
             Neden <span className="notranslate">ER</span>&nbsp;Asansör?
           </h4>
@@ -69,7 +106,7 @@ const PeriyodikBakim = () => {
           </ul>
         </div>
 
-        {/* WHATSAPP BUTONU - Mobilde tam genişlik ayarlı */}
+        {/* WHATSAPP BUTONU */}
         <div className="flex justify-center pt-6 md:pt-10">
           <a
             href="https://wa.me/905312331711"
