@@ -1,16 +1,53 @@
-'use client';
 import React from 'react';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import { Phone } from 'lucide-react';
 
+// --- BU SAYFAYA ÖZEL SEO METADATA ---
+export const metadata = {
+  title: 'Asansör Revizyon ve Modernizasyon | ER Asansör - Yenileme Hizmetleri',
+  description: 'Eskiyen asansörlerinizi modern teknolojiyle yeniliyoruz. Kabin revizyonu, motor değişimi, güvenlik modernizasyonu ve yeşil etiket işlemleri.',
+  keywords: ['asansör revizyon', 'asansör yenileme', 'asansör modernizasyon', 'asansör yeşil etiket', 'istanbul asansör revizyon fiyatları'],
+  openGraph: {
+    title: 'Asansör Revizyonu | Güvenli ve Modern Asansörler',
+    description: 'Mevcut asansörünüzü en yeni güvenlik standartlarına ve estetik trendlere uygun hale getiriyoruz.',
+  },
+};
+
+// --- SCHEMA MARKUP (REVİZYON HİZMETİ İÇİN) ---
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  serviceType: 'Asansör Revizyon ve Modernizasyon',
+  provider: {
+    '@type': 'LocalBusiness',
+    name: 'ER Asansör',
+    telephone: '+905312331711'
+  },
+  areaServed: {
+    '@type': 'City',
+    name: 'İstanbul'
+  },
+  description: 'Eski ve güvensiz asansörlerin A3 standartlarına uygun hale getirilmesi, kabin ve motor yenileme işlemleri.',
+  offers: {
+    '@type': 'Offer',
+    description: 'Keşif sonrası modernizasyon teklifi.'
+  }
+};
+
 const Revizyon = () => {
   return (
     <main className="min-h-screen bg-white text-gray-800">
+      {/* Schema Verisi */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
       <Header />
       
       {/* --- BAŞLIK ALANI --- */}
-      {/* Mobilde pt-32, masaüstünde pt-48 yaparak navbar boşluğunu dengeledik */}
+      {/* Mobilde pt-32, masaüstünde pt-48 */}
       <section className="pt-32 md:pt-48 pb-10 md:pb-16 bg-white text-center">
         <div className="container mx-auto px-6">
           <h1 className="text-black text-3xl md:text-5xl font-black uppercase tracking-tighter mb-4 leading-none">
@@ -31,7 +68,7 @@ const Revizyon = () => {
             Revizyon (Yenileme) Hizmeti
           </h3>
           <p className="text-gray-700 leading-relaxed font-medium">
-            {/* DÜZELTME BURADA: Marka ismi kilitlendi */}
+            {/* Çeviri Koruması */}
             <span className="notranslate">ER</span>&nbsp;Asansör olarak, mevcut asansör sistemlerinizi modern teknolojiyle
             buluşturarak hem daha güvenli hem de daha estetik hale getiriyoruz.
             Eskiyen aksamların yenilenmesi, asansörünüzün performansını artırırken enerji maliyetlerinizi de düşürür.
@@ -59,7 +96,7 @@ const Revizyon = () => {
           </div>
         </div>
 
-        {/* WHATSAPP BUTONU - Mobilde tam genişlik ayarlı */}
+        {/* WHATSAPP BUTONU */}
         <div className="flex justify-center pt-6 md:pt-10">
           <a
             href="https://wa.me/905312331711"
