@@ -72,9 +72,9 @@ export const metadata: Metadata = {
 
   // Favicon Ayarları (Eğer app klasöründe icon.png varsa burası otomatik de çalışır ama garanti olsun)
   icons: {
-    icon: '/icon.png', // Veya '/favicon.ico'
-    shortcut: '/icon.png',
-    apple: '/apple-icon.png', // Varsa ekleyin
+    icon: '/favicon.ico', // Veya '/favicon.ico'
+    shortcut: '/favicon.ico',
+    apple: '/favicon.ico', // Varsa ekleyin
   },
 };
 
