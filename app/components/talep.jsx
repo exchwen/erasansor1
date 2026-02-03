@@ -230,3 +230,4 @@ const TalepFormu = () => {
 };
 
 export default TalepFormu;
+
