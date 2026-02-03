@@ -42,7 +42,7 @@ const Header = () => {
 
   return (
     <header className="w-full shadow-md fixed top-0 z-[100]">
-      {/* Üst Bilgi Çubuğu (Siyah Kalmaya Devam Ediyor - Kontrast İçin) */}
+      {/* Üst Bilgi Çubuğu (Siyah - Kontrast İçin) */}
       <div className="bg-black text-white py-2 text-xs font-medium border-b border-gray-800">
         <div className="container mx-auto px-4 flex justify-between items-center">
           <div className="flex gap-4 items-center">
@@ -85,32 +85,27 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Navigasyon Alanı (Artık BEYAZ) */}
+      {/* Navigasyon Alanı (BEYAZ) */}
       <div className="bg-white py-3 border-b border-gray-100 relative z-50">
         <div className="container mx-auto px-4 flex justify-between items-center">
           
-          {/* --- LOGO ALANI --- */}
-          <Link href="/" className="flex items-center gap-3 group shrink-0">
-            {/* Logo Kutusu: SİYAH zemin (Altın/Beyaz logo parlasın diye) */}
-            <div className="relative w-12 h-12 md:w-14 md:h-14 bg-black border-2 border-[#fee123] rounded-lg p-1.5 shadow-md group-hover:shadow-lg transition-all duration-300">
+          {/* --- LOGO ALANI GÜNCELLENDİ --- */}
+          <Link href="/" className="flex items-center gap-2 group shrink-0">
+            {/* Logo Kutusu: Logoda ER yazdığı için burası görseli tutuyor */}
+            <div className="relative w-10 h-10 md:w-12 md:h-12 bg-black border-2 border-[#fee123] rounded-md p-1 group-hover:bg-white group-hover:border-white transition-all duration-300">
               <Image
                 src="/logo.png"
                 alt="ER ASANSÖR"
                 fill
-                sizes="(max-width: 768px) 48px, 56px"
+                sizes="(max-width: 768px) 40px, 48px"
                 className="object-contain"
                 priority
               />
             </div>
-            {/* Marka İsmi: SİYAH metin */}
-            <div className="flex flex-col leading-none">
-              <span className="text-black text-2xl md:text-3xl font-black tracking-tighter uppercase">
-                ER
-              </span>
-              <span className="text-black text-sm md:text-base font-bold tracking-widest uppercase">
-                ASANSÖR
-              </span>
-            </div>
+            {/* Metin Alanı: ER silindi, sadece ASANSÖR kaldı */}
+            <span className="text-black text-xl md:text-3xl font-black tracking-tighter uppercase">
+              ASANSÖR
+            </span>
           </Link>
           {/* --- LOGO ALANI SONU --- */}
 
