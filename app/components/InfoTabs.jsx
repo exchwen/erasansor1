@@ -34,7 +34,6 @@ const tabs = [
 
 const InfoTabs = () => {
   const [activeTab, setActiveTab] = useState(1);
-  const activeContent = tabs.find((t) => t.id === activeTab);
 
   return (
     <section
@@ -47,8 +46,8 @@ const InfoTabs = () => {
           YÜKSEK STANDARTLARDA <span className="text-[#fee123]">HİZMET</span>
         </h2>
         <p className="text-gray-600 mb-8 text-base md:text-lg leading-relaxed">
-          {/* DÜZELTME 1: Kelimeler birbirine yapıştırıldı */}
-          <span className="notranslate">ER</span>&nbsp;Asansör, sektördeki tüm yeterlilik sertifikalarına sahiptir. Kaliteli hizmeti bir standart haline getirmek için mühendislik disipliniyle çalışıyoruz.
+          {/* Çeviri Koruması: ER Asansör */}
+          <span className="notranslate">ER Asansör</span>, sektördeki tüm yeterlilik sertifikalarına sahiptir. Kaliteli hizmeti bir standart haline getirmek için mühendislik disipliniyle çalışıyoruz.
         </p>
         
         <ul className="space-y-5 mb-10">
@@ -68,8 +67,8 @@ const InfoTabs = () => {
         
         <p className="text-gray-500 italic border-t border-gray-100 pt-8 text-sm md:text-base">
           Müşterilerimizden aldığımız destekle geleceğe güvenle bakıyoruz. 
-          {/* DÜZELTME 2: Kelimeler birbirine yapıştırıldı */}
-          Sizleri de <span className="text-black font-black"><span className="notranslate">ER</span>&nbsp;Asansör</span> ailesinde görmekten mutluluk duyarız.
+          {/* Çeviri Koruması: ER Asansör ailesi */}
+          Sizleri de <span className="text-black font-black"><span className="notranslate">ER Asansör</span></span> ailesinde görmekten mutluluk duyarız.
         </p>
       </div>
 
@@ -92,15 +91,15 @@ const InfoTabs = () => {
                   : 'bg-white text-gray-400 border-gray-100 hover:text-black hover:bg-gray-50'
                 }`}
             >
-              {/* Mobilde kısa başlık, masaüstünde tam başlık */}
               <span className="md:hidden">{tab.title}</span>
               <span className="hidden md:block">{tab.fullTitle}</span>
             </button>
           ))}
         </div>
 
-        {/* İçerik Alanı */}
+        {/* İçerik Alanı - ÇÖZÜM BURADA */}
         <div className="p-8 md:p-12 bg-white flex-grow flex flex-col justify-center min-h-[300px] relative">
+          
           {/* Arka Plan "ER" Yazısı */}
           <div className="absolute top-6 right-8 text-7xl md:text-9xl text-gray-50 font-black select-none pointer-events-none transition-opacity notranslate">
             ER
@@ -108,9 +107,24 @@ const InfoTabs = () => {
           
           <div className="relative z-10">
             <div className="w-12 h-1 bg-[#fee123] mb-6"></div>
-            <p className="text-gray-700 leading-relaxed text-lg md:text-2xl font-bold animate-fade-in italic">
-              "{activeContent?.content}"
-            </p>
+            
+            {/* ÖNEMLİ DÜZELTME: 
+              Tüm içerikleri aynı anda render ediyoruz ama sadece aktif olanı CSS ile gösteriyoruz.
+              Böylece Google Translate her bir metni ayrı ayrı çevirip hafızasında tutuyor.
+              React state değiştiğinde içerik silinmediği için Translate bozulmuyor.
+            */}
+            {tabs.map((tab) => (
+              <div 
+                key={tab.id} 
+                // Eğer sekme aktifse göster (block), değilse gizle (hidden)
+                className={activeTab === tab.id ? 'block animate-fade-in' : 'hidden'}
+              >
+                <p className="text-gray-700 leading-relaxed text-lg md:text-2xl font-bold italic">
+                  "{tab.content}"
+                </p>
+              </div>
+            ))}
+
           </div>
         </div>
       </div>
