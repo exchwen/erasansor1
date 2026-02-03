@@ -91,8 +91,9 @@ const Header = () => {
           
           {/* --- LOGO ALANI GÜNCELLENDİ --- */}
           <Link href="/" className="flex items-center gap-2 group shrink-0">
-            {/* Logo Kutusu: Logoda ER yazdığı için burası görseli tutuyor */}
-            <div className="relative w-10 h-10 md:w-12 md:h-12 bg-black border-2 border-[#fee123] rounded-md p-1 group-hover:bg-white group-hover:border-white transition-all duration-300">
+            {/* DÜZELTME: group-hover:bg-white ve group-hover:border-white kaldırıldı */}
+            {/* Logo Kutusu: Her zaman SİYAH zemin ve SARI çerçeve */}
+            <div className="relative w-10 h-10 md:w-12 md:h-12 bg-black border-2 border-[#fee123] rounded-md p-1 transition-all duration-300">
               <Image
                 src="/logo.png"
                 alt="ER ASANSÖR"
@@ -102,7 +103,7 @@ const Header = () => {
                 priority
               />
             </div>
-            {/* Metin Alanı: ER silindi, sadece ASANSÖR kaldı */}
+            {/* Metin Alanı: Sadece ASANSÖR yazısı */}
             <span className="text-black text-xl md:text-3xl font-black tracking-tighter uppercase">
               ASANSÖR
             </span>
