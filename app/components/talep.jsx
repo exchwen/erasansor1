@@ -7,8 +7,6 @@ const TalepFormu = () => {
   const [isSending, setIsSending] = useState(false);
   const [status, setStatus] = useState({ type: '', message: '' });
 
-  // 🔴 DÜZELTME BURADA YAPILDI:
-  // Artık Google linkini değil, kendi oluşturduğumuz API yolunu yazıyoruz.
   const SCRIPT_URL = "/api/send-google";
 
   const slides = [
@@ -39,7 +37,6 @@ const TalepFormu = () => {
     };
 
     try {
-      // İstek artık senin kendi sunucuna gidiyor (CORS hatası olmaz)
       const response = await fetch(SCRIPT_URL, {
         method: 'POST',
         headers: {
@@ -207,7 +204,7 @@ const TalepFormu = () => {
                 className={`w-full py-4 rounded-lg font-black tracking-widest uppercase transition-all shadow-xl ${
                   isSending
                     ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                    : 'bg-[#1a3a4a] text-white hover:bg-[#fee123] hover:text-black active:scale-95'
+                    : 'bg-black text-white hover:bg-[#fee123] hover:text-black active:scale-95'
                 }`}
               >
                 {isSending ? 'KAYDEDİLİYOR...' : 'TALEP GÖNDER'}
