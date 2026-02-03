@@ -7,10 +7,10 @@ const inter = Inter({ subsets: ['latin'] });
 
 // --- GELİŞMİŞ SEO AYARLARI ---
 export const metadata: Metadata = {
-  // Sitenizin ana domain adresi (Vercel domaini yerine kendi domaininiz varsa onu yazın)
+  // Sitenizin ana domain adresi
   metadataBase: new URL('https://erasansor1.vercel.app'),
   
-  // Başlık Şablonu: Alt sayfalarda başlık otomatik olarak "Sayfa Adı | ER ASANSÖR" olur.
+  // Başlık Şablonu
   title: {
     default: 'ER ASANSÖR | Asansör Bakım, Montaj ve Revizyon',
     template: '%s | ER ASANSÖR',
@@ -18,15 +18,12 @@ export const metadata: Metadata = {
   
   description: 'İstanbul asansör firması ER Asansör; montaj, periyodik bakım, revizyon ve arıza servisi hizmetleri sunar. 7/24 teknik destek.',
   
-  // Anahtar Kelimeler (Google artık çok önemsemese de diğer motorlar için iyidir)
   keywords: ['asansör', 'asansör bakımı', 'asansör montaj', 'asansör revizyon', 'istanbul asansör', 'er asansör', 'yük asansörü', 'insan asansörü'],
   
-  // Yazarlar / Oluşturan
   authors: [{ name: 'ER Asansör' }],
   creator: 'ER Asansör',
   publisher: 'ER Asansör',
 
-  // Robotlar (Google Botları) için talimatlar
   robots: {
     index: true,
     follow: true,
@@ -39,12 +36,10 @@ export const metadata: Metadata = {
     },
   },
 
-  // Canonical URL (Kopya içerik sorununu çözer)
   alternates: {
     canonical: '/',
   },
 
-  // Sosyal Medya Paylaşımları (Facebook, LinkedIn, WhatsApp vb.)
   openGraph: {
     title: 'ER ASANSÖR | İstanbul Asansör Bakım, Montaj ve Revizyon',
     description: 'Güvenli, estetik ve yasal yönetmeliklere uygun asansör çözümleri.',
@@ -54,7 +49,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: '/logo.png', // Paylaşıldığında çıkacak resim
+        url: '/logo.png',
         width: 800,
         height: 600,
         alt: 'ER Asansör Logo',
@@ -62,19 +57,24 @@ export const metadata: Metadata = {
     ],
   },
 
-  // Twitter / X Paylaşımları
   twitter: {
     card: 'summary_large_image',
     title: 'ER ASANSÖR',
     description: 'İstanbul profesyonel asansör bakım ve montaj hizmetleri.',
-    images: ['/logo.png'], // Twitter için görsel
+    images: ['/logo.png'],
   },
 
-  // Favicon Ayarları (Eğer app klasöründe icon.png varsa burası otomatik de çalışır ama garanti olsun)
+  // --- İKON AYARLARI GÜNCELLENDİ ---
+  // Tarayıcılar favicon.ico bulamazsa logo.png kullanacak
   icons: {
-    icon: '/favicon.ico', // Veya '/favicon.ico'
-    shortcut: '/favicon.ico',
-    apple: '/favicon.ico', // Varsa ekleyin
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/logo.png', type: 'image/png' },
+    ],
+    shortcut: ['/favicon.ico'],
+    apple: [
+      { url: '/logo.png' }, // Apple cihazlar için logo.png daha iyi görünür
+    ],
   },
   
   verification: {
@@ -128,10 +128,6 @@ export default function RootLayout({
         `}</style>
       </head>
       
-      {/* suppressHydrationWarning={true}: 
-         Google Translate sayfayı çevirdiğinde DOM yapısını değiştirir.
-         Next.js'in "Sunucu ile İstemci uyuşmuyor" hatası verip çökmesini engeller.
-      */}
       <body className={inter.className} suppressHydrationWarning={true}>
         
         {/* Çeviri motorunun bağlandığı görünmez element */}
