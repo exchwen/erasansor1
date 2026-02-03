@@ -1,7 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image'; // Image bileşenini ekledik
+import Image from 'next/image';
 import {
   FaPhoneAlt,
   FaWhatsapp,
@@ -42,7 +42,7 @@ const Header = () => {
 
   return (
     <header className="w-full shadow-md fixed top-0 z-[100]">
-      {/* Üst Bilgi Çubuğu */}
+      {/* Üst Bilgi Çubuğu (Siyah Kalmaya Devam Ediyor - Kontrast İçin) */}
       <div className="bg-black text-white py-2 text-xs font-medium border-b border-gray-800">
         <div className="container mx-auto px-4 flex justify-between items-center">
           <div className="flex gap-4 items-center">
@@ -61,11 +61,10 @@ const Header = () => {
           </div>
 
           <div className="flex gap-3 md:gap-4 items-center">
-          <a href="https://instagram.com/erasansor" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-[#fee123] transition shrink-0">
-            <FaInstagram className="text-[#fee123]" /> 
-            {/* Instagram adı özel isim olduğu için tamamen korumaya aldık */}
-            <span className="hidden lg:inline notranslate">erasansor</span>
-          </a>
+            <a href="https://instagram.com/erasansor" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-[#fee123] transition shrink-0">
+              <FaInstagram className="text-[#fee123]" /> 
+              <span className="hidden lg:inline notranslate">erasansor</span>
+            </a>
             <a href="https://wa.me/905312331711" target="_blank" rel="noopener noreferrer" className="bg-green-600 px-3 py-1 rounded text-white font-bold flex items-center gap-2 hover:bg-green-500 transition shadow-sm text-[10px] sm:text-xs">
               <FaWhatsapp /> <span className="hidden xs:inline">Teklif Al</span><span className="xs:hidden">Teklif</span>
             </a>
@@ -86,100 +85,111 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Navigasyon Alanı */}
-      <div className="bg-black py-3 border-b border-gray-800 relative z-50">
+      {/* Navigasyon Alanı (Artık BEYAZ) */}
+      <div className="bg-white py-3 border-b border-gray-100 relative z-50">
         <div className="container mx-auto px-4 flex justify-between items-center">
           
-          {/* --- LOGO ALANI GÜNCELLENDİ --- */}
-          <Link href="/" className="flex items-center gap-2 group shrink-0">
-            {/* "ER" yazısı yerine LOGO görseli eklendi */}
-            <div className="relative w-10 h-10 md:w-12 md:h-12 bg-black border-2 border-[#fee123] rounded-md p-1 group-hover:bg-white group-hover:border-white transition-all duration-300">
+          {/* --- LOGO ALANI --- */}
+          <Link href="/" className="flex items-center gap-3 group shrink-0">
+            {/* Logo Kutusu: SİYAH zemin (Altın/Beyaz logo parlasın diye) */}
+            <div className="relative w-12 h-12 md:w-14 md:h-14 bg-black border-2 border-[#fee123] rounded-lg p-1.5 shadow-md group-hover:shadow-lg transition-all duration-300">
               <Image
-                src="/logo.png" // public klasöründeki logo dosyanız
+                src="/logo.png"
                 alt="ER ASANSÖR"
                 fill
-                sizes="(max-width: 768px) 40px, 48px"
+                sizes="(max-width: 768px) 48px, 56px"
                 className="object-contain"
                 priority
               />
             </div>
-            {/* "ASANSÖR" yazısı */}
-            <span className="text-white text-xl md:text-3xl font-black tracking-tighter uppercase">
-              ASANSÖR
-            </span>
+            {/* Marka İsmi: SİYAH metin */}
+            <div className="flex flex-col leading-none">
+              <span className="text-black text-2xl md:text-3xl font-black tracking-tighter uppercase">
+                ER
+              </span>
+              <span className="text-black text-sm md:text-base font-bold tracking-widest uppercase">
+                ASANSÖR
+              </span>
+            </div>
           </Link>
           {/* --- LOGO ALANI SONU --- */}
 
-          {/* Masaüstü Menü */}
-          <nav className="hidden md:flex gap-6 lg:gap-8 font-bold uppercase text-sm items-center">
-            <Link href="/" className="text-white hover:text-[#fee123] transition">Ana Sayfa</Link>
-            <Link href="/hakkimizda" className="text-white hover:text-[#fee123] transition">Hakkımızda</Link>
+          {/* Masaüstü Menü (Linkler SİYAH) */}
+          <nav className="hidden md:flex gap-6 lg:gap-8 font-bold uppercase text-sm items-center text-black">
+            <Link href="/" className="hover:text-[#d4af37] transition-colors relative after:content-[''] after:absolute after:w-0 after:h-0.5 after:bg-[#d4af37] after:left-0 after:-bottom-1 after:transition-all hover:after:w-full">Ana Sayfa</Link>
+            <Link href="/hakkimizda" className="hover:text-[#d4af37] transition-colors relative after:content-[''] after:absolute after:w-0 after:h-0.5 after:bg-[#d4af37] after:left-0 after:-bottom-1 after:transition-all hover:after:w-full">Hakkımızda</Link>
+            
             <div className="relative group py-2" onMouseEnter={() => setIsDropdownOpen(true)} onMouseLeave={() => setIsDropdownOpen(false)}>
-              <Link href="/hizmetlerimiz" className="flex items-center gap-1 text-white hover:text-[#fee123] transition">
-                Hizmetlerimiz <FaChevronDown size={10} className={`text-[#fee123] transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
+              <Link href="/hizmetlerimiz" className="flex items-center gap-1 hover:text-[#d4af37] transition-colors">
+                Hizmetlerimiz <FaChevronDown size={10} className={`text-[#d4af37] transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
               </Link>
               {isDropdownOpen && (
-                <div className="absolute top-full left-0 w-72 bg-[#111] border-t-4 border-[#fee123] shadow-2xl rounded-b-xl overflow-hidden animate-in fade-in slide-in-from-top-2">
-                  <Link href="/hizmetlerimiz/periyodik-bakim" className="block px-6 py-4 text-white hover:bg-gray-900 hover:text-[#fee123] border-b border-gray-800 uppercase text-xs font-bold tracking-tight">Periyodik Bakım</Link>
-                  <Link href="/hizmetlerimiz/ariza-servisi" className="block px-6 py-4 text-white hover:bg-gray-900 hover:text-[#fee123] border-b border-gray-800 uppercase text-xs font-bold tracking-tight">Arıza Servisi</Link>
-                  <Link href="/hizmetlerimiz/revizyon" className="block px-6 py-4 text-white hover:bg-gray-900 hover:text-[#fee123] border-b border-gray-800 uppercase text-xs font-bold tracking-tight">Revizyon (Yenileme)</Link>
-                  <Link href="/hizmetlerimiz/asansor-montaj" className="block px-6 py-4 text-white hover:bg-gray-900 hover:text-[#fee123] border-b border-gray-800 uppercase text-xs font-bold tracking-tight">Asansör Montaj</Link>
-                  <Link href="/hizmetlerimiz/asansor-projelendirme" className="block px-6 py-4 text-white hover:bg-gray-900 hover:text-[#fee123] uppercase text-xs font-bold tracking-tight">Asansör Projelendirme</Link>
+                <div className="absolute top-full left-0 w-72 bg-white border-t-4 border-[#d4af37] shadow-xl rounded-b-xl overflow-hidden animate-in fade-in slide-in-from-top-2 border-x border-b border-gray-100">
+                  <Link href="/hizmetlerimiz/periyodik-bakim" className="block px-6 py-4 text-black hover:bg-gray-50 hover:text-[#d4af37] border-b border-gray-100 uppercase text-xs font-bold tracking-tight">Periyodik Bakım</Link>
+                  <Link href="/hizmetlerimiz/ariza-servisi" className="block px-6 py-4 text-black hover:bg-gray-50 hover:text-[#d4af37] border-b border-gray-100 uppercase text-xs font-bold tracking-tight">Arıza Servisi</Link>
+                  <Link href="/hizmetlerimiz/revizyon" className="block px-6 py-4 text-black hover:bg-gray-50 hover:text-[#d4af37] border-b border-gray-100 uppercase text-xs font-bold tracking-tight">Revizyon (Yenileme)</Link>
+                  <Link href="/hizmetlerimiz/asansor-montaj" className="block px-6 py-4 text-black hover:bg-gray-50 hover:text-[#d4af37] border-b border-gray-100 uppercase text-xs font-bold tracking-tight">Asansör Montaj</Link>
+                  <Link href="/hizmetlerimiz/asansor-projelendirme" className="block px-6 py-4 text-black hover:bg-gray-50 hover:text-[#d4af37] uppercase text-xs font-bold tracking-tight">Asansör Projelendirme</Link>
                 </div>
               )}
             </div>
-            <Link href="/referanslar" className="text-white hover:text-[#fee123] transition">Referanslar</Link>
-            <Link href="/cozumortaklari" className="text-white hover:text-[#fee123] transition">Çözüm Ortaklarımız</Link>
-            <Link href="/iletisim" className="text-white border-2 border-[#fee123] px-5 py-2 rounded-lg font-black hover:bg-[#fee123] hover:text-black transition-all">İLETİŞİM</Link>
+
+            <Link href="/referanslar" className="hover:text-[#d4af37] transition-colors relative after:content-[''] after:absolute after:w-0 after:h-0.5 after:bg-[#d4af37] after:left-0 after:-bottom-1 after:transition-all hover:after:w-full">Referanslar</Link>
+            <Link href="/cozumortaklari" className="hover:text-[#d4af37] transition-colors relative after:content-[''] after:absolute after:w-0 after:h-0.5 after:bg-[#d4af37] after:left-0 after:-bottom-1 after:transition-all hover:after:w-full">Çözüm Ortaklarımız</Link>
+            <Link href="/iletisim" className="text-white bg-black border-2 border-black px-6 py-2.5 rounded-lg font-black hover:bg-white hover:text-black hover:border-black transition-all shadow-lg hover:shadow-xl text-xs">İLETİŞİM</Link>
           </nav>
 
-          <button className="md:hidden text-white text-2xl p-2" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-            {isMobileMenuOpen ? <FaTimes className="text-[#fee123]" /> : <FaBars />}
+          {/* Mobil Menü Butonu (SİYAH) */}
+          <button className="md:hidden text-black text-2xl p-2 hover:bg-gray-100 rounded-lg transition" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+            {isMobileMenuOpen ? <FaTimes className="text-[#d4af37]" /> : <FaBars />}
           </button>
         </div>
       </div>
 
-      {/* --- MOBİL MENÜ --- */}
+      {/* --- MOBİL MENÜ (BEYAZ ARKA PLAN) --- */}
       {isMobileMenuOpen && (
         <>
-          <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[-1]" onClick={() => setIsMobileMenuOpen(false)} />
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[-1]" onClick={() => setIsMobileMenuOpen(false)} />
           
-          <div className="md:hidden absolute top-full left-0 w-full bg-black border-t border-gray-900 shadow-2xl animate-in slide-in-from-top duration-300 max-h-[80vh] overflow-y-auto">
-            <nav className="flex flex-col p-5 font-bold uppercase text-xs md:text-sm">
-              <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="py-3 text-white border-b border-gray-900">Ana Sayfa</Link>
-              <Link href="/hakkimizda" onClick={() => setIsMobileMenuOpen(false)} className="py-3 text-white border-b border-gray-900">Hakkımızda</Link>
+          <div className="md:hidden absolute top-full left-0 w-full bg-white border-t border-gray-100 shadow-2xl animate-in slide-in-from-top duration-300 max-h-[85vh] overflow-y-auto">
+            <nav className="flex flex-col p-5 font-bold uppercase text-xs md:text-sm text-black">
+              <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="py-4 border-b border-gray-100 hover:text-[#d4af37]">Ana Sayfa</Link>
+              <Link href="/hakkimizda" onClick={() => setIsMobileMenuOpen(false)} className="py-4 border-b border-gray-100 hover:text-[#d4af37]">Hakkımızda</Link>
               
-              <div className="flex flex-col border-b border-gray-900">
-                <div className="flex items-center justify-between py-3">
+              <div className="flex flex-col border-b border-gray-100">
+                <div className="flex items-center justify-between py-4">
                   <Link 
                     href="/hizmetlerimiz" 
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="text-white hover:text-[#fee123] flex-grow"
+                    className="flex-grow hover:text-[#d4af37]"
                   >
                     HİZMETLERİMİZ
                   </Link>
                   <button 
                     onClick={() => setIsMobileSubMenuOpen(!isMobileSubMenuOpen)}
-                    className="p-2 -mr-2"
+                    className="p-3 -mr-3"
                   >
-                    <FaChevronDown size={14} className={`text-[#fee123] transition-transform duration-300 ${isMobileSubMenuOpen ? 'rotate-180' : ''}`} />
+                    <FaChevronDown size={14} className={`text-[#d4af37] transition-transform duration-300 ${isMobileSubMenuOpen ? 'rotate-180' : ''}`} />
                   </button>
                 </div>
                 
                 {isMobileSubMenuOpen && (
-                  <div className="bg-gray-950/50 flex flex-col pl-4 animate-in slide-in-from-top-2">
-                    <Link href="/hizmetlerimiz/periyodik-bakim" onClick={() => setIsMobileMenuOpen(false)} className="py-2.5 text-gray-400 text-[10px] border-b border-gray-900/50 italic">Periyodik Bakım</Link>
-                    <Link href="/hizmetlerimiz/ariza-servisi" onClick={() => setIsMobileMenuOpen(false)} className="py-2.5 text-gray-400 text-[10px] border-b border-gray-900/50 italic">Arıza Servisi</Link>
-                    <Link href="/hizmetlerimiz/revizyon" onClick={() => setIsMobileMenuOpen(false)} className="py-2.5 text-gray-400 text-[10px] border-b border-gray-900/50 italic">Revizyon (Yenileme)</Link>
-                    <Link href="/hizmetlerimiz/asansor-montaj" onClick={() => setIsMobileMenuOpen(false)} className="py-2.5 text-gray-400 text-[10px] border-b border-gray-900/50 italic">Asansör Montaj</Link>
-                    <Link href="/hizmetlerimiz/asansor-projelendirme" onClick={() => setIsMobileMenuOpen(false)} className="py-2.5 text-gray-400 text-[10px] italic">Asansör Projelendirme</Link>
+                  <div className="bg-gray-50 flex flex-col pl-6 pr-2 rounded-lg mb-4 animate-in slide-in-from-top-2">
+                    <Link href="/hizmetlerimiz/periyodik-bakim" onClick={() => setIsMobileMenuOpen(false)} className="py-3 text-gray-600 text-[11px] border-b border-gray-200 hover:text-black">Periyodik Bakım</Link>
+                    <Link href="/hizmetlerimiz/ariza-servisi" onClick={() => setIsMobileMenuOpen(false)} className="py-3 text-gray-600 text-[11px] border-b border-gray-200 hover:text-black">Arıza Servisi</Link>
+                    <Link href="/hizmetlerimiz/revizyon" onClick={() => setIsMobileMenuOpen(false)} className="py-3 text-gray-600 text-[11px] border-b border-gray-200 hover:text-black">Revizyon (Yenileme)</Link>
+                    <Link href="/hizmetlerimiz/asansor-montaj" onClick={() => setIsMobileMenuOpen(false)} className="py-3 text-gray-600 text-[11px] border-b border-gray-200 hover:text-black">Asansör Montaj</Link>
+                    <Link href="/hizmetlerimiz/asansor-projelendirme" onClick={() => setIsMobileMenuOpen(false)} className="py-3 text-gray-600 text-[11px] hover:text-black">Asansör Projelendirme</Link>
                   </div>
                 )}
               </div>
 
-              <Link href="/referanslar" onClick={() => setIsMobileMenuOpen(false)} className="py-3 text-white border-b border-gray-900">Referanslar</Link>
-              <Link href="/cozumortaklari" onClick={() => setIsMobileMenuOpen(false)} className="py-3 text-white border-b border-gray-900">Çözüm Ortaklarımız</Link>
-              <Link href="/iletisim" onClick={() => setIsMobileMenuOpen(false)} className="mt-4 text-center bg-[#fee123] text-black py-3 rounded-lg font-black">İLETİŞİM</Link>
+              <Link href="/referanslar" onClick={() => setIsMobileMenuOpen(false)} className="py-4 border-b border-gray-100 hover:text-[#d4af37]">Referanslar</Link>
+              <Link href="/cozumortaklari" onClick={() => setIsMobileMenuOpen(false)} className="py-4 border-b border-gray-100 hover:text-[#d4af37]">Çözüm Ortaklarımız</Link>
+              
+              <Link href="/iletisim" onClick={() => setIsMobileMenuOpen(false)} className="mt-6 text-center bg-black text-white border-2 border-black py-3.5 rounded-lg font-black text-sm shadow-lg active:scale-95 transition-transform">
+                İLETİŞİM
+              </Link>
             </nav>
           </div>
         </>
@@ -189,4 +199,3 @@ const Header = () => {
 };
 
 export default Header;
-
