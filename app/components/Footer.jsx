@@ -28,15 +28,16 @@ const Footer = () => {
   const googleMapsEmbedUrl = "https://maps.google.com/maps?q=Merkez%2C%20Re%C5%9Fit%20Pa%C5%9Fa%20Cd.%2C%2034310%20Avc%C4%B1lar%2F%C4%B0stanbul&t=&z=15&ie=UTF8&iwloc=&output=embed";
 
   return (
-    <footer id="iletisim" className="bg-black text-white pt-16 md:pt-20 pb-8 md:pb-10 border-t border-gray-900">
+    // DÜZELTME: bg-black yerine bg-white, text-white yerine text-gray-800
+    <footer id="iletisim" className="bg-white text-gray-800 pt-16 md:pt-20 pb-8 md:pb-10 border-t border-gray-200">
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 mb-16">
           
           {/* 1. KOLON: İLETİŞİM VE HARİTA */}
           <div className="space-y-6 md:space-y-8">
-            {/* LOGO VE BAŞLIK ALANI (GÜNCELLENDİ) */}
+            {/* LOGO VE BAŞLIK ALANI */}
             <div className="flex items-center gap-3 border-b-4 border-[#fee123] inline-flex pb-2">
-              {/* Logo Kutusu: Siyah zemin, Sarı çerçeve */}
+              {/* Logo Kutusu: SİYAH zemin (Logo beyaz/sarı olduğu için) */}
               <div className="relative w-10 h-10 bg-black border-2 border-[#fee123] rounded-md p-1 shrink-0">
                 <Image
                   src="/logo.png"
@@ -46,49 +47,50 @@ const Footer = () => {
                   className="object-contain"
                 />
               </div>
-              {/* Metin: Sadece ASANSÖR */}
-              <span className="text-2xl font-black tracking-widest uppercase">ASANSÖR</span>
+              {/* Metin: SİYAH */}
+              <span className="text-2xl font-black tracking-widest uppercase text-black">ASANSÖR</span>
             </div>
 
-            <div className="space-y-4 text-gray-400 font-semibold text-sm">
+            <div className="space-y-4 text-gray-600 font-semibold text-sm">
               <a href="tel:05312331711" className="flex items-center gap-4 hover:text-[#fee123] transition-colors group">
-                <div className="bg-gray-900 p-2.5 rounded-full group-hover:bg-[#fee123] group-hover:text-black transition-all shrink-0">
+                {/* İkon Arkası: Açık Gri */}
+                <div className="bg-gray-100 p-2.5 rounded-full group-hover:bg-[#fee123] group-hover:text-black transition-all shrink-0 text-black">
                   <Phone size={18} />
                 </div>
-                <span>0 (531) 233 1711</span>
+                <span className="group-hover:text-black">0 (531) 233 1711</span>
               </a>
               <a href="tel:02126071010" className="flex items-center gap-4 hover:text-[#fee123] transition-colors group">
-                <div className="bg-gray-900 p-2.5 rounded-full group-hover:bg-[#fee123] group-hover:text-black transition-all shrink-0">
+                <div className="bg-gray-100 p-2.5 rounded-full group-hover:bg-[#fee123] group-hover:text-black transition-all shrink-0 text-black">
                   <Phone size={18} />
                 </div>
-                <span>0 (212) 607 1010</span>
+                <span className="group-hover:text-black">0 (212) 607 1010</span>
               </a>
               <a href="mailto:info@erasansor.com" className="flex items-center gap-4 hover:text-[#fee123] transition-colors group">
-                <div className="bg-gray-900 p-2.5 rounded-full group-hover:bg-[#fee123] group-hover:text-black transition-all shrink-0">
+                <div className="bg-gray-100 p-2.5 rounded-full group-hover:bg-[#fee123] group-hover:text-black transition-all shrink-0 text-black">
                   <Mail size={18} />
                 </div>
-                <span className="break-all">info@erasansor.com</span>
+                <span className="break-all group-hover:text-black">info@erasansor.com</span>
               </a>
               <a href={googleMapsExternalUrl} target="_blank" rel="noopener noreferrer" className="flex items-start gap-4 hover:text-[#fee123] transition-colors group">
-                <div className="bg-gray-900 p-2.5 rounded-full group-hover:bg-[#fee123] group-hover:text-black transition-all shrink-0">
+                <div className="bg-gray-100 p-2.5 rounded-full group-hover:bg-[#fee123] group-hover:text-black transition-all shrink-0 text-black">
                   <MapPin size={18} />
                 </div>
-                <span className="leading-relaxed">Avcılar, Reşitpaşa cad., İstanbul 34310 Türkiye</span>
+                <span className="leading-relaxed group-hover:text-black">Avcılar, Reşitpaşa cad., İstanbul 34310 Türkiye</span>
               </a>
             </div>
 
             {/* HARİTA GÖRÜNÜMÜ */}
-            <div className="relative w-full h-40 md:h-44 rounded-xl overflow-hidden border border-gray-800 shadow-2xl group">
-              <div className="absolute inset-0 bg-black/50 group-hover:bg-transparent transition-all duration-500 z-10" />
+            <div className="relative w-full h-40 md:h-44 rounded-xl overflow-hidden border border-gray-200 shadow-lg group">
+              <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-all duration-500 z-10" />
               <iframe
                 title="ER ASANSÖR Konum"
                 src={googleMapsEmbedUrl}
-                className="w-full h-full grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700"
+                className="w-full h-full grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700"
                 style={{ border: 0 }}
                 allowFullScreen=""
                 loading="lazy"
               ></iframe>
-              <a href={googleMapsExternalUrl} target="_blank" rel="noopener noreferrer" className="absolute inset-0 z-20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3 font-black text-[10px] md:text-xs bg-black/60 text-[#fee123] uppercase tracking-widest">
+              <a href={googleMapsExternalUrl} target="_blank" rel="noopener noreferrer" className="absolute inset-0 z-20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3 font-black text-[10px] md:text-xs bg-black/70 text-[#fee123] uppercase tracking-widest">
                 Navigasyonu Aç <ExternalLink size={14} />
               </a>
             </div>
@@ -96,33 +98,34 @@ const Footer = () => {
 
           {/* 2. KOLON: REFERANSLAR */}
           <div className="text-left">
-            <h3 className="text-xl font-black tracking-widest uppercase mb-8 md:mb-10 text-[#fee123]">
+            <h3 className="text-xl font-black tracking-widest uppercase mb-8 md:mb-10 text-black border-b-4 border-[#fee123] inline-block pb-2">
               REFERANSLARIMIZ
             </h3>
             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-3 gap-2 md:gap-3">
               {referenceLogos.slice(0, 12).map((logo, index) => (
-                <div key={index} className="bg-white/5 p-2 rounded-lg flex items-center justify-center h-16 md:h-20 border border-white/5 hover:border-[#fee123]/40 transition-all group">
+                // Logo Kutusu: Açık gri zemin ve gri kenarlık
+                <div key={index} className="bg-gray-50 p-2 rounded-lg flex items-center justify-center h-16 md:h-20 border border-gray-100 hover:border-[#fee123] transition-all group hover:shadow-md">
                   <Image
                     src={logo.url}
                     alt={logo.name}
                     width={80}
                     height={50}
-                    className="max-h-full max-w-full object-contain opacity-40 grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500"
+                    className="max-h-full max-w-full object-contain opacity-60 grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500"
                   />
                 </div>
               ))}
             </div>
-            <Link href="/referanslar" className="inline-block mt-6 text-[#fee123] text-[10px] font-bold uppercase tracking-widest border-b border-[#fee123]/40 hover:border-[#fee123] transition-all">
+            <Link href="/referanslar" className="inline-block mt-6 text-black text-[10px] font-bold uppercase tracking-widest border-b border-[#fee123] hover:text-[#d4af37] transition-all">
               Tüm Referansları Gör →
             </Link>
           </div>
 
           {/* 3. KOLON: HİZMETLERİMİZ */}
           <div className="md:pl-12 lg:pl-16">
-            <h3 className="text-xl font-black tracking-widest uppercase mb-8 md:mb-10 border-b-4 border-[#fee123] inline-block pb-2">
+            <h3 className="text-xl font-black tracking-widest uppercase mb-8 md:mb-10 border-b-4 border-[#fee123] inline-block pb-2 text-black">
               HİZMETLERİMİZ
             </h3>
-            <ul className="space-y-4 md:space-y-5 font-bold text-gray-400 text-sm">
+            <ul className="space-y-4 md:space-y-5 font-bold text-gray-600 text-sm">
               {[
                 { name: 'Periyodik Bakım', path: '/hizmetlerimiz/periyodik-bakim' },
                 { name: 'Arıza Servisi', path: '/hizmetlerimiz/ariza-servisi' },
@@ -131,7 +134,7 @@ const Footer = () => {
                 { name: 'Asansör Projelendirme', path: '/hizmetlerimiz/asansor-projelendirme' },
               ].map((item) => (
                 <li key={item.name}>
-                  <Link href={item.path} className="hover:text-[#fee123] hover:translate-x-2 transition-all inline-block uppercase tracking-tight">
+                  <Link href={item.path} className="hover:text-black hover:translate-x-2 transition-all inline-block uppercase tracking-tight relative hover:before:content-['-'] hover:before:mr-1">
                     {item.name}
                   </Link>
                 </li>
@@ -140,19 +143,18 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* ALT BAR */}
-        <div className="mt-12 md:mt-20 pt-8 border-t border-gray-900 flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] font-black text-gray-600 uppercase tracking-[0.2em] md:tracking-[0.3em] text-center md:text-left">
+        {/* ALT BAR (BEYAZ ZEMİNDE KOYU GRİ ÇİZGİ) */}
+        <div className="mt-12 md:mt-20 pt-8 border-t border-gray-200 flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] font-black text-gray-500 uppercase tracking-[0.2em] md:tracking-[0.3em] text-center md:text-left">
           <div className="space-y-1">
             <p>
-              {/* Metin içi ER yazısı kaldı, çünkü burası düz metin */}
-              © 2009 <span className="notranslate">ER</span> ASANSÖR
+              © 2009 <span className="notranslate text-black">ER</span> ASANSÖR
             </p>
-            <p className="text-gray-700">TÜM HAKLARI SAKLIDIR.</p>
+            <p className="text-gray-400">TÜM HAKLARI SAKLIDIR.</p>
           </div>
           
           <div className="flex flex-wrap justify-center gap-6 md:gap-10">
-            <Link href="/gizlilik-politikasi" className="hover:text-[#fee123] transition-colors">Gizlilik Politikası</Link>
-            <Link href="/erisebilirlik-bildirimi" className="hover:text-[#fee123] transition-colors">Erişilebilirlik</Link>
+            <Link href="/gizlilik-politikasi" className="hover:text-black transition-colors">Gizlilik Politikası</Link>
+            <Link href="/erisebilirlik-bildirimi" className="hover:text-black transition-colors">Erişilebilirlik</Link>
           </div>
         </div>
       </div>
