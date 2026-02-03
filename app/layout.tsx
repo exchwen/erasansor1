@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ['latin'] });
 // --- GELİŞMİŞ SEO AYARLARI ---
 export const metadata: Metadata = {
   // Sitenizin ana domain adresi
-  metadataBase: new URL('https://erasansor.com'),
+  metadataBase: new URL('https://www.erasansor.com'),
   
   // Başlık Şablonu
   title: {
