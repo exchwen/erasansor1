@@ -24,8 +24,8 @@ const Footer = () => {
   ];
 
   const mapAddress = 'Merkez, Reşit Paşa Cd., 34310 Avcılar/İstanbul';
-  const googleMapsExternalUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapAddress)}`;
-  const googleMapsEmbedUrl = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3011.650257850849!2d28.7188!3d40.9882!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDDCsDU5JzE3LjUiTiAyOMKwNDMnMDcuNyJF!5e0!3m2!1str!2str!4v1640000000000!5m2!1str!2str";
+  const googleMapsExternalUrl = `http://googleusercontent.com/maps.google.com/maps?q=${encodeURIComponent(mapAddress)}`;
+  const googleMapsEmbedUrl = "https://maps.google.com/maps?q=Merkez%2C%20Re%C5%9Fit%20Pa%C5%9Fa%20Cd.%2C%2034310%20Avc%C4%B1lar%2F%C4%B0stanbul&t=&z=15&ie=UTF8&iwloc=&output=embed";
 
   return (
     <footer id="iletisim" className="bg-black text-white pt-16 md:pt-20 pb-8 md:pb-10 border-t border-gray-900">
@@ -34,10 +34,22 @@ const Footer = () => {
           
           {/* 1. KOLON: İLETİŞİM VE HARİTA */}
           <div className="space-y-6 md:space-y-8">
-            <h3 className="text-2xl font-black tracking-widest uppercase border-b-4 border-[#fee123] inline-block pb-2">
-              {/* DÜZELTME 1: Başlıktaki kelimeler birbirine yapıştırıldı */}
-              <span className="notranslate">ER</span>&nbsp;ASANSÖR
-            </h3>
+            {/* LOGO VE BAŞLIK ALANI (GÜNCELLENDİ) */}
+            <div className="flex items-center gap-3 border-b-4 border-[#fee123] inline-flex pb-2">
+              {/* Logo Kutusu: Siyah zemin, Sarı çerçeve */}
+              <div className="relative w-10 h-10 bg-black border-2 border-[#fee123] rounded-md p-1 shrink-0">
+                <Image
+                  src="/logo.png"
+                  alt="ER ASANSÖR"
+                  fill
+                  sizes="40px"
+                  className="object-contain"
+                />
+              </div>
+              {/* Metin: Sadece ASANSÖR */}
+              <span className="text-2xl font-black tracking-widest uppercase">ASANSÖR</span>
+            </div>
+
             <div className="space-y-4 text-gray-400 font-semibold text-sm">
               <a href="tel:05312331711" className="flex items-center gap-4 hover:text-[#fee123] transition-colors group">
                 <div className="bg-gray-900 p-2.5 rounded-full group-hover:bg-[#fee123] group-hover:text-black transition-all shrink-0">
@@ -131,9 +143,9 @@ const Footer = () => {
         {/* ALT BAR */}
         <div className="mt-12 md:mt-20 pt-8 border-t border-gray-900 flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] font-black text-gray-600 uppercase tracking-[0.2em] md:tracking-[0.3em] text-center md:text-left">
           <div className="space-y-1">
-            {/* DÜZELTME 2: 2009-ER-ASANSÖR bloğu birbirine kilitlendi */}
             <p>
-              © 2009&nbsp;<span className="notranslate">ER</span>&nbsp;ASANSÖR
+              {/* Metin içi ER yazısı kaldı, çünkü burası düz metin */}
+              © 2009 <span className="notranslate">ER</span> ASANSÖR
             </p>
             <p className="text-gray-700">TÜM HAKLARI SAKLIDIR.</p>
           </div>
