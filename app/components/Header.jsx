@@ -54,9 +54,9 @@ const Header = () => {
               <FaWhatsapp className="text-lg text-[#fee123]" /> 
               <span className="hidden sm:inline">0 (531) 233 17 11</span>
             </a>
-            <a href="mailto:info@erasansor.com" className="flex items-center gap-2 hover:text-[#fee123] transition shrink-0">
+            <a href="mailto:erasansor.tr@gmail.com" className="flex items-center gap-2 hover:text-[#fee123] transition shrink-0">
               <FaEnvelope className="text-[#fee123]" /> 
-              <span className="hidden md:inline">info@erasansor.com</span>
+              <span className="hidden md:inline">erasansor.tr@gmail.com</span>
             </a>
           </div>
 
