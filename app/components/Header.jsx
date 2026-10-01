@@ -17,7 +17,7 @@ const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileSubMenuOpen, setIsMobileSubMenuOpen] = useState(false);
 
-  // --- DİL DEĞİŞTİRME FONKSİYONU 1 ---
+  // --- DİL DEĞİŞTİRME FONKSİYONU ---
   const changeLanguage = (lang) => {
     const select = document.querySelector('.goog-te-combo');
     if (select) {
